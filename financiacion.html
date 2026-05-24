@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
+
+<!-- Fuente Audiowide para SVG del logo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<title>Financiación — Fernández Autos</title>
+<meta name="description" content="Financiá tu auto con las mejores condiciones del mercado.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Financiación — Fernández Autos">
+<meta property="og:description" content="Financiá tu auto con las mejores condiciones del mercado.">
+<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root {
+  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
+  --accent: #1a4a8a; --accent-light: #2558a3;
+  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+  --green: #2d6a30; --green-bg: #e8f5e9;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--white); color: var(--black); }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 62px;
+  background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo img { height: 44px; object-fit: contain; }
+nav { display: flex; align-items: center; gap: 28px; }
+nav a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+nav a:hover, nav a.active { color: var(--black); }
+.header-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.btn-wsp {
+  display: flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; font-family: var(--sans);
+}
+.btn-outline {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+  width: 36px; height: 36px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Panel mobile: drawer lateral desde la izquierda */
+.nav-mobile-panel {
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 68%;
+  max-width: 300px;
+  background: #fff;
+  z-index: 99999;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 32px rgba(0,0,0,.15);
+  padding-top: 24px;
+}
+.nav-mobile-panel.open {
+  transform: translateX(0);
+}
+.nav-mobile-panel .drawer-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid #e2dfd5;
+  margin-bottom: 8px;
+}
+.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
+.nav-mobile-panel a {
+  font-size: 1rem; font-weight: 500;
+  padding: 16px 24px;
+  border-left: 3px solid transparent;
+  color: #7a7870;
+  text-decoration: none;
+  display: block;
+  transition: all .15s;
+}
+.nav-mobile-panel a:hover,
+.nav-mobile-panel a.active {
+  color: #0e0d0b;
+  border-left-color: #1a4a8a;
+  background: #f4f2ec;
+}
+/* Overlay oscuro detrás del drawer */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 99998;
+}
+.nav-overlay.open { display: block; }
+
+
+
+/* HERO */
+.hero {
+  background: var(--black); padding: 80px 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.hero-text { color: #fff; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+}
+.hero-text h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+.hero-text h1 span { color: #a8c4f0; }
+.hero-text p { font-size: 1rem; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 28px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--accent); color: #fff; border: none; border-radius: 10px;
+  padding: 13px 24px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+.btn-wsp-hero {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 10px;
+  padding: 13px 24px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.btn-wsp-hero:hover { background: #1fba57; }
+
+/* Tarjetas hero stats */
+.hero-stats { display: flex; flex-direction: column; gap: 16px; }
+.stat-card {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; gap: 18px;
+}
+.stat-icon { font-size: 2rem; flex-shrink: 0; }
+.stat-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.stat-desc { font-size: 0.82rem; color: rgba(255,255,255,.55); line-height: 1.5; }
+
+/* OPCIONES */
+.opciones-section { padding: 80px 48px; background: var(--white); }
+.section-label { font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
+.section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 40px; }
+.opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.opcion-card {
+  border-radius: 16px; padding: 32px 28px; border: 1.5px solid var(--border);
+  transition: all .22s; position: relative; overflow: hidden;
+}
+.opcion-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,74,138,.1); }
+.opcion-card.destacada { background: var(--accent); border-color: var(--accent); color: #fff; }
+.opcion-card.destacada .opcion-desc { color: rgba(255,255,255,.75); }
+.opcion-card.destacada .opcion-item { color: rgba(255,255,255,.85); }
+.opcion-card.destacada .opcion-item::before { background: rgba(255,255,255,.3); color: #fff; }
+.opcion-num {
+  position: absolute; top: 20px; right: 24px;
+  font-size: 3.5rem; font-weight: 900; color: rgba(0,0,0,.05); line-height: 1;
+}
+.opcion-card.destacada .opcion-num { color: rgba(255,255,255,.08); }
+.opcion-icon { font-size: 2.2rem; margin-bottom: 16px; }
+.opcion-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+.opcion-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.65; margin-bottom: 16px; }
+.opcion-items { display: flex; flex-direction: column; gap: 8px; }
+.opcion-item {
+  font-size: 0.84rem; color: var(--black); display: flex; align-items: center; gap: 10px;
+}
+.opcion-item::before {
+  content: '✓'; width: 20px; height: 20px; background: var(--green-bg); color: var(--green);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+}
+
+/* PROCESO */
+.proceso-section { background: var(--cream); padding: 80px 48px; }
+.proceso-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; margin-top: 40px; position: relative; }
+.proceso-steps::before {
+  content: ''; position: absolute; top: 28px; left: 10%; right: 10%;
+  height: 2px; background: var(--border); z-index: 0;
+}
+.paso { text-align: center; position: relative; z-index: 1; }
+.paso-num {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; box-shadow: 0 4px 16px rgba(26,74,138,.3);
+}
+.paso-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.paso-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+/* REQUISITOS */
+.requisitos-section { padding: 80px 48px; background: var(--white); }
+.requisitos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 40px; align-items: start; }
+.req-grupo { }
+.req-grupo h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--accent); display: inline-block; }
+.req-lista { display: flex; flex-direction: column; gap: 10px; }
+.req-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; background: var(--cream); border-radius: 10px;
+  font-size: 0.88rem; line-height: 1.5;
+}
+.req-item-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.req-nota {
+  margin-top: 16px; padding: 14px 16px; background: #e8eef8;
+  border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+  font-size: 0.83rem; color: var(--accent); line-height: 1.6;
+}
+
+/* FORMULARIO */
+.form-section {
+  background: var(--black); padding: 80px 48px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+}
+.form-text { color: #fff; }
+.form-text h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; line-height: 1.3; }
+.form-text h2 span { color: #a8c4f0; }
+.form-text p { font-size: 0.92rem; color: rgba(255,255,255,.6); line-height: 1.7; margin-bottom: 28px; }
+.form-text-items { display: flex; flex-direction: column; gap: 12px; }
+.form-text-item { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.8); font-size: 0.88rem; }
+.form-text-item span:first-child { font-size: 1.2rem; }
+.form-box { background: #fff; border-radius: 20px; padding: 36px; }
+.form-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field.full { grid-column: 1/-1; }
+.form-field label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 600; }
+.form-field input, .form-field select, .form-field textarea {
+  border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px;
+  font-family: var(--sans); font-size: 0.88rem; outline: none;
+  transition: border-color .2s; background: var(--white); color: var(--black);
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+.form-field textarea { resize: vertical; min-height: 80px; }
+.btn-form {
+  width: 100%; margin-top: 8px; background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; padding: 14px; font-family: var(--sans); font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+}
+.btn-form:hover { background: var(--accent-light); transform: translateY(-1px); }
+.form-msg { display: none; text-align: center; padding: 12px; border-radius: 8px; font-size: 0.88rem; margin-top: 12px; font-weight: 500; }
+.form-msg.ok { background: var(--green-bg); color: var(--green); }
+.form-msg.err { background: #fdecea; color: #8b1c1c; }
+
+/* CTA FINAL */
+.cta-section {
+  padding: 72px 48px; background: var(--accent);
+  text-align: center;
+}
+.cta-section h2 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+.cta-section p { font-size: 1rem; color: rgba(255,255,255,.75); margin-bottom: 32px; }
+.cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn-cta-wsp {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25d366; color: #fff; border: none; border-radius: 10px;
+  padding: 14px 28px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.btn-cta-wsp:hover { background: #1fba57; transform: translateY(-2px); }
+.btn-cta-sec {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.15); color: #fff; border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 10px; padding: 13px 28px; font-family: var(--sans); font-size: 0.95rem;
+  font-weight: 500; cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.btn-cta-sec:hover { background: rgba(255,255,255,.25); }
+
+/* FOOTER */
+footer {
+  background: var(--black); color: rgba(255,255,255,.4);
+  padding: 36px 48px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.82rem;
+}
+footer img { height: 30px; filter: brightness(0) invert(1); opacity: .5; }
+footer a { color: rgba(255,255,255,.4); text-decoration: none; }
+footer a:hover { color: #fff; }
+
+/* WSP FLOTANTE */
+.wsp-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 56px; height: 56px; background: #25d366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none;
+  animation: pulse 2.5s infinite;
+}
+.wsp-float svg { width: 26px; height: 26px; fill: #fff; }
+@keyframes pulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4);}50%{box-shadow:0 4px 32px rgba(37,211,102,.65);} }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
+  .btn-wsp{display:none;}
+  header{padding:0 16px;}
+  nav{display:none;}
+  .hero{grid-template-columns:1fr;padding:48px 20px;gap:32px;}
+  .opciones-section,.proceso-section,.requisitos-section,.form-section{padding:56px 20px;}
+  .opciones-grid,.proceso-steps{grid-template-columns:1fr;}
+  .proceso-steps::before{display:none;}
+  .requisitos-grid,.form-section{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .cta-section{padding:56px 20px;}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:28px 20px;}
+}
+@media(min-width:769px){.hamburger{display:none;}.nav-mobile-panel{display:none!important;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  </text>
+</svg></a>
+  <nav class="nav-desktop">
+    <a href="index.html">Inicio</a>
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html" class="active">Financiación</a>
+    <a href="consignaciones.html">Consignaciones</a>
+    <a href="index.html#servicios">Servicios</a>
+    <a href="index.html#contacto">Contacto</a>
+  </nav>
+  <div class="header-cta">
+        <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+<a href="stock.html" class="btn-outline">Ver stock →</a>
+  </div>
+</header>
+
+<!-- MENÚ MOBILE DRAWER -->
+<div id="navMenu" class="nav-mobile-panel">
+  <div class="drawer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      </text>
+    </svg>
+  </div>
+  <a href="index.html" onclick="toggleMenu()">Home</a>
+  <a href="stock.html" onclick="toggleMenu()">Stock</a>
+  <a href="financiacion.html" class="active" onclick="toggleMenu()">Financiación</a>
+  <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
+  <a href="index.html#servicios">Servicios</a>
+  <a href="index.html#contacto">Contacto</a>
+</div>
+<div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">Financiación</div>
+    <h1>Tu auto, <span>con las cuotas que podés pagar.</span></h1>
+    <p>Trabajamos con los principales bancos del país y te asesoramos para encontrar la opción que mejor se adapta a tu situación. Sin vueltas, sin letra chica.</p>
+    <div class="hero-btns">
+      <a href="#formulario" class="btn-primary">Quiero financiar mi auto →</a>
+      <a href="https://wa.me/5492236249445?text=Hola!%20Quiero%20info%20sobre%20financiaci%C3%B3n" target="_blank" class="btn-wsp-hero">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Consultar ahora
+      </a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-icon">🏦</div>
+      <div>
+        <div class="stat-title">Crédito bancario</div>
+        <div class="stat-desc">Gestionamos el crédito con los principales bancos del país. Tasas competitivas y aprobación ágil.</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔄</div>
+      <div>
+        <div class="stat-title">Permuta como parte de pago</div>
+        <div class="stat-desc">Usá tu auto actual como parte del pago. Tasación justa y proceso simple.</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div>
+        <div class="stat-title">Gestión integral</div>
+        <div class="stat-desc">Nos encargamos de todo el papeleo. Vos solo elegís el auto y firmás.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPCIONES -->
+<section class="opciones-section">
+  <div class="section-label">Cómo financiamos</div>
+  <div class="section-title">Opciones disponibles</div>
+  <div class="opciones-grid">
+    <div class="opcion-card destacada">
+      <div class="opcion-num">01</div>
+      <div class="opcion-icon">🏦</div>
+      <div class="opcion-title">Crédito bancario</div>
+      <div class="opcion-desc">Trabajamos con los principales bancos. Te conseguimos la mejor tasa disponible según tu perfil crediticio.</div>
+      <div class="opcion-items">
+        <div class="opcion-item">Hasta 60 cuotas</div>
+        <div class="opcion-item">Aprobación en el día</div>
+        <div class="opcion-item">Múltiples entidades</div>
+        <div class="opcion-item">En pesos o dólares</div>
+      </div>
+    </div>
+    <div class="opcion-card">
+      <div class="opcion-num">02</div>
+      <div class="opcion-icon">🔄</div>
+      <div class="opcion-title">Permuta + financiación</div>
+      <div class="opcion-desc">Combiná la entrega de tu auto actual con financiación bancaria para reducir el monto a financiar y mejorar las condiciones.</div>
+      <div class="opcion-items">
+        <div class="opcion-item">Tasación justa y rápida</div>
+        <div class="opcion-item">Menor cuota mensual</div>
+        <div class="opcion-item">Un solo trámite</div>
+        <div class="opcion-item">Todas las marcas</div>
+      </div>
+    </div>
+    <div class="opcion-card">
+      <div class="opcion-num">03</div>
+      <div class="opcion-icon">💵</div>
+      <div class="opcion-title">Pago combinado</div>
+      <div class="opcion-desc">Combiná efectivo, transferencia y crédito bancario de la manera que más te convenga. Diseñamos la operación a tu medida.</div>
+      <div class="opcion-items">
+        <div class="opcion-item">Máxima flexibilidad</div>
+        <div class="opcion-item">Entrada libre</div>
+        <div class="opcion-item">Asesoramiento personalizado</div>
+        <div class="opcion-item">Sin costos ocultos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="proceso-section">
+  <div class="section-label">Paso a paso</div>
+  <div class="section-title">¿Cómo es el proceso?</div>
+  <div class="proceso-steps">
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-title">Elegís el auto</div>
+      <div class="paso-desc">Encontrás el auto que querés en nuestro stock o nos consultás por lo que necesitás.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-title">Consultás con nosotros</div>
+      <div class="paso-desc">Te asesoramos sobre las opciones disponibles y te decimos qué documentación necesitás.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-title">Gestionamos el crédito</div>
+      <div class="paso-desc">Nos encargamos de todo el trámite con el banco. Vos no hacés nada.</div>
+    </div>
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <div class="paso-title">Retirás tu auto</div>
+      <div class="paso-desc">Con la aprobación en mano, firmás y te llevás el auto el mismo día.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section class="form-section" id="formulario">
+  <div class="form-text">
+    <h2>¿Querés que te <span>llamemos?</span></h2>
+    <p>Dejanos tus datos y un asesor te contacta para explicarte las opciones disponibles según tu situación.</p>
+    <div class="form-text-items">
+      <div class="form-text-item"><span>⚡</span><span>Respuesta en menos de 24hs hábiles</span></div>
+      <div class="form-text-item"><span>🔒</span><span>Tus datos son confidenciales</span></div>
+      <div class="form-text-item"><span>💬</span><span>Sin compromisos ni presiones</span></div>
+    </div>
+  </div>
+  <div class="form-box">
+    <h3>Solicitar asesoramiento</h3>
+    <form onsubmit="enviarFormulario(event)">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>Nombre *</label>
+          <input type="text" id="fNombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-field">
+          <label>Teléfono *</label>
+          <input type="tel" id="fTel" placeholder="223 000-0000" required>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" id="fEmail" placeholder="tu@email.com">
+        </div>
+        <div class="form-field">
+          <label>Monto estimado a financiar</label>
+          <select id="fMonto">
+            <option value="">No lo sé aún</option>
+            <option value="Hasta $10.000.000">Hasta $10.000.000</option>
+            <option value="$10M - $20M">$10.000.000 - $20.000.000</option>
+            <option value="$20M - $40M">$20.000.000 - $40.000.000</option>
+            <option value="Más de $40M">Más de $40.000.000</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Situación laboral</label>
+          <select id="fSituacion">
+            <option value="Relación de dependencia">Relación de dependencia</option>
+            <option value="Monotributista">Monotributista</option>
+            <option value="Autónomo">Autónomo</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>¿Tenés auto para permutar?</label>
+          <select id="fPermuta">
+            <option value="No">No</option>
+            <option value="Sí">Sí</option>
+            <option value="Tal vez">Tal vez</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label>Consulta adicional</label>
+          <textarea id="fMensaje" placeholder="¿Tenés alguna duda o consulta específica?"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn-form">Solicitar asesoramiento →</button>
+      <div class="form-msg" id="formMsg"></div>
+    </form>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2>¿Preferís hablar directamente?</h2>
+  <p>Escribinos por WhatsApp y te respondemos al instante con las opciones disponibles.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5492236249445?text=Hola!%20Quiero%20info%20sobre%20financiaci%C3%B3n%20de%20autos" target="_blank" class="btn-cta-wsp">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribir por WhatsApp
+    </a>
+    <a href="stock.html" class="btn-cta-sec">Ver stock disponible →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="logo">
+    <img src="logo.png" alt="Fernandez Autos" style="height:36px;object-fit:contain;">
+  </a>
+  <div>© 2026 Fernández Autos · Mar del Plata</div>
+  <div style="display:flex;gap:20px;">
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="consignaciones.html">Consignaciones</a>
+    <a href="index.html#contacto">Contacto</a>
+  </div>
+</footer>
+
+<!-- WSP FLOTANTE -->
+<a href="https://wa.me/5492236249445" target="_blank" class="wsp-float">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
+const WEBHOOK_SECRET = '2babb2e0-7da3-43a1-ab18-7ab1fb7938b08905c42e-9766-477f-acb2-88b579d45e29';
+
+async function enviarFormulario(e) {
+  e.preventDefault();
+  const nombre = document.getElementById('fNombre').value.trim();
+  const tel = document.getElementById('fTel').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const monto = document.getElementById('fMonto').value;
+  const situacion = document.getElementById('fSituacion').value;
+  const permuta = document.getElementById('fPermuta').value;
+  const mensaje = document.getElementById('fMensaje').value.trim();
+  const msg = document.getElementById('formMsg');
+
+  const nota = `Consulta financiación — Monto: ${monto||'No especificado'} · Situación: ${situacion} · Permuta: ${permuta}${mensaje?' · '+mensaje:''}`;
+
+  // ── Intento 1: webhook ──────────────────────────────────────────────────
+  try {
+    const r = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SB_KEY}`,
+        'x-webhook-secret': WEBHOOK_SECRET
+      },
+      body: JSON.stringify({
+        nombre, tel, email,
+        interes: 'Financiación',
+        nota,
+        origen_detalle: 'financiacion',
+        payload_extra: { monto, situacion, permuta, mensaje }
+      })
+    });
+    const data = await r.json();
+    if (r.ok && data.ok) {
+      msg.textContent = '✓ ¡Consulta recibida! Te contactamos a la brevedad.';
+      msg.className = 'form-msg ok'; msg.style.display = 'block';
+      e.target.reset();
+      return;
+    }
+    throw new Error('webhook failed: ' + (data.error || r.status));
+  } catch (err) {
+    console.warn('Webhook fallido, usando fallback:', err);
+  }
+
+  // ── Intento 2: fallback ─────────────────────────────────────────────────
+  try {
+    // Crear cliente
+    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify({nombre, tel, email, interes:'Financiación', estado:'Prospecto', notas:nota})
+    });
+    const cli = await cliR.json();
+    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
+
+    // Crear prospecto (sin asignar)
+    await fetch(`${SB_URL}/rest/v1/prospectos`, {
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify({cliente_id:clienteId, nombre, tel, email, interes:'Financiación', nota, col:'nueva', cerrado:false, origen:'web', origen_detalle:'financiacion_fallback', ultimo_contacto:new Date().toISOString()})
+    });
+
+    // Notificar al admin
+    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify({para:'admin', tipo:'nuevo_lead', titulo:'💳 Consulta de financiación (sin asignar)', mensaje:nombre+' · '+tel+' · '+monto, leida:false})
+    });
+
+    msg.textContent = '✓ ¡Consulta recibida! Te contactamos a la brevedad.';
+    msg.className = 'form-msg ok'; msg.style.display = 'block';
+    e.target.reset();
+  } catch(err) {
+    console.error(err);
+    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
+  }
+}
+function toggleMenu() {
+  const panel = document.getElementById('navMenu');
+  const btn = document.getElementById('hamburger');
+  const overlay = document.getElementById('navOverlay');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}));
+</script>
+</body>
+</html>

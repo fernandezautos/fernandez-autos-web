@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
+
+<!-- Fuente Audiowide para SVG del logo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<title>Fernández Autos — Concesionaria en Mar del Plata</title>
+<meta name="description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fernández Autos — Concesionaria en Mar del Plata">
+<meta property="og:description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
+<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+
+
+<style>
+:root {
+  --black: #0e0d0b;
+  --white: #fafaf7;
+  --cream: #f4f2ec;
+  --accent: #1a4a8a;
+  --accent-light: #2558a3;
+  --gold: #c9a84c;
+  --muted: #7a7870;
+  --border: #e2dfd5;
+  --sans: Arial, sans-serif;
+  --serif: Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--white); color: var(--black); overflow-x: hidden; }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 62px;
+  background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo img { height: 44px; object-fit: contain; }
+nav { display: flex; align-items: center; gap: 28px; }
+nav a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+nav a:hover, nav a.active { color: var(--black); }
+.header-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.btn-wsp {
+  display: flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; font-family: var(--sans);
+}
+.btn-outline {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+  width: 36px; height: 36px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* MENÚ MOBILE — ver bloque RESPONSIVE más abajo */
+
+
+.btn-wsp {
+  display: flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 8px;
+  padding: 9px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .2s;
+}
+.btn-wsp:hover { background: #1fba57; transform: translateY(-1px); }
+.btn-outline {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
+  padding: 8px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+.carousel {
+  position: relative; width: 100%; height: 580px;
+  overflow: hidden;
+}
+.carousel-track {
+  display: flex; height: 100%;
+  transition: transform .7s cubic-bezier(.77,0,.175,1);
+}
+.carousel-slide {
+  min-width: 100%; height: 100%; position: relative; flex-shrink: 0;
+}
+.carousel-slide img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.carousel-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(0,0,0,.6) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+}
+.carousel-content {
+  position: absolute; top: 50%; left: 72px; transform: translateY(-50%);
+  color: #fff; max-width: 500px; z-index: 2;
+}
+.carousel-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+}
+.carousel-content h1 {
+  font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1; font-weight: 400; margin-bottom: 12px; color: #fff;
+}
+.carousel-content h1 em { font-style: italic; color: #a8c4f0; }
+.carousel-sub {
+  font-size: 0.95rem; color: rgba(255,255,255,.8); line-height: 1.6;
+  margin-bottom: 28px; font-weight: 300;
+}
+.carousel-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--accent); color: #fff; border: none; border-radius: 10px;
+  padding: 12px 24px; font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .22s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,74,138,.35); }
+.btn-secondary {
+  background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+  color: #fff; border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: 10px; padding: 11px 24px; font-family: var(--sans); font-size: 0.9rem;
+  font-weight: 500; cursor: pointer; text-decoration: none; transition: all .22s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-secondary:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.7); }
+
+/* Estadísticas sobre el carrusel */
+.carousel-stats {
+  position: absolute; top: 50%; right: 72px; transform: translateY(-50%);
+  z-index: 2; display: flex; flex-direction: column; gap: 12px;
+}
+.stat {
+  background: rgba(255,255,255,.12); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 10px;
+  padding: 12px 20px; text-align: center; color: #fff;
+}
+.stat-num { font-family: var(--serif); font-size: 1.7rem; line-height: 1; color: #fff; }
+.stat-label { font-size: 0.7rem; color: rgba(255,255,255,.65); margin-top: 3px; letter-spacing: .5px; }
+
+/* Navegación carrusel */
+.carousel-nav {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 3;
+}
+.carousel-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.4); border: none; cursor: pointer;
+  transition: all .3s; padding: 0;
+}
+.carousel-dot.active { background: #fff; width: 22px; border-radius: 4px; }
+.carousel-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2); color: #fff; border-radius: 50%;
+  width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.1rem; transition: all .2s; z-index: 3;
+}
+.carousel-arrow:hover { background: rgba(255,255,255,.3); }
+.carousel-arrow.prev { left: 20px; }
+.carousel-arrow.next { right: 20px; }
+
+@media (max-width: 768px) {
+  .carousel { height: 460px; }
+  .carousel-content { left: 24px; right: 24px; }
+  .carousel-stats { display: none; }
+  .carousel-content h1 { font-size: 1.8rem; }
+}
+
+/* ── BUSCADOR ── */
+.search-section { background: var(--black); padding: 48px; }
+.search-box {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 12px; align-items: end;
+}
+.search-title { color: #fff; font-family: var(--serif); font-size: 1.6rem; margin-bottom: 28px; text-align: center; grid-column: 1/-1; }
+.search-field { display: flex; flex-direction: column; gap: 6px; }
+.search-field label { font-size: 0.72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+.search-field select, .search-field input {
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  color: #fff; border-radius: 8px; padding: 12px 16px;
+  font-family: var(--sans); font-size: 0.9rem; outline: none;
+  transition: border-color .2s;
+}
+.search-field select:focus, .search-field input:focus { border-color: rgba(255,255,255,.4); }
+.search-field select option { background: #1a1917; }
+.btn-search {
+  background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 12px 28px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.btn-search:hover { background: var(--accent-light); }
+
+/* ── STOCK PREVIEW ── */
+.stock-section { padding: 80px 48px; background: var(--white); }
+.section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
+.section-label { font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
+.section-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--black); font-weight: 400; }
+.ver-todo { font-size: 0.88rem; color: var(--accent); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.ver-todo:hover { text-decoration: underline; }
+
+.autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.auto-card {
+  border-radius: 16px; overflow: hidden; background: #fff;
+  border: 1px solid var(--border); transition: all .22s; cursor: pointer;
+  text-decoration: none; color: inherit;
+  display: block;
+}
+.auto-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); border-color: transparent; }
+.auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
+.auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.auto-card:hover .auto-card-img img { transform: scale(1.04); }
+.auto-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.auto-tag {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  padding: 4px 10px; border-radius: 20px;
+}
+.tag-usado { background: var(--black); color: #fff; }
+.tag-nuevo { background: var(--accent); color: #fff; }
+.auto-card-body { padding: 18px 20px; }
+.auto-nombre { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.auto-detalle { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
+.auto-footer { display: flex; align-items: center; justify-content: space-between; }
+.auto-precio { font-family: var(--serif); font-size: 1.3rem; color: var(--accent); }
+.auto-km { font-size: 0.78rem; color: var(--muted); }
+.auto-cta {
+  background: var(--accent); color: #fff; border: none; border-radius: 7px;
+  padding: 7px 14px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  font-family: var(--sans); transition: background .2s; text-decoration: none;
+}
+.auto-cta:hover { background: var(--accent-light); }
+.loading-autos { text-align: center; padding: 60px; color: var(--muted); font-size: 0.9rem; }
+
+/* ── SERVICIOS ── */
+.servicios-section { background: var(--cream); padding: 80px 48px; }
+.servicios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+.servicio-card {
+  background: #fff; border-radius: 16px; padding: 32px 28px;
+  border: 1px solid var(--border); transition: all .22s;
+}
+.servicio-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+.servicio-icon { font-size: 2rem; margin-bottom: 16px; }
+.servicio-title { font-weight: 600; font-size: 1rem; margin-bottom: 8px; }
+.servicio-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
+
+/* ── FINANCIACIÓN ── */
+.financiacion-section {
+  padding: 80px 48px; background: var(--white);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.fin-text .section-label { margin-bottom: 8px; }
+.fin-text .section-title { margin-bottom: 20px; }
+.fin-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+.fin-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.fin-feature { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
+.fin-feature::before { content: '✓'; width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+.fin-calc {
+  background: var(--black); border-radius: 20px; padding: 36px;
+  color: #fff;
+}
+.fin-calc h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
+.calc-field { margin-bottom: 18px; }
+.calc-field label { font-size: 0.72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+.calc-field input, .calc-field select {
+  width: 100%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  color: #fff; border-radius: 8px; padding: 11px 14px;
+  font-family: var(--sans); font-size: 0.9rem; outline: none;
+}
+.calc-field select option { background: #1a1917; }
+.calc-result { background: rgba(255,255,255,.08); border-radius: 10px; padding: 18px; margin-top: 20px; text-align: center; }
+.calc-result-label { font-size: 0.75rem; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+.calc-result-val { font-family: var(--serif); font-size: 2rem; color: var(--gold); }
+.calc-result-sub { font-size: 0.72rem; color: rgba(255,255,255,.4); margin-top: 4px; }
+.btn-calc { width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: var(--sans); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+.btn-calc:hover { background: var(--accent-light); }
+
+/* ── CONTACTO ── */
+.contacto-section { background: var(--cream); padding: 80px 48px; }
+.contacto-inner { max-width: 1000px; margin: 0 auto; }
+.contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 0; align-items: start; }
+.contacto-info { display: flex; flex-direction: column; gap: 24px; }
+.contacto-item { display: flex; gap: 16px; align-items: flex-start; }
+.contacto-item-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.contacto-item-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.contacto-item-val { font-weight: 600; font-size: 0.95rem; }
+.contacto-form { background: #fff; border-radius: 20px; padding: 36px; border: 1px solid var(--border); }
+.contacto-form h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field.full { grid-column: 1/-1; }
+.form-field label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; font-weight: 500; }
+.form-field input, .form-field select, .form-field textarea {
+  border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px;
+  font-family: var(--sans); font-size: 0.9rem; outline: none; transition: border-color .2s;
+  background: #fafaf7; color: var(--black);
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+.form-field textarea { resize: vertical; min-height: 90px; }
+.btn-form { width: 100%; margin-top: 8px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+.btn-form:hover { background: var(--accent-light); transform: translateY(-1px); }
+.form-msg { display: none; text-align: center; padding: 12px; border-radius: 8px; font-size: 0.88rem; margin-top: 12px; font-weight: 500; }
+.form-msg.ok { background: #e8f5e9; color: #2d6a30; }
+.form-msg.err { background: #fdecea; color: #8b1c1c; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--black); color: rgba(255,255,255,.5);
+  padding: 48px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.84rem;
+}
+footer .logo img { height: 28px; }
+footer a { color: rgba(255,255,255,.5); text-decoration: none; }
+footer a:hover { color: #fff; }
+
+/* ── WHATSAPP FLOTANTE ── */
+.wsp-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 58px; height: 58px; background: #25d366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none;
+  transition: all .2s; animation: pulse 2.5s infinite;
+}
+.wsp-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.5); }
+.wsp-float svg { width: 28px; height: 28px; fill: #fff; }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,.4); }
+  50% { box-shadow: 0 4px 32px rgba(37,211,102,.65); }
+}
+
+/* ── ANIMACIONES ── */
+.fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+
+/* Nav desktop: visible solo en desktop */
+.nav-desktop { display: flex; align-items: center; gap: 28px; }
+.nav-desktop a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+.nav-desktop a:hover, .nav-desktop a.active { color: var(--black); }
+
+/* Panel mobile: drawer lateral desde la izquierda */
+.nav-mobile-panel {
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 68%;
+  max-width: 300px;
+  background: #fff;
+  z-index: 99999;
+  flex-direction: column;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 32px rgba(0,0,0,.15);
+  padding-top: 24px;
+}
+.nav-mobile-panel.open {
+  transform: translateX(0);
+}
+/* Logo dentro del drawer */
+.nav-mobile-panel .drawer-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
+.nav-mobile-panel a {
+  font-size: 1rem; font-weight: 500;
+  padding: 16px 24px;
+  border-left: 3px solid transparent;
+  color: var(--muted);
+  text-decoration: none;
+  display: block;
+  transition: all .15s;
+}
+.nav-mobile-panel a:hover,
+.nav-mobile-panel a.active {
+  color: var(--black);
+  border-left-color: var(--accent);
+  background: var(--cream);
+}
+
+/* Overlay oscuro detrás del drawer */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 99998;
+}
+.nav-overlay.open { display: block; }
+
+@media (max-width: 768px) {
+  header { padding: 0 14px; gap: 0; justify-content: space-between; }
+  .nav-desktop { display: none; }
+  .hamburger { display: flex; }
+  .btn-wsp { display: none; }
+  .logo { position: static; transform: none; }
+  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
+  .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; }
+  .hero::before { display: none; }
+  .hero-visual { display: none; }
+  .search-section { padding: 32px 20px; }
+  .search-box { grid-template-columns: 1fr; }
+  .stock-section, .servicios-section, .contacto-section { padding: 60px 20px; }
+  .servicios-grid { grid-template-columns: 1fr 1fr; }
+  .financiacion-section { grid-template-columns: 1fr; padding: 60px 20px; }
+  .contacto-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 20px; }
+}
+@media (min-width: 769px) {
+  .hamburger { display: none; }
+  .nav-mobile-panel { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  </text>
+</svg></a>
+  <!-- NAV desktop (visible en desktop, oculto en mobile) -->
+  <nav id="navMenuDesktop" class="nav-desktop">
+    <a href="index.html">Inicio</a>
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="consignaciones.html">Consignaciones</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+  <div class="header-cta">
+    <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="stock.html" class="btn-outline">Ver stock →</a>
+  </div>
+</header>
+
+<!-- MENÚ MOBILE — fuera del header para evitar problemas de stacking context -->
+<div id="navMenu" class="nav-mobile-panel">
+  <div class="drawer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      </text>
+    </svg>
+  </div>
+  <a href="index.html" onclick="toggleMenu()">Home</a>
+  <a href="stock.html" onclick="toggleMenu()">Stock</a>
+  <a href="financiacion.html" onclick="toggleMenu()">Financiación</a>
+  <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
+  <a href="#servicios" onclick="toggleMenu()">Servicios</a>
+  <a href="#contacto" onclick="toggleMenu()">Contacto</a>
+</div>
+<div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
+
+<!-- CARRUSEL HERO -->
+<!-- ================================================
+  CARRUSEL: Para cambiar las fotos, editá los src=""
+  de cada <img> dentro de .carousel-slide.
+  Para agregar una slide, duplicá el bloque
+  <div class="carousel-slide">...</div>
+  y actualizá también los puntos en .carousel-nav
+================================================ -->
+<div class="carousel" id="carousel">
+  <div class="carousel-track" id="carouselTrack">
+
+    <!-- SLIDE 1 — Cambiá la foto aquí -->
+    <div class="carousel-slide">
+      <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=85" alt="Fernández Autos">
+      <div class="carousel-overlay"></div>
+      <div class="carousel-content">
+        <div class="carousel-tag">Mar del Plata</div>
+        <h1>Tu próximo auto,<br><em>a tu medida.</em></h1>
+        <p class="carousel-sub">Usados seleccionados y 0km con financiación flexible.</p>
+        <div class="carousel-btns">
+          <a href="stock.html" class="btn-primary">Ver stock →</a>
+          <a href="#contacto" class="btn-secondary">Hablar con un asesor</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 — Cambiá la foto aquí -->
+    <div class="carousel-slide">
+      <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85" alt="Fernández Autos">
+      <div class="carousel-overlay"></div>
+      <div class="carousel-content">
+        <div class="carousel-tag">Financiación</div>
+        <h1>Cuotas fijas,<br><em>sin vueltas.</em></h1>
+        <p class="carousel-sub">Créditos bancarios y financiación propia. Hasta 60 cuotas.</p>
+        <div class="carousel-btns">
+          <a href="financiacion.html" class="btn-primary">Conocer opciones →</a>
+          <a href="#contacto" class="btn-secondary">Consultar</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 — Cambiá la foto aquí -->
+    <div class="carousel-slide">
+      <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1600&q=85" alt="Fernández Autos">
+      <div class="carousel-overlay"></div>
+      <div class="carousel-content">
+        <div class="carousel-tag">Permuta</div>
+        <h1>Entregá el tuyo,<br><em>llevate el mejor.</em></h1>
+        <p class="carousel-sub">Tasación justa y proceso simple. Permutamos tu auto.</p>
+        <div class="carousel-btns">
+          <a href="#contacto" class="btn-primary">Tasar mi auto →</a>
+          <a href="stock.html" class="btn-secondary">Ver stock</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="carousel-stats">
+    <div class="stat">
+      <div class="stat-num" id="statStock">—</div>
+      <div class="stat-label">Autos disponibles</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">+10</div>
+      <div class="stat-label">Años de experiencia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Atención personalizada</div>
+    </div>
+  </div>
+
+  <!-- Flechas -->
+  <button class="carousel-arrow prev" onclick="moverCarrusel(-1)">‹</button>
+  <button class="carousel-arrow next" onclick="moverCarrusel(1)">›</button>
+
+  <!-- Puntos -->
+  <div class="carousel-nav" id="carouselNav">
+    <button class="carousel-dot active" onclick="irASlide(0)"></button>
+    <button class="carousel-dot" onclick="irASlide(1)"></button>
+    <button class="carousel-dot" onclick="irASlide(2)"></button>
+  </div>
+</div>
+
+<!-- BUSCADOR -->
+<section class="search-section">
+  <div class="search-box">
+    <div class="section-title" style="color:#fff;font-family:var(--serif);font-size:1.5rem;grid-column:1/-1;margin-bottom:8px;">Buscá tu auto ideal</div>
+    <div class="search-field">
+      <label>Tipo</label>
+      <select id="sTipo">
+        <option value="">Todos</option>
+        <option value="Usado">Usado</option>
+        <option value="Nuevo">0 km</option>
+      </select>
+    </div>
+    <div class="search-field">
+      <label>Marca</label>
+      <select id="sMarca"><option value="">Todas</option></select>
+    </div>
+    <div class="search-field">
+      <label>Precio máximo</label>
+      <select id="sPrecio">
+        <option value="">Sin límite</option>
+        <option value="10000000">Hasta $10.000.000</option>
+        <option value="20000000">Hasta $20.000.000</option>
+        <option value="30000000">Hasta $30.000.000</option>
+        <option value="50000000">Hasta $50.000.000</option>
+      </select>
+    </div>
+    <button class="btn-search" onclick="buscar()">Buscar →</button>
+  </div>
+</section>
+
+<!-- STOCK PREVIEW -->
+<section class="stock-section">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Disponible ahora</div>
+      <div class="section-title">Nuestro stock</div>
+    </div>
+    <a href="stock.html" class="ver-todo">Ver todos los autos →</a>
+  </div>
+  <div class="autos-grid" id="autosGrid">
+    <div class="loading-autos" style="grid-column:1/-1;">Cargando autos disponibles...</div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="servicios-section" id="servicios">
+  <div class="section-header fade-up">
+    <div>
+      <div class="section-label">Lo que hacemos</div>
+      <div class="section-title">Nuestros servicios</div>
+    </div>
+  </div>
+  <div class="servicios-grid">
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon">🚗</div>
+      <div class="servicio-title">Compra, venta y permuta</div>
+      <div class="servicio-desc">Usados seleccionados y 0km de todas las marcas. Entregá tu auto en parte de pago con tasación justa y proceso simple.</div>
+    </div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon">🤝</div>
+      <div class="servicio-title">Consignaciones</div>
+      <div class="servicio-desc">Dejanos encargarnos de la venta de tu auto. Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.</div>
+    </div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon">💳</div>
+      <div class="servicio-title">Financiación</div>
+      <div class="servicio-desc">Créditos bancarios y financiación flexible. Cuotas fijas en pesos o dólares.</div>
+    </div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon">📋</div>
+      <div class="servicio-title">Gestoría</div>
+      <div class="servicio-desc">Nos encargamos de toda la transferencia y documentación. Sin vueltas.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCIACIÓN -->
+<section class="financiacion-section">
+  <div class="fin-text fade-up">
+    <div class="section-label">Financiación</div>
+    <div class="section-title">Tu auto con las<br>cuotas que podés pagar</div>
+    <p>Trabajamos con los principales bancos y financieras del país. Te asesoramos para encontrar la opción que mejor se adapta a tu situación.</p>
+    <div class="fin-features">
+      <div class="fin-feature">Hasta 60 cuotas fijas</div>
+      <div class="fin-feature">Créditos prendarios bancarios</div>
+      <div class="fin-feature">Gestión rápida y sin burocracia</div>
+      <div class="fin-feature">Aprobación en el día</div>
+    </div>
+    <a href="financiacion.html" class="btn-primary">Más información →</a>
+  </div>
+  <div class="fin-calc fade-up">
+    <h3>Calculá tu cuota estimada</h3>
+    <div class="calc-field">
+      <label>Valor del auto</label>
+      <input type="number" id="calcValor" placeholder="Ej: 15000000" oninput="calcularCuota()">
+    </div>
+    <div class="calc-field">
+      <label>Cuota inicial (%)</label>
+      <select id="calcEntrada" onchange="calcularCuota()">
+        <option value="0">Sin entrada</option>
+        <option value="20">20%</option>
+        <option value="30">30%</option>
+        <option value="40">40%</option>
+      </select>
+    </div>
+    <div class="calc-field">
+      <label>Cantidad de cuotas</label>
+      <select id="calcCuotas" onchange="calcularCuota()">
+        <option value="12">12 cuotas</option>
+        <option value="24">24 cuotas</option>
+        <option value="36" selected>36 cuotas</option>
+        <option value="48">48 cuotas</option>
+        <option value="60">60 cuotas</option>
+      </select>
+    </div>
+    <div class="calc-result">
+      <div class="calc-result-label">Cuota mensual estimada</div>
+      <div class="calc-result-val" id="calcResultado">$ —</div>
+      <div class="calc-result-sub">* Valor referencial. Consultá condiciones reales con un asesor.</div>
+    </div>
+    <button class="btn-calc" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">Quiero financiar mi auto</button>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto-section" id="contacto">
+  <div class="contacto-inner">
+  <div class="contacto-grid">
+    <div class="contacto-info fade-up">
+      <div class="fade-up" style="margin-bottom:24px;">
+        <div class="section-label">Contacto</div>
+        <div class="section-title">Hablemos</div>
+      </div>
+      <div class="contacto-item">
+        <div class="contacto-item-icon">📍</div>
+        <div>
+          <div class="contacto-item-label">Dirección</div>
+          <div class="contacto-item-val">Mar del Plata, Buenos Aires</div>
+        </div>
+      </div>
+      <div class="contacto-item">
+        <div class="contacto-item-icon">📱</div>
+        <div>
+          <div class="contacto-item-label">WhatsApp</div>
+          <div class="contacto-item-val"><a href="https://wa.me/5492236249445" target="_blank" style="color:var(--accent);text-decoration:none;">+54 9 223 600-0000</a></div>
+        </div>
+      </div>
+      <div class="contacto-item">
+        <div class="contacto-item-icon">🕐</div>
+        <div>
+          <div class="contacto-item-label">Horario</div>
+          <div class="contacto-item-val">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
+        </div>
+      </div>
+      <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp" style="width:fit-content;margin-top:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribinos por WhatsApp
+      </a>
+    </div>
+    <div class="contacto-form fade-up">
+      <h3>Dejanos tu consulta</h3>
+      <form onsubmit="enviarConsulta(event)">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Nombre *</label>
+            <input type="text" id="fNombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="form-field">
+            <label>Teléfono *</label>
+            <input type="tel" id="fTel" placeholder="223 000-0000" required>
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" id="fEmail" placeholder="tu@email.com">
+          </div>
+          <div class="form-field">
+            <label>Interés</label>
+            <select id="fInteres">
+              <option value="Compra de auto usado">Compra de auto usado</option>
+              <option value="Compra de auto 0km">Compra de auto 0km</option>
+              <option value="Financiación">Financiación</option>
+              <option value="Permuta">Permuta</option>
+              <option value="Consulta general">Consulta general</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label>Mensaje</label>
+            <textarea id="fMensaje" placeholder="Contanos en qué podemos ayudarte..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn-form">Enviar consulta →</button>
+        <div class="form-msg" id="formMsg"></div>
+      </form>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  </text>
+</svg>
+  </a>
+  <div>© 2026 Fernández Autos · Mar del Plata</div>
+  <div style="display:flex;gap:20px;">
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOTANTE -->
+<a href="https://wa.me/5492236249445" target="_blank" class="wsp-float" title="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
+const WEBHOOK_SECRET = '2babb2e0-7da3-43a1-ab18-7ab1fb7938b08905c42e-9766-477f-acb2-88b579d45e29';
+
+let stockData = [];
+
+// ── CARRUSEL ──
+let slideActual = 0;
+const totalSlides = 3;
+let autoPlay;
+
+function irASlide(n) {
+  slideActual = n;
+  document.getElementById('carouselTrack').style.transform = `translateX(-${n * 100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === n));
+}
+function moverCarrusel(dir) {
+  irASlide((slideActual + dir + totalSlides) % totalSlides);
+  reiniciarAutoPlay();
+}
+function reiniciarAutoPlay() {
+  clearInterval(autoPlay);
+  autoPlay = setInterval(() => moverCarrusel(1), 5000);
+}
+
+// Swipe en mobile
+let touchStart = 0;
+document.getElementById('carousel')?.addEventListener('touchstart', e => touchStart = e.touches[0].clientX);
+document.getElementById('carousel')?.addEventListener('touchend', e => {
+  const diff = touchStart - e.changedTouches[0].clientX;
+  if(Math.abs(diff) > 50) moverCarrusel(diff > 0 ? 1 : -1);
+});
+
+reiniciarAutoPlay();
+
+// ── STOCK ──
+// Cargar autos desde Supabase
+async function cargarStock() {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    stockData = await r.json();
+
+    // Actualizar contador hero
+    document.getElementById('statStock').textContent = stockData.length;
+
+    // Poblar marcas en buscador
+    const marcas = [...new Set(stockData.map(v => v.marca).filter(Boolean))].sort();
+    const selMarca = document.getElementById('sMarca');
+    marcas.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m; opt.textContent = m;
+      selMarca.appendChild(opt);
+    });
+
+    // Mostrar primeros 6
+    renderAutos(stockData.slice(0, 6));
+  } catch(e) {
+    document.getElementById('autosGrid').innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">Error al cargar el stock.</div>';
+  }
+}
+
+function renderAutos(autos) {
+  const grid = document.getElementById('autosGrid');
+  if(!autos.length) {
+    grid.innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">No se encontraron autos con esos criterios.</div>';
+    return;
+  }
+  const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio';
+  grid.innerHTML = autos.map(v => `
+    <a href="stock.html?id=${v.id}" class="auto-card">
+      <div class="auto-card-img">
+        ${v.foto_portada
+          ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">`
+          : `<div class="auto-card-img-placeholder">🚗</div>`}
+        <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
+      </div>
+      <div class="auto-card-body">
+        <div class="auto-nombre">${v.marca} ${v.modelo}</div>
+        <div class="auto-detalle">${v.anio||''}${v.km?' · '+Number(v.km).toLocaleString('es-AR')+' km':''} ${v.transmision?'· '+v.transmision:''}</div>
+        <div class="auto-footer">
+          <div class="auto-precio">${fmt(v.precio)}</div>
+          <span class="auto-cta">Ver auto →</span>
+        </div>
+      </div>
+    </a>`).join('');
+}
+
+function buscar() {
+  const tipo = document.getElementById('sTipo').value;
+  const marca = document.getElementById('sMarca').value;
+  const precio = parseInt(document.getElementById('sPrecio').value) || 0;
+  let filtrados = stockData;
+  if(tipo) filtrados = filtrados.filter(v => v.tipo === tipo);
+  if(marca) filtrados = filtrados.filter(v => v.marca === marca);
+  if(precio) filtrados = filtrados.filter(v => v.precio <= precio);
+  // Ir a stock con filtros
+  const params = new URLSearchParams();
+  if(tipo) params.set('tipo', tipo);
+  if(marca) params.set('marca', marca);
+  if(precio) params.set('precio', precio);
+  window.location.href = 'stock.html?' + params.toString();
+}
+
+// Calculadora de cuotas
+function calcularCuota() {
+  const valor = parseFloat(document.getElementById('calcValor').value) || 0;
+  const entradaPct = parseInt(document.getElementById('calcEntrada').value) || 0;
+  const cuotas = parseInt(document.getElementById('calcCuotas').value) || 36;
+  if(!valor) { document.getElementById('calcResultado').textContent = '$ —'; return; }
+  const financiado = valor * (1 - entradaPct/100);
+  const tasa = 0.06; // 6% mensual estimado
+  const cuota = financiado * (tasa * Math.pow(1+tasa, cuotas)) / (Math.pow(1+tasa, cuotas) - 1);
+  document.getElementById('calcResultado').textContent = '$ '+Math.round(cuota).toLocaleString('es-AR');
+}
+
+// Enviar consulta → crear lead en CRM
+// 1. Intenta el webhook (asigna vendedor por rotacion + notificaciones automaticas)
+// 2. Si el webhook falla, cae al metodo viejo (inserts directos) como fallback
+async function enviarConsulta(e) {
+  e.preventDefault();
+  const nombre = document.getElementById('fNombre').value.trim();
+  const tel = document.getElementById('fTel').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const interes = document.getElementById('fInteres').value;
+  const mensaje = document.getElementById('fMensaje').value.trim();
+  const msg = document.getElementById('formMsg');
+
+  // ── Intento 1: webhook (camino principal) ───────────────────────────────
+  try {
+    const r = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SB_KEY}`,
+        'x-webhook-secret': WEBHOOK_SECRET
+      },
+      body: JSON.stringify({
+        nombre, tel, email, interes,
+        nota: mensaje,
+        origen_detalle: 'home_contacto'
+      })
+    });
+    const data = await r.json();
+    if (r.ok && data.ok) {
+      msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
+      msg.className = 'form-msg ok'; msg.style.display = 'block';
+      e.target.reset();
+      return;
+    }
+    throw new Error('webhook failed: ' + (data.error || r.status));
+  } catch (err) {
+    console.warn('Webhook fallido, usando fallback:', err);
+  }
+
+  // ── Intento 2: fallback (inserts directos sin asignacion) ───────────────
+  try {
+    // Crear cliente en Supabase
+    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+      body: JSON.stringify({ nombre, tel, email, interes, estado: 'Prospecto', notas: mensaje })
+    });
+    const cli = await cliR.json();
+    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
+
+    // Crear prospecto (queda sin asignar - el admin lo asigna manualmente)
+    await fetch(`${SB_URL}/rest/v1/prospectos`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({
+        cliente_id: clienteId, nombre, tel, email, interes,
+        nota: mensaje, col: 'nueva', cerrado: false,
+        origen: 'web', origen_detalle: 'home_contacto_fallback',
+        ultimo_contacto: new Date().toISOString()
+      })
+    });
+
+    // Notificar al admin (fallback: solo admin, sin asignacion a vendedor)
+    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ para: 'admin', tipo: 'nuevo_lead', titulo: '🌐 Nuevo lead desde la web (sin asignar)', mensaje: nombre+' · '+tel+' · '+interes, leida: false })
+    });
+
+    msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
+    msg.className = 'form-msg ok'; msg.style.display = 'block';
+    e.target.reset();
+  } catch(err) {
+    console.error(err);
+    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
+  }
+}
+
+// Animaciones scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if(entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Cerrar menú al hacer click en un link (manejado con onclick en cada <a> del panel)
+// El panel mobile tiene onclick="toggleMenu()" en cada link directamente
+
+// Exponer enviarConsulta globalmente para que el onsubmit del <form> la encuentre
+window.enviarConsulta = enviarConsulta;
+
+// Iniciar
+cargarStock();
+
+}); // DOMContentLoaded
+
+function toggleMenu() {
+  const panel = document.getElementById('navMenu');
+  const btn = document.getElementById('hamburger');
+  const overlay = document.getElementById('navOverlay');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
+}
+</script>
+</body>
+</html>

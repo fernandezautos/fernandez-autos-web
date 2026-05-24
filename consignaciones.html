@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
+
+<!-- Fuente Audiowide para SVG del logo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<title>Consignaciones — Fernández Autos</title>
+<meta name="description" content="Vendé tu auto con nosotros. Te encargamos todo.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Consignaciones — Fernández Autos">
+<meta property="og:description" content="Vendé tu auto con nosotros. Te encargamos todo.">
+<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root {
+  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
+  --accent: #1a4a8a; --accent-light: #2558a3;
+  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+  --green: #2d6a30; --green-bg: #e8f5e9;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--white); color: var(--black); }
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 62px;
+  background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo img { height: 44px; object-fit: contain; }
+nav { display: flex; align-items: center; gap: 28px; }
+nav a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+nav a:hover, nav a.active { color: var(--black); }
+.header-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.btn-wsp {
+  display: flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; font-family: var(--sans);
+}
+.btn-outline {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+  width: 36px; height: 36px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Panel mobile: drawer lateral desde la izquierda */
+.nav-mobile-panel {
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 68%;
+  max-width: 300px;
+  background: #fff;
+  z-index: 99999;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 32px rgba(0,0,0,.15);
+  padding-top: 24px;
+}
+.nav-mobile-panel.open {
+  transform: translateX(0);
+}
+.nav-mobile-panel .drawer-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid #e2dfd5;
+  margin-bottom: 8px;
+}
+.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
+.nav-mobile-panel a {
+  font-size: 1rem; font-weight: 500;
+  padding: 16px 24px;
+  border-left: 3px solid transparent;
+  color: #7a7870;
+  text-decoration: none;
+  display: block;
+  transition: all .15s;
+}
+.nav-mobile-panel a:hover,
+.nav-mobile-panel a.active {
+  color: #0e0d0b;
+  border-left-color: #1a4a8a;
+  background: #f4f2ec;
+}
+/* Overlay oscuro detrás del drawer */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 99998;
+}
+.nav-overlay.open { display: block; }
+
+
+
+/* HERO */
+.hero {
+  background: var(--black); padding: 48px 48px; text-align: center; color: #fff;
+}
+.hero h1 {
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 700;
+  margin-bottom: 16px; line-height: 1.2;
+}
+@media (min-width: 769px) {
+  .hero h1 { white-space: nowrap; }
+}
+.hero p { font-size: 1rem; color: rgba(255,255,255,.65); max-width: 480px; margin: 0 auto; }
+
+/* BENEFICIOS */
+.beneficios {
+  display: flex; justify-content: center; gap: 32px;
+  padding: 24px 48px; background: var(--cream); flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.beneficio { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: var(--muted); }
+.beneficio-icon { font-size: 1.1rem; }
+.beneficio strong { color: var(--black); }
+
+/* FORMULARIO */
+.form-wrap { max-width: 760px; margin: 40px auto; padding: 0 20px 60px; }
+
+.form-section-card {
+  background: #fff; border-radius: 16px; padding: 28px 32px;
+  margin-bottom: 16px; border: 1px solid var(--border);
+}
+.form-section-title {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 1.05rem; font-weight: 700; margin-bottom: 24px;
+  color: var(--black);
+}
+.form-section-icon { font-size: 1.2rem; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field.full { grid-column: 1/-1; }
+.form-field label {
+  font-size: 0.8rem; font-weight: 600; color: var(--black);
+}
+.form-field label span { color: var(--accent); }
+.form-field input, .form-field select, .form-field textarea {
+  border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px;
+  font-family: var(--sans); font-size: 0.9rem; outline: none;
+  transition: border-color .2s; background: #fff; color: var(--black);
+}
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
+.form-field textarea { resize: vertical; min-height: 90px; }
+
+/* UPLOAD FOTOS */
+.upload-area {
+  border: 2px dashed #93b4d8; border-radius: 12px; padding: 36px 20px;
+  text-align: center; cursor: pointer; transition: all .2s;
+  background: #f0f6ff;
+}
+.upload-area:hover { border-color: var(--accent); background: #e8f0fb; }
+.upload-icon { font-size: 2rem; margin-bottom: 10px; color: var(--accent); }
+.upload-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+.upload-sub { font-size: 0.78rem; color: var(--muted); }
+.upload-input { display: none; }
+.fotos-preview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.foto-thumb {
+  width: 90px; height: 70px; border-radius: 8px; overflow: hidden;
+  position: relative; border: 2px solid var(--border);
+}
+.foto-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.foto-thumb-del {
+  position: absolute; top: 3px; right: 3px;
+  background: rgba(0,0,0,.6); color: #fff; border: none; border-radius: 50%;
+  width: 20px; height: 20px; cursor: pointer; font-size: 0.65rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-nota { font-size: 0.75rem; color: var(--muted); margin-top: 8px; }
+
+/* BOTÓN ENVIAR */
+.btn-enviar {
+  width: 100%; background: var(--accent); color: #fff; border: none;
+  border-radius: 12px; padding: 17px; font-family: var(--sans);
+  font-size: 1rem; font-weight: 700; cursor: pointer; transition: all .2s;
+  letter-spacing: .3px;
+}
+.btn-enviar:hover { background: var(--accent-light); transform: translateY(-1px); }
+.btn-enviar:disabled { background: #9bb3cc; cursor: not-allowed; transform: none; }
+
+.form-msg { display: none; text-align: center; padding: 16px; border-radius: 10px; font-size: 0.9rem; margin-top: 14px; font-weight: 500; }
+.form-msg.ok { background: var(--green-bg); color: var(--green); }
+.form-msg.err { background: #fdecea; color: #8b1c1c; }
+
+/* WSP FLOTANTE */
+.wsp-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 56px; height: 56px; background: #25d366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none;
+  animation: pulse 2.5s infinite;
+}
+.wsp-float svg { width: 26px; height: 26px; fill: #fff; }
+@keyframes pulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4);}50%{box-shadow:0 4px 32px rgba(37,211,102,.65);} }
+
+/* FOOTER */
+footer {
+  background: var(--black); color: rgba(255,255,255,.4);
+  padding: 32px 48px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.82rem;
+}
+footer a { color: rgba(255,255,255,.4); text-decoration: none; }
+footer a:hover { color: #fff; }
+
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
+  .btn-wsp{display:none;}
+  header{padding:0 16px;} nav{display:none;}
+  .hero{padding:48px 20px;}
+  .beneficios{padding:20px;gap:16px;flex-direction:column;}
+  .form-wrap{padding:0 12px 40px;}
+  .form-section-card{padding:20px;}
+  .form-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  </text>
+</svg></a>
+  <nav class="nav-desktop">
+    <a href="index.html">Inicio</a>
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="consignaciones.html" class="active">Consignaciones</a>
+    <a href="index.html#servicios">Servicios</a>
+    <a href="index.html#contacto">Contacto</a>
+  </nav>
+  <div class="header-cta">
+        <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+<a href="stock.html" class="btn-outline">Ver stock →</a>
+  </div>
+</header>
+
+<!-- MENÚ MOBILE DRAWER -->
+<div id="navMenu" class="nav-mobile-panel">
+  <div class="drawer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      </text>
+    </svg>
+  </div>
+  <a href="index.html" onclick="toggleMenu()">Home</a>
+  <a href="stock.html" onclick="toggleMenu()">Stock</a>
+  <a href="financiacion.html" onclick="toggleMenu()">Financiación</a>
+  <a href="consignaciones.html" class="active" onclick="toggleMenu()">Consignaciones</a>
+  <a href="index.html#servicios">Servicios</a>
+  <a href="index.html#contacto">Contacto</a>
+</div>
+<div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Tu auto, vendido por nosotros</h1>
+  <p>Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.</p>
+</div>
+
+<!-- BENEFICIOS -->
+<div class="beneficios">
+  <div class="beneficio"><span class="beneficio-icon">✅</span><span><strong>Sin costos adelantados</strong></span></div>
+  <div class="beneficio"><span class="beneficio-icon">📣</span><span><strong>Publicación en todos los portales</strong></span></div>
+  <div class="beneficio"><span class="beneficio-icon">🤝</span><span><strong>Nos ocupamos de todo</strong></span></div>
+  <div class="beneficio"><span class="beneficio-icon">⚡</span><span><strong>Respuesta en 24hs</strong></span></div>
+</div>
+
+<!-- FORMULARIO -->
+<div class="form-wrap">
+
+  <!-- El Vehículo -->
+  <div class="form-section-card">
+    <div class="form-section-title">
+      <span class="form-section-icon">🚗</span> El Vehículo
+    </div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Marca <span>*</span></label>
+        <input type="text" id="cMarca" placeholder="Ej: Toyota" required>
+      </div>
+      <div class="form-field">
+        <label>Modelo <span>*</span></label>
+        <input type="text" id="cModelo" placeholder="Ej: Corolla" required>
+      </div>
+      <div class="form-field">
+        <label>Año <span>*</span></label>
+        <input type="number" id="cAnio" placeholder="Ej: 2020" min="1990" max="2026" required>
+      </div>
+      <div class="form-field">
+        <label>Kilómetros <span>*</span></label>
+        <input type="number" id="cKm" placeholder="Ej: 50000" required>
+      </div>
+      <div class="form-field">
+        <label>Precio esperado</label>
+        <input type="text" id="cPrecio" placeholder="Ej: $15.000.000 o USD 12.000">
+      </div>
+      <div class="form-field">
+        <label>Transmisión</label>
+        <select id="cTransmision">
+          <option value="">Seleccionar</option>
+          <option>Manual</option>
+          <option>Automática</option>
+          <option>CVT</option>
+        </select>
+      </div>
+      <div class="form-field full">
+        <label>Descripción del estado</label>
+        <textarea id="cDesc" placeholder="Contanos el estado del auto, detalles, extras, si tiene service al día, etc."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fotos -->
+  <div class="form-section-card">
+    <div class="form-section-title">
+      <span class="form-section-icon">📷</span> Fotos del vehículo
+    </div>
+    <div class="upload-area" onclick="document.getElementById('inputFotos').click()" id="uploadArea">
+      <div class="upload-icon">⬆️</div>
+      <div class="upload-title">Subí tus fotos</div>
+      <div class="upload-sub" id="uploadSub">0 / 3 imágenes</div>
+    </div>
+    <input type="file" id="inputFotos" class="upload-input" accept="image/*" multiple>
+    <div class="fotos-preview" id="fotosPreview"></div>
+    <div class="upload-nota">Formatos aceptados: JPG, PNG, WEBP · Máximo 3 fotos</div>
+  </div>
+
+  <!-- Tus datos -->
+  <div class="form-section-card">
+    <div class="form-section-title">
+      <span class="form-section-icon">👤</span> Tus datos
+    </div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Nombre completo <span>*</span></label>
+        <input type="text" id="cNombre" placeholder="Tu nombre" required>
+      </div>
+      <div class="form-field">
+        <label>Email <span>*</span></label>
+        <input type="email" id="cEmail" placeholder="tu@email.com" required>
+      </div>
+      <div class="form-field full">
+        <label>Teléfono <span>*</span></label>
+        <input type="tel" id="cTel" placeholder="223 000-0000" required>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-enviar" id="btnEnviar" onclick="enviarConsignacion()">Enviar solicitud →</button>
+  <div class="form-msg" id="formMsg"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html"><img src="wordmark-navy.svg" alt="Fernandez Autos" style="height:28px;filter:brightness(0) invert(1);opacity:.5;"></a>
+  <div>© 2026 Fernandez Autos · Mar del Plata</div>
+  <div style="display:flex;gap:20px;">
+    <a href="stock.html">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="consignaciones.html">Consignaciones</a>
+  </div>
+</footer>
+
+<!-- WSP FLOTANTE -->
+<a href="https://wa.me/5492236249445" target="_blank" class="wsp-float">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
+const WEBHOOK_SECRET = '2babb2e0-7da3-43a1-ab18-7ab1fb7938b08905c42e-9766-477f-acb2-88b579d45e29';
+const BUCKET = 'fotos-autos';
+let fotosSeleccionadas = [];
+
+// Manejo de fotos
+document.getElementById('inputFotos').addEventListener('change', function(e) {
+  const archivos = Array.from(e.target.files);
+  const disponibles = 3 - fotosSeleccionadas.length;
+  const nuevas = archivos.slice(0, disponibles);
+  nuevas.forEach(f => { if(fotosSeleccionadas.length < 3) fotosSeleccionadas.push(f); });
+  renderFotos();
+  this.value = '';
+});
+
+function renderFotos() {
+  const preview = document.getElementById('fotosPreview');
+  const sub = document.getElementById('uploadSub');
+  sub.textContent = fotosSeleccionadas.length + ' / 3 imágenes';
+  if(fotosSeleccionadas.length >= 3) document.getElementById('uploadArea').style.opacity = '.5';
+  else document.getElementById('uploadArea').style.opacity = '1';
+
+  preview.innerHTML = fotosSeleccionadas.map((f, i) => {
+    const url = URL.createObjectURL(f);
+    return `<div class="foto-thumb">
+      <img src="${url}" alt="Foto ${i+1}">
+      <button class="foto-thumb-del" onclick="eliminarFoto(${i})">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function eliminarFoto(i) {
+  fotosSeleccionadas.splice(i, 1);
+  renderFotos();
+}
+
+async function enviarConsignacion() {
+  const nombre = document.getElementById('cNombre').value.trim();
+  const tel = document.getElementById('cTel').value.trim();
+  const email = document.getElementById('cEmail').value.trim();
+  const marca = document.getElementById('cMarca').value.trim();
+  const modelo = document.getElementById('cModelo').value.trim();
+  const anio = document.getElementById('cAnio').value.trim();
+  const km = document.getElementById('cKm').value.trim();
+  const precio = document.getElementById('cPrecio').value.trim();
+  const transm = document.getElementById('cTransmision').value;
+  const desc = document.getElementById('cDesc').value.trim();
+  const msg = document.getElementById('formMsg');
+
+  if(!nombre || !tel || !email || !marca || !modelo || !anio || !km) {
+    msg.textContent = 'Por favor completá todos los campos obligatorios.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
+    return;
+  }
+
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  const interes = `Consignación: ${marca} ${modelo} ${anio}`;
+  const nota = `${marca} ${modelo} ${anio} · ${Number(km).toLocaleString('es-AR')} km${transm?' · '+transm:''}${precio?' · Precio esperado: '+precio:''}${desc?' · '+desc:''}`;
+
+  // ── helper: sube fotos a Storage y guarda urls en prospecto_historial ──
+  async function subirFotos(prospectoId) {
+    if(!prospectoId || !fotosSeleccionadas.length) return;
+    const urlsFotos = [];
+    for(let i = 0; i < fotosSeleccionadas.length; i++) {
+      const foto = fotosSeleccionadas[i];
+      const ext = foto.name.split('.').pop();
+      const path = `consignaciones/${prospectoId}_${i+1}.${ext}`;
+      const upR = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
+        method: 'POST',
+        headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':foto.type,'x-upsert':'true'},
+        body: foto
+      });
+      if(upR.ok) urlsFotos.push(`${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`);
+    }
+    if(urlsFotos.length) {
+      await fetch(`${SB_URL}/rest/v1/prospecto_historial`, {
+        method: 'POST',
+        headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body: JSON.stringify({ prospecto_id: prospectoId, tipo: 'sistema', texto: `Fotos del vehículo: ${urlsFotos.join(' | ')}` })
+      });
+    }
+  }
+
+  // ── helper: limpia el formulario al final ──
+  function limpiarForm() {
+    ['cMarca','cModelo','cAnio','cKm','cPrecio','cDesc','cNombre','cEmail','cTel'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('cTransmision').value = '';
+    fotosSeleccionadas = []; renderFotos();
+  }
+
+  // ── Intento 1: webhook ─────────────────────────────────────────────────
+  try {
+    const r = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SB_KEY}`,
+        'x-webhook-secret': WEBHOOK_SECRET
+      },
+      body: JSON.stringify({
+        nombre, tel, email,
+        interes, nota,
+        origen_detalle: 'consignacion',
+        payload_extra: { marca, modelo, anio, km, precio, transmision: transm, descripcion: desc }
+      })
+    });
+    const data = await r.json();
+    if (r.ok && data.ok && data.prospecto_id) {
+      // Webhook creó el lead. Subimos las fotos asociadas.
+      await subirFotos(data.prospecto_id);
+      msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
+      msg.className = 'form-msg ok'; msg.style.display = 'block';
+      btn.textContent = '✓ Enviado';
+      limpiarForm();
+      return;
+    }
+    throw new Error('webhook failed: ' + (data.error || r.status));
+  } catch (err) {
+    console.warn('Webhook fallido, usando fallback:', err);
+  }
+
+  // ── Intento 2: fallback (inserts directos sin asignar) ─────────────────
+  try {
+    // 1. Crear cliente
+    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+      method: 'POST',
+      headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify({nombre, tel, email, interes:'Consignación', estado:'Prospecto',
+        notas:`Consignación: ${marca} ${modelo} ${anio} · ${Number(km).toLocaleString('es-AR')} km${precio?' · Precio esperado: '+precio:''}${desc?' · '+desc:''}`})
+    });
+    const cli = await cliR.json();
+    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
+
+    // 2. Crear prospecto (sin asignar)
+    const prospR = await fetch(`${SB_URL}/rest/v1/prospectos`, {
+      method: 'POST',
+      headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+      body: JSON.stringify({
+        cliente_id: clienteId, nombre, tel, email,
+        interes, nota,
+        col: 'nueva', cerrado: false,
+        origen: 'web', origen_detalle: 'consignacion_fallback',
+        ultimo_contacto: new Date().toISOString()
+      })
+    });
+    const prosp = await prospR.json();
+    const prospectoId = Array.isArray(prosp) ? prosp[0]?.id : prosp?.id;
+
+    // 3. Subir fotos
+    await subirFotos(prospectoId);
+
+    // 4. Notificar al admin
+    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
+      method: 'POST',
+      headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body: JSON.stringify({
+        para: 'admin', tipo: 'nuevo_lead',
+        titulo: '🤝 Nueva consignación (sin asignar)',
+        mensaje: `${nombre} · ${marca} ${modelo} ${anio} · ${tel}`,
+        leida: false
+      })
+    });
+
+    msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
+    msg.className = 'form-msg ok'; msg.style.display = 'block';
+    btn.textContent = '✓ Enviado';
+    limpiarForm();
+
+  } catch(err) {
+    console.error(err);
+    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Enviar solicitud →';
+  }
+}
+function toggleMenu() {
+  const panel = document.getElementById('navMenu');
+  const btn = document.getElementById('hamburger');
+  const overlay = document.getElementById('navOverlay');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}));
+</script>
+</body>
+</html>
