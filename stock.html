@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
+
+<!-- Fuente Audiowide para SVG del logo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<title>Stock de Autos — Fernández Autos</title>
+<meta name="description" content="Explorá nuestro stock de autos usados y 0km en Mar del Plata.">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stock de Autos — Fernández Autos">
+<meta property="og:description" content="Explorá nuestro stock de autos usados y 0km en Mar del Plata.">
+<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+:root {
+  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
+  --accent: #1a4a8a; --accent-light: #2558a3;
+  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--white); color: var(--black); padding-top: 62px; }
+
+/* ── HEADER ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 62px;
+  background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo img { height: 44px; object-fit: contain; }
+nav { display: flex; align-items: center; gap: 28px; }
+nav a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+nav a:hover, nav a.active { color: var(--black); }
+.header-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.btn-wsp {
+  display: flex; align-items: center; gap: 8px;
+  background: #25d366; color: #fff; border: none; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; font-family: var(--sans);
+}
+.btn-outline {
+  display: flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
+  padding: 8px 16px; font-size: 0.84rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.hamburger {
+  display: none; flex-direction: column; justify-content: center; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 6px;
+  width: 36px; height: 36px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--black); border-radius: 2px; transition: all .3s; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Panel mobile: drawer lateral desde la izquierda */
+.nav-mobile-panel {
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 68%;
+  max-width: 300px;
+  background: #fff;
+  z-index: 99999;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 32px rgba(0,0,0,.15);
+  padding-top: 24px;
+}
+.nav-mobile-panel.open {
+  transform: translateX(0);
+}
+.nav-mobile-panel .drawer-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid #e2dfd5;
+  margin-bottom: 8px;
+}
+.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
+.nav-mobile-panel a {
+  font-size: 1rem; font-weight: 500;
+  padding: 16px 24px;
+  border-left: 3px solid transparent;
+  color: #7a7870;
+  text-decoration: none;
+  display: block;
+  transition: all .15s;
+}
+.nav-mobile-panel a:hover,
+.nav-mobile-panel a.active {
+  color: #0e0d0b;
+  border-left-color: #1a4a8a;
+  background: #f4f2ec;
+}
+/* Overlay oscuro detrás del drawer */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 99998;
+}
+.nav-overlay.open { display: block; }
+
+
+
+/* HERO STOCK */
+.stock-hero {
+  background: var(--cream); padding: 20px 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.stock-hero-text { }
+.stock-hero-text h1 { font-size: 1.1rem; font-weight: 700; color: var(--black); }
+.stock-hero-text p { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+.stock-hero-tabs { display: flex; gap: 4px; background: #fff; padding: 4px; border-radius: 10px; border: 1px solid var(--border); }
+.tab-btn {
+  padding: 7px 20px; border: none; cursor: pointer; font-family: var(--sans);
+  font-size: 0.84rem; font-weight: 600; border-radius: 7px;
+  transition: all .2s; background: transparent; color: var(--muted);
+}
+.tab-btn.active { background: var(--accent); color: #fff; }
+
+/* FILTROS */
+.filtros-bar {
+  background: var(--cream); border-bottom: 1px solid var(--border);
+  padding: 20px 48px; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+}
+.filtro { display: flex; flex-direction: column; gap: 5px; }
+.filtro label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
+.filtro select, .filtro input {
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 9px 14px; font-family: var(--sans); font-size: 0.86rem;
+  background: #fff; color: var(--black); outline: none;
+  transition: border-color .2s; min-width: 140px;
+}
+.filtro select:focus, .filtro input:focus { border-color: var(--accent); }
+.btn-filtrar {
+  background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 10px 22px; font-family: var(--sans); font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: background .2s; white-space: nowrap;
+}
+.btn-filtrar:hover { background: var(--accent-light); }
+.btn-limpiar {
+  background: transparent; color: var(--muted); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 9px 16px; font-family: var(--sans); font-size: 0.86rem;
+  cursor: pointer; transition: all .2s;
+}
+.btn-limpiar:hover { border-color: var(--black); color: var(--black); }
+.filtros-resultado { margin-left: auto; font-size: 0.82rem; color: var(--muted); align-self: center; white-space: nowrap; }
+
+/* GRILLA */
+.stock-body { padding: 32px 48px; }
+.autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+.auto-card {
+  border-radius: 14px; overflow: hidden; background: #fff;
+  border: 1px solid var(--border); transition: all .22s;
+  text-decoration: none; color: inherit; display: block; cursor: pointer;
+}
+.auto-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); border-color: transparent; }
+.auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
+.auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.auto-card:hover .auto-card-img img { transform: scale(1.04); }
+.auto-card-img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+.auto-tag {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  padding: 4px 10px; border-radius: 20px;
+}
+.tag-usado { background: var(--black); color: #fff; }
+.tag-nuevo { background: var(--accent); color: #fff; }
+.foto-count {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(0,0,0,.6); color: #fff; border-radius: 20px;
+  padding: 3px 10px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;
+}
+.auto-card-body { padding: 16px 18px; }
+.auto-nombre { font-weight: 700; font-size: 0.98rem; margin-bottom: 4px; }
+.auto-specs { font-size: 0.78rem; color: var(--muted); margin-bottom: 14px; display: flex; gap: 10px; flex-wrap: wrap; }
+.auto-spec { display: flex; align-items: center; gap: 4px; }
+.auto-footer { display: flex; align-items: center; justify-content: space-between; }
+.auto-precio { font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+.auto-precio-usd { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.btn-ver {
+  background: var(--accent); color: #fff; border: none; border-radius: 7px;
+  padding: 8px 16px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  font-family: var(--sans); transition: background .2s;
+}
+.btn-ver:hover { background: var(--accent-light); }
+
+.empty-state { text-align: center; padding: 80px 20px; color: var(--muted); grid-column: 1/-1; }
+.empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+.empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--black); }
+
+/* MODAL FICHA */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; padding: 16px;
+  overflow-y: auto;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: #fff; border-radius: 20px; width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 32px 80px rgba(0,0,0,.4);
+  margin: auto;
+}
+
+/* Galería arriba — sin padding, foto a sangría */
+.galeria-wrap {
+  position: relative; border-radius: 20px 20px 0 0; overflow: hidden;
+  background: #111; height: 300px;
+}
+.galeria-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+.galeria-wrap-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+
+/* ── LIGHTBOX ── */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 999999;
+  background: rgba(0,0,0,.95); align-items: center; justify-content: center;
+}
+.lightbox.open { display: flex; }
+.lightbox-img {
+  max-width: 92vw; max-height: 90vh;
+  object-fit: contain; border-radius: 4px;
+  user-select: none;
+}
+.lightbox-close {
+  position: fixed; top: 20px; right: 24px;
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s; z-index: 10;
+}
+.lightbox-close:hover { background: rgba(255,255,255,.3); }
+.lightbox-prev, .lightbox-next {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.15); border: none; color: #fff;
+  width: 48px; height: 48px; border-radius: 50%; font-size: 1.6rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s; z-index: 10;
+}
+.lightbox-prev:hover, .lightbox-next:hover { background: rgba(255,255,255,.3); }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+.lightbox-counter {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,.6); font-size: 0.85rem; letter-spacing: 1px;
+}
+.galeria-prev, .galeria-next {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+  border: none; border-radius: 50%; width: 38px; height: 38px;
+  color: #fff; font-size: 1.1rem; cursor: pointer; z-index: 2;
+  display: flex; align-items: center; justify-content: center; transition: background .15s;
+}
+.galeria-prev { left: 12px; }
+.galeria-next { right: 12px; }
+.galeria-prev:hover, .galeria-next:hover { background: rgba(0,0,0,.7); }
+/* Botón cerrar sobre la foto */
+.modal-close-float {
+  position: absolute; top: 12px; right: 12px; z-index: 3;
+  background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+  border: none; border-radius: 50%; width: 36px; height: 36px;
+  color: #fff; font-size: 1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+/* Dots */
+.galeria-dots {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 2;
+}
+.galeria-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,.4); border: none; padding: 0; cursor: pointer; transition: all .2s;
+}
+.galeria-dot.active { background: #fff; width: 20px; border-radius: 4px; }
+
+/* Cuerpo del modal */
+.modal-body { padding: 20px 20px 24px; }
+
+/* Nombre y precio */
+.modal-header-info {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; margin-bottom: 18px;
+}
+.modal-nombre { font-size: 1.35rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; }
+.modal-precio-wrap { text-align: right; flex-shrink: 0; }
+.modal-precio { font-size: 1.25rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.modal-financiacion { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+/* Specs en grid oscuro */
+.modal-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.modal-spec-item {
+  background: #f4f2ec; border-radius: 12px; padding: 12px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.modal-spec-icon { font-size: 1.1rem; flex-shrink: 0; }
+.modal-spec-text { }
+.modal-spec-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 2px; }
+.modal-spec-val { font-weight: 700; font-size: 0.92rem; }
+
+/* Descripción */
+.modal-desc-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.modal-desc-text { font-size: 0.88rem; color: #444; line-height: 1.7; margin-bottom: 20px; }
+
+/* Botones */
+.modal-btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-modal-wsp {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #25d366; color: #fff; border: none; border-radius: 12px;
+  padding: 15px; font-family: var(--sans); font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; transition: background .2s; letter-spacing: .3px;
+}
+.btn-modal-wsp:hover { background: #1fba57; }
+.btn-modal-sec {
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--muted); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 13px; font-family: var(--sans); font-size: 0.88rem;
+  font-weight: 500; cursor: pointer; transition: all .2s; text-decoration: none;
+}
+.btn-modal-sec:hover { border-color: var(--accent); color: var(--accent); }
+
+/* MOBILE */
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .btn-wsp{display:none;}
+  .modal-overlay { padding: 0; align-items: flex-end; }
+  .modal-box { border-radius: 20px 20px 0 0; max-height: 92vh; max-width: 100%; }
+  .galeria-wrap { height: 260px; border-radius: 20px 20px 0 0; }
+}
+
+/* WhatsApp flotante */
+.wsp-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 56px; height: 56px; background: #25d366; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none;
+  transition: all .2s; animation: pulse 2.5s infinite;
+}
+.wsp-float:hover { transform: scale(1.1); }
+.wsp-float svg { width: 26px; height: 26px; fill: #fff; }
+@keyframes pulse {
+  0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4);}
+  50%{box-shadow:0 4px 32px rgba(37,211,102,.65);}
+}
+
+/* RESPONSIVE */
+@media(min-width:769px){.hamburger{display:none;}.nav-mobile-panel{display:none!important;}}
+@media(max-width:768px){
+  .hamburger{display:flex;}
+  .btn-wsp{display:none;}
+  header{padding:0 16px;}
+  nav{display:none;}
+  .hamburger{display:flex;}
+  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
+  .btn-wsp{display:none;}
+  .stock-hero{padding:32px 16px 0;flex-direction:column;gap:20px;}
+  .filtros-bar{padding:16px;gap:10px;}
+  .filtro select,.filtro input{min-width:0;width:100%;}
+  .filtros-resultado{display:none;}
+  .stock-body{padding:20px 16px;}
+  .modal-body{grid-template-columns:1fr;padding:20px;}
+  .galeria-principal{height:220px;}
+  .modal-specs-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  </text>
+</svg></a>
+  <nav class="nav-desktop">
+    <a href="index.html">Inicio</a>
+    <a href="stock.html" class="active">Stock</a>
+    <a href="financiacion.html">Financiación</a>
+    <a href="consignaciones.html">Consignaciones</a>
+    <a href="index.html#servicios">Servicios</a>
+    <a href="index.html#contacto">Contacto</a>
+  </nav>
+  <div class="header-cta">
+        <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="stock.html" class="btn-outline">Ver stock →</a>
+  </div>
+</header>
+
+<!-- MENÚ MOBILE DRAWER -->
+<div id="navMenu" class="nav-mobile-panel">
+  <div class="drawer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      </text>
+    </svg>
+  </div>
+  <a href="index.html" onclick="toggleMenu()">Home</a>
+  <a href="stock.html" class="active" onclick="toggleMenu()">Stock</a>
+  <a href="financiacion.html" onclick="toggleMenu()">Financiación</a>
+  <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
+  <a href="index.html#servicios">Servicios</a>
+  <a href="index.html#contacto">Contacto</a>
+</div>
+<div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
+
+<!-- FILTROS -->
+<div class="filtros-bar">
+  <div class="filtro">
+    <label>Tipo</label>
+    <select id="fTipo" onchange="filtrarTipo(this.value)">
+      <option value="">Todos</option>
+      <option value="Usado">Usados</option>
+      <option value="Nuevo">0 km</option>
+    </select>
+  </div>
+  <div class="filtro">
+    <label>Marca</label>
+    <select id="fMarca" onchange="aplicarFiltros()">
+      <option value="">Todas</option>
+    </select>
+  </div>
+  <div class="filtro">
+    <label>Modelo</label>
+    <select id="fModelo" onchange="aplicarFiltros()">
+      <option value="">Todos</option>
+    </select>
+  </div>
+  <div class="filtro">
+    <label>Año desde</label>
+    <select id="fAnioDesde" onchange="aplicarFiltros()">
+      <option value="">Cualquiera</option>
+    </select>
+  </div>
+  <div class="filtro">
+    <label>Precio máximo</label>
+    <select id="fPrecio" onchange="aplicarFiltros()">
+      <option value="">Sin límite</option>
+      <option value="10000000">$ 10.000.000</option>
+      <option value="20000000">$ 20.000.000</option>
+      <option value="30000000">$ 30.000.000</option>
+      <option value="50000000">$ 50.000.000</option>
+      <option value="80000000">$ 80.000.000</option>
+    </select>
+  </div>
+  <div class="filtro">
+    <label>Transmisión</label>
+    <select id="fTransmision" onchange="aplicarFiltros()">
+      <option value="">Todas</option>
+      <option value="Manual">Manual</option>
+      <option value="Automática">Automática</option>
+      <option value="CVT">CVT</option>
+    </select>
+  </div>
+  <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
+  <div class="filtros-resultado" id="filtrosResultado"></div>
+</div>
+
+<!-- GRILLA DE AUTOS -->
+<div class="stock-body">
+  <div class="autos-grid" id="autosGrid">
+    <div class="empty-state">
+      <div class="empty-state-icon">🔍</div>
+      <p>Cargando autos...</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FICHA DEL AUTO -->
+<div class="modal-overlay" id="modalAuto">
+  <div class="modal-box">
+    <!-- Galería a sangría arriba -->
+    <div class="galeria-wrap" id="galeriaWrap">
+      <div class="galeria-wrap-ph">🚗</div>
+      <button class="modal-close-float" onclick="cerrarModal()">✕</button>
+    </div>
+    <!-- Cuerpo -->
+    <div class="modal-body">
+      <div class="modal-header-info">
+        <div class="modal-nombre" id="modalNombre">—</div>
+        <div class="modal-precio-wrap">
+          <div class="modal-precio" id="modalPrecio">—</div>
+          <div class="modal-financiacion">Financiación disponible</div>
+        </div>
+      </div>
+      <div class="modal-specs-grid" id="modalSpecs"></div>
+      <div id="modalDescWrap" style="display:none;">
+        <div class="modal-desc-label">Descripción</div>
+        <div class="modal-desc-text" id="modalDesc"></div>
+      </div>
+      <div class="modal-btns">
+        <a id="btnModalWsp" href="#" target="_blank" class="btn-modal-wsp">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Consultar por WhatsApp
+        </a>
+        <button class="btn-modal-sec" onclick="cerrarModal()">← Volver al stock</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP FLOTANTE -->
+<a href="https://wa.me/5492236249445" target="_blank" class="wsp-float">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="if(event.target===this)cerrarLightbox()">
+  <button class="lightbox-close" onclick="cerrarLightbox()">✕</button>
+  <button class="lightbox-prev" id="lbPrev" onclick="moverLightbox(-1)">‹</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-next" id="lbNext" onclick="moverLightbox(1)">›</button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<script>
+const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+const WSP = '5492236249445';
+
+let stockData = [];
+let filtroTipo = '';
+
+const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio';
+
+async function cargarStock() {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    stockData = await r.json();
+    poblarFiltros();
+    aplicarFiltros();
+
+    // Leer parámetros de la URL (desde buscador de home)
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('tipo')) { filtroTipo = params.get('tipo'); document.getElementById('fTipo').value = params.get('tipo'); }
+    if(params.get('marca')) document.getElementById('fMarca').value = params.get('marca');
+    if(params.get('precio')) document.getElementById('fPrecio').value = params.get('precio');
+    aplicarFiltros();
+
+    // Abrir ficha si viene con ?id=
+    if(params.get('id')) {
+      const auto = stockData.find(v => v.id == params.get('id'));
+      if(auto) abrirModal(auto);
+    }
+  } catch(e) {
+    document.getElementById('autosGrid').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Error al cargar el stock</h3><p>Por favor intentá de nuevo o contactanos por WhatsApp.</p></div>';
+  }
+}
+
+function poblarFiltros() {
+  const marcas = [...new Set(stockData.map(v=>v.marca).filter(Boolean))].sort();
+  const selM = document.getElementById('fMarca');
+  marcas.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; selM.appendChild(o); });
+  selM.onchange = function() { poblarModelos(this.value); aplicarFiltros(); };
+
+  const anios = [...new Set(stockData.map(v=>v.anio).filter(Boolean))].sort((a,b)=>b-a);
+  const selA = document.getElementById('fAnioDesde');
+  anios.forEach(a => { const o = document.createElement('option'); o.value=a; o.textContent=a; selA.appendChild(o); });
+}
+
+function poblarModelos(marca) {
+  const sel = document.getElementById('fModelo');
+  sel.innerHTML = '<option value="">Todos</option>';
+  if(!marca) return;
+  const modelos = [...new Set(stockData.filter(v=>v.marca===marca).map(v=>v.modelo).filter(Boolean))].sort();
+  modelos.forEach(m => { const o = document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
+}
+
+function filtrarTipo(tipo) {
+  filtroTipo = tipo;
+  aplicarFiltros();
+}
+
+function aplicarFiltros() {
+  let data = [...stockData];
+  if(filtroTipo) data = data.filter(v => v.tipo === filtroTipo);
+  const marca = document.getElementById('fMarca').value;
+  const modelo = document.getElementById('fModelo').value;
+  const anio = document.getElementById('fAnioDesde').value;
+  const precio = parseInt(document.getElementById('fPrecio').value)||0;
+  const transm = document.getElementById('fTransmision').value;
+  if(marca) data = data.filter(v=>v.marca===marca);
+  if(modelo) data = data.filter(v=>v.modelo===modelo);
+  if(anio) data = data.filter(v=>v.anio>=parseInt(anio));
+  if(precio) data = data.filter(v=>v.precio<=precio);
+  if(transm) data = data.filter(v=>v.transmision===transm);
+
+  document.getElementById('filtrosResultado').textContent = data.length+' auto'+(data.length!==1?'s':'')+' encontrado'+(data.length!==1?'s':'');
+  renderGrilla(data);
+}
+
+function limpiarFiltros() {
+  ['fMarca','fModelo','fAnioDesde','fPrecio','fTransmision'].forEach(id => document.getElementById(id).value='');
+  filtroTipo = '';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  aplicarFiltros();
+}
+
+function renderGrilla(autos) {
+  const grid = document.getElementById('autosGrid');
+  if(!autos.length) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>No encontramos autos con esos filtros</h3><p>Probá cambiando los criterios de búsqueda.</p></div>';
+    return;
+  }
+  grid.innerHTML = autos.map(v => `
+    <div class="auto-card" onclick="abrirModal(${JSON.stringify(v).replace(/"/g,'&quot;')})">
+      <div class="auto-card-img">
+        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph">🚗</div>`}
+        <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
+      </div>
+      <div class="auto-card-body">
+        <div class="auto-nombre">${v.marca} ${v.modelo}</div>
+        <div class="auto-specs">
+          ${v.anio?`<span class="auto-spec">📅 ${v.anio}</span>`:''}
+          ${v.km?`<span class="auto-spec">🛣 ${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
+          ${v.transmision?`<span class="auto-spec">⚙️ ${v.transmision}</span>`:''}
+          ${v.color?`<span class="auto-spec">🎨 ${v.color}</span>`:''}
+        </div>
+        <div class="auto-footer">
+          <div>
+            <div class="auto-precio">${fmt(v.precio)}</div>
+          </div>
+          <button class="btn-ver">Ver ficha →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// MODAL FICHA
+let fotosModal = [];
+let fotoActual = 0;
+
+async function abrirModal(v) {
+  document.getElementById('modalNombre').textContent = (v.marca+' '+v.modelo+' '+v.anio).toUpperCase();
+  document.getElementById('modalPrecio').textContent = fmt(v.precio);
+
+  // Specs con iconos
+  const specs = [
+    {icon:'📅', label:'Año', val:v.anio},
+    {icon:'🛣', label:'Kilometraje', val:v.km ? Number(v.km).toLocaleString('es-AR')+' km' : '0 km'},
+    {icon:'⚙️', label:'Transmisión', val:v.transmision},
+    {icon:'🎨', label:'Color', val:v.color},
+    {icon:'🚗', label:'Carrocería', val:v.carroceria},
+    {icon:'⛽', label:'Combustible', val:v.combustible},
+  ].filter(s => s.val && s.val !== '—' && s.val !== '' && s.val !== undefined);
+  document.getElementById('modalSpecs').innerHTML = specs.map(s =>
+    `<div class="modal-spec-item">
+      <div class="modal-spec-icon">${s.icon}</div>
+      <div class="modal-spec-text">
+        <div class="modal-spec-label">${s.label}</div>
+        <div class="modal-spec-val">${s.val}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  // Descripción
+  const descWrap = document.getElementById('modalDescWrap');
+  const descEl = document.getElementById('modalDesc');
+  if(v.obs){ descEl.textContent = v.obs; descWrap.style.display='block'; } else descWrap.style.display='none';
+
+  // WhatsApp
+  const msg = encodeURIComponent(`Hola! Me interesa el ${v.marca} ${v.modelo} ${v.anio||''} que vi en la web. ¿Podés darme más info?`);
+  document.getElementById('btnModalWsp').href = `https://wa.me/${WSP}?text=${msg}`;
+
+  await cargarFotosModal(v);
+  document.getElementById('modalAuto').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function cargarFotosModal(v) {
+  fotosModal = []; fotoActual = 0;
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/auto_fotos?select=url&vehiculo_id=eq.${v.id}&order=orden.asc,created_at.asc`,
+      {headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`}});
+    const fotos = await r.json();
+    fotosModal = fotos.map(f=>f.url);
+  } catch(e){}
+  if(!fotosModal.length && v.foto_portada) fotosModal = [v.foto_portada];
+  renderGaleriaModal();
+}
+
+function renderGaleriaModal() {
+  const wrap = document.getElementById('galeriaWrap');
+  if(!fotosModal.length) {
+    wrap.innerHTML = `<div class="galeria-wrap-ph">🚗</div><button class="modal-close-float" onclick="cerrarModal()">✕</button>`;
+    return;
+  }
+  wrap.innerHTML = `
+    <img src="${fotosModal[fotoActual]}" alt="Foto del auto" onclick="abrirLightbox(${fotoActual})">
+    <button class="modal-close-float" onclick="cerrarModal()">✕</button>
+    ${fotosModal.length > 1 ? `
+      <button class="galeria-prev" onclick="cambiarFoto((fotoActual-1+fotosModal.length)%fotosModal.length)">‹</button>
+      <button class="galeria-next" onclick="cambiarFoto((fotoActual+1)%fotosModal.length)">›</button>
+      <div class="galeria-dots">${fotosModal.map((_,i)=>`<button class="galeria-dot ${i===fotoActual?'active':''}" onclick="cambiarFoto(${i})"></button>`).join('')}</div>
+    ` : ''}`;
+  let tx = 0;
+  wrap.ontouchstart = e => tx = e.touches[0].clientX;
+  wrap.ontouchend = e => {
+    const diff = tx - e.changedTouches[0].clientX;
+    if(Math.abs(diff) > 40) cambiarFoto(diff > 0 ? (fotoActual+1)%fotosModal.length : (fotoActual-1+fotosModal.length)%fotosModal.length);
+  };
+}
+
+// ── LIGHTBOX ──
+let lbIndex = 0;
+
+function abrirLightbox(i) {
+  lbIndex = i;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function cerrarLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function moverLightbox(dir) {
+  lbIndex = (lbIndex + dir + fotosModal.length) % fotosModal.length;
+  renderLightbox();
+}
+
+function renderLightbox() {
+  document.getElementById('lightboxImg').src = fotosModal[lbIndex];
+  document.getElementById('lightboxCounter').textContent = fotosModal.length > 1 ? `${lbIndex + 1} / ${fotosModal.length}` : '';
+  document.getElementById('lbPrev').style.display = fotosModal.length > 1 ? 'flex' : 'none';
+  document.getElementById('lbNext').style.display = fotosModal.length > 1 ? 'flex' : 'none';
+}
+
+function cambiarFoto(i) { fotoActual = i; renderGaleriaModal(); }
+
+function cerrarModal() {
+  document.getElementById('modalAuto').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if(document.getElementById('lightbox').classList.contains('open')) {
+    if(e.key==='Escape') cerrarLightbox();
+    if(e.key==='ArrowRight') moverLightbox(1);
+    if(e.key==='ArrowLeft') moverLightbox(-1);
+  } else {
+    if(e.key==='Escape') cerrarModal();
+  }
+});
+document.getElementById('modalAuto').addEventListener('click', function(e){ if(e.target===this) cerrarModal(); });
+
+
+cargarStock();
+function toggleMenu() {
+  const panel = document.getElementById('navMenu');
+  const btn = document.getElementById('hamburger');
+  const overlay = document.getElementById('navOverlay');
+  panel.classList.toggle('open');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+  document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click', () => {
+  document.getElementById('navMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+  document.body.style.overflow = '';
+}));
+</script>
+</body>
+</html>
