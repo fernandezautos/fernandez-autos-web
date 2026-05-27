@@ -846,7 +846,6 @@ async function abrirModal(v) {
 
   // WhatsApp: guardar contexto del auto para el modal
   window._wspAutoActual = `${v.marca} ${v.modelo} ${v.anio||''}`;
-  function abrirWspModalConAuto() { abrirWspModal('auto:' + window._wspAutoActual); }
 
   await cargarFotosModal(v);
   document.getElementById('modalAuto').classList.add('open');
@@ -930,6 +929,10 @@ document.addEventListener('keydown', e => {
 });
 document.getElementById('modalAuto').addEventListener('click', function(e){ if(e.target===this) cerrarModal(); });
 
+
+function abrirWspModalConAuto() {
+  abrirWspModal('auto:' + (window._wspAutoActual || ''));
+}
 
 cargarStock();
 function toggleMenu() {
