@@ -895,8 +895,10 @@ function cerrarWspModal() {
   document.getElementById('wspModal').classList.remove('open');
 }
 
-document.getElementById('wspModal').addEventListener('click', function(e) {
-  if (e.target === this) cerrarWspModal();
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('wspModal').addEventListener('click', function(e) {
+    if (e.target === this) cerrarWspModal();
+  });
 });
 
 async function enviarWspModal() {
