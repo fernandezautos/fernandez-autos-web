@@ -442,6 +442,56 @@ footer a:hover { color: #fff; }
   .hamburger { display: none; }
   .nav-mobile-panel { display: none !important; }
 }
+
+/* ── MODAL WSP ROTATIVO ── */
+.wsp-modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 20px;
+}
+.wsp-modal-overlay.open { display: flex; }
+.wsp-modal-box {
+  background: #fff; border-radius: 20px; padding: 36px 32px;
+  width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
+  position: relative;
+}
+.wsp-modal-close {
+  position: absolute; top: 16px; right: 18px;
+  background: none; border: none; font-size: 1.2rem; cursor: pointer;
+  color: #9e9e9e; line-height: 1;
+}
+.wsp-modal-close:hover { color: #333; }
+.wsp-modal-icon {
+  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 1.6rem;
+}
+.wsp-modal-title {
+  text-align: center; font-size: 1.1rem; font-weight: 700;
+  color: #0e0d0b; margin-bottom: 6px;
+}
+.wsp-modal-sub {
+  text-align: center; font-size: 0.82rem; color: #7a7870;
+  margin-bottom: 24px; line-height: 1.5;
+}
+.wsp-modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.wsp-modal-field label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .8px; color: #7a7870; font-weight: 600; }
+.wsp-modal-field input {
+  border: 1.5px solid #e2dfd5; border-radius: 10px; padding: 12px 14px;
+  font-size: 0.92rem; outline: none; transition: border-color .2s;
+  font-family: var(--sans); color: #0e0d0b; background: #fafaf7;
+}
+.wsp-modal-field input:focus { border-color: #1a4a8a; }
+.wsp-modal-field input.inp-err { border-color: #d32f2f; }
+.wsp-modal-btn {
+  width: 100%; margin-top: 8px; background: #25d366; color: #fff; border: none;
+  border-radius: 12px; padding: 14px; font-size: 0.96rem; font-weight: 700;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center;
+  justify-content: center; gap: 10px; font-family: var(--sans);
+}
+.wsp-modal-btn:hover { background: #1fba57; transform: translateY(-1px); }
+.wsp-modal-btn:disabled { background: #9e9e9e; cursor: not-allowed; transform: none; }
+.wsp-modal-nota { text-align: center; font-size: 0.73rem; color: #9e9e9e; margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -464,10 +514,10 @@ footer a:hover { color: #fff; }
     <a href="#contacto">Contacto</a>
   </nav>
   <div class="header-cta">
-    <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp">
+    <button onclick="abrirWspModal('index')" class="btn-wsp">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
-    </a>
+    </button>
     <a href="stock.html" class="btn-outline">Ver stock →</a>
   </div>
 </header>
@@ -720,7 +770,7 @@ footer a:hover { color: #fff; }
         <div class="contacto-item-icon">📱</div>
         <div>
           <div class="contacto-item-label">WhatsApp</div>
-          <div class="contacto-item-val"><a href="https://wa.me/5492236249445" target="_blank" style="color:var(--accent);text-decoration:none;">+54 9 223 600-0000</a></div>
+          <div class="contacto-item-val"><a href="#" onclick="abrirWspModal('index');return false;" style="color:var(--accent);text-decoration:none;">+54 9 223 600-0000</a></div>
         </div>
       </div>
       <div class="contacto-item">
@@ -730,10 +780,10 @@ footer a:hover { color: #fff; }
           <div class="contacto-item-val">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
         </div>
       </div>
-      <a href="https://wa.me/5492236249445" target="_blank" class="btn-wsp" style="width:fit-content;margin-top:8px;">
+      <button onclick="abrirWspModal('index')" class="btn-wsp" style="width:fit-content;margin-top:8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Escribinos por WhatsApp
-      </a>
+      </button>
     </div>
     <div class="contacto-form fade-up">
       <h3>Dejanos tu consulta</h3>
@@ -792,9 +842,34 @@ footer a:hover { color: #fff; }
 </footer>
 
 <!-- WHATSAPP FLOTANTE -->
-<a href="https://wa.me/5492236249445" target="_blank" class="wsp-float" title="WhatsApp">
+<button onclick="abrirWspModal('index')" class="wsp-float" title="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
+</button>
+
+<!-- MODAL WSP ROTATIVO -->
+<div id="wspModal" class="wsp-modal-overlay">
+  <div class="wsp-modal-box">
+    <button class="wsp-modal-close" onclick="cerrarWspModal()">✕</button>
+    <div class="wsp-modal-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </div>
+    <div class="wsp-modal-title">Antes de seguir, dejanos tus datos</div>
+    <div class="wsp-modal-sub">Te conectamos con un asesor en segundos.</div>
+    <div class="wsp-modal-field">
+      <label>Nombre *</label>
+      <input type="text" id="wspNombre" placeholder="Tu nombre" autocomplete="given-name">
+    </div>
+    <div class="wsp-modal-field">
+      <label>Teléfono *</label>
+      <input type="tel" id="wspTelefono" placeholder="223 000-0000" autocomplete="tel">
+    </div>
+    <button class="wsp-modal-btn" id="wspBtn" onclick="enviarWspModal()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Continuar a WhatsApp &#8594;
+    </button>
+    <div class="wsp-modal-nota">Al continuar, aceptás que un asesor se ponga en contacto con vos.</div>
+  </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -1011,6 +1086,65 @@ document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 // Exponer enviarConsulta globalmente para que el onsubmit del <form> la encuentre
 window.enviarConsulta = enviarConsulta;
+
+
+// ── SISTEMA WSP ROTATIVO ──────────────────────────────────────────
+const WSP_ROTATOR = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
+const WSP_FALLBACK = '5492236249445';
+let wspContexto = null;
+
+function abrirWspModal(contexto) {
+  wspContexto = contexto || null;
+  document.getElementById('wspNombre').value = '';
+  document.getElementById('wspTelefono').value = '';
+  document.getElementById('wspNombre').classList.remove('inp-err');
+  document.getElementById('wspTelefono').classList.remove('inp-err');
+  const btn = document.getElementById('wspBtn');
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Continuar a WhatsApp →';
+  document.getElementById('wspModal').classList.add('open');
+  setTimeout(() => document.getElementById('wspNombre').focus(), 100);
+}
+
+function cerrarWspModal() {
+  document.getElementById('wspModal').classList.remove('open');
+}
+
+document.getElementById('wspModal').addEventListener('click', function(e) {
+  if (e.target === this) cerrarWspModal();
+});
+
+async function enviarWspModal() {
+  const nombre = document.getElementById('wspNombre').value.trim();
+  const telefono = document.getElementById('wspTelefono').value.trim();
+  let valido = true;
+  if (!nombre || nombre.length < 2) { document.getElementById('wspNombre').classList.add('inp-err'); valido = false; }
+  else document.getElementById('wspNombre').classList.remove('inp-err');
+  if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); valido = false; }
+  else document.getElementById('wspTelefono').classList.remove('inp-err');
+  if (!valido) return;
+
+  const btn = document.getElementById('wspBtn');
+  btn.disabled = true;
+  btn.textContent = 'Conectando...';
+
+  try {
+    const r = await fetch(WSP_ROTATOR, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, telefono, contexto: wspContexto })
+    });
+    const data = await r.json();
+    if (data.ok && data.numero_vendedor) {
+      cerrarWspModal();
+      window.open('https://wa.me/' + data.numero_vendedor + '?text=' + encodeURIComponent(data.mensaje || ''), '_blank');
+    } else { throw new Error('sin numero'); }
+  } catch(e) {
+    cerrarWspModal();
+    window.open('https://wa.me/' + WSP_FALLBACK + '?text=' + encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank');
+  }
+}
+// ─────────────────────────────────────────────────────────────────
 
 // Iniciar
 cargarStock();
