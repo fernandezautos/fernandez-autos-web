@@ -540,62 +540,10 @@ footer a:hover { color: #fff; }
 </div>
 <div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
 
-<!-- CARRUSEL HERO -->
-<!-- ================================================
-  CARRUSEL: Para cambiar las fotos, editá los src=""
-  de cada <img> dentro de .carousel-slide.
-  Para agregar una slide, duplicá el bloque
-  <div class="carousel-slide">...</div>
-  y actualizá también los puntos en .carousel-nav
-================================================ -->
+<!-- CARRUSEL HERO — contenido dinámico desde Supabase -->
 <div class="carousel" id="carousel">
   <div class="carousel-track" id="carouselTrack">
-
-    <!-- SLIDE 1 — Cambiá la foto aquí -->
-    <div class="carousel-slide">
-      <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=85" alt="Fernández Autos">
-      <div class="carousel-overlay"></div>
-      <div class="carousel-content">
-        <div class="carousel-tag">Mar del Plata</div>
-        <h1>Tu próximo auto,<br><em>a tu medida.</em></h1>
-        <p class="carousel-sub">Usados seleccionados y 0km con financiación flexible.</p>
-        <div class="carousel-btns">
-          <a href="stock.html" class="btn-primary">Ver stock →</a>
-          <a href="#contacto" class="btn-secondary">Hablar con un asesor</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 2 — Cambiá la foto aquí -->
-    <div class="carousel-slide">
-      <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85" alt="Fernández Autos">
-      <div class="carousel-overlay"></div>
-      <div class="carousel-content">
-        <div class="carousel-tag">Financiación</div>
-        <h1>Cuotas fijas,<br><em>sin vueltas.</em></h1>
-        <p class="carousel-sub">Créditos bancarios y financiación propia. Hasta 60 cuotas.</p>
-        <div class="carousel-btns">
-          <a href="financiacion.html" class="btn-primary">Conocer opciones →</a>
-          <a href="#contacto" class="btn-secondary">Consultar</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 3 — Cambiá la foto aquí -->
-    <div class="carousel-slide">
-      <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1600&q=85" alt="Fernández Autos">
-      <div class="carousel-overlay"></div>
-      <div class="carousel-content">
-        <div class="carousel-tag">Permuta</div>
-        <h1>Entregá el tuyo,<br><em>llevate el mejor.</em></h1>
-        <p class="carousel-sub">Tasación justa y proceso simple. Permutamos tu auto.</p>
-        <div class="carousel-btns">
-          <a href="#contacto" class="btn-primary">Tasar mi auto →</a>
-          <a href="stock.html" class="btn-secondary">Ver stock</a>
-        </div>
-      </div>
-    </div>
-
+    <!-- slides se renderizan por JS -->
   </div>
 
   <!-- Estadísticas -->
@@ -605,12 +553,12 @@ footer a:hover { color: #fff; }
       <div class="stat-label">Autos disponibles</div>
     </div>
     <div class="stat">
-      <div class="stat-num">+10</div>
-      <div class="stat-label">Años de experiencia</div>
+      <div class="stat-num" id="statExpVal">+10</div>
+      <div class="stat-label" id="statExpLabel">Años de experiencia</div>
     </div>
     <div class="stat">
-      <div class="stat-num">100%</div>
-      <div class="stat-label">Atención personalizada</div>
+      <div class="stat-num" id="statAtenVal">100%</div>
+      <div class="stat-label" id="statAtenLabel">Atención personalizada</div>
     </div>
   </div>
 
@@ -618,12 +566,8 @@ footer a:hover { color: #fff; }
   <button class="carousel-arrow prev" onclick="moverCarrusel(-1)">‹</button>
   <button class="carousel-arrow next" onclick="moverCarrusel(1)">›</button>
 
-  <!-- Puntos -->
-  <div class="carousel-nav" id="carouselNav">
-    <button class="carousel-dot active" onclick="irASlide(0)"></button>
-    <button class="carousel-dot" onclick="irASlide(1)"></button>
-    <button class="carousel-dot" onclick="irASlide(2)"></button>
-  </div>
+  <!-- Puntos — se generan por JS -->
+  <div class="carousel-nav" id="carouselNav"></div>
 </div>
 
 <!-- BUSCADOR -->
@@ -678,27 +622,12 @@ footer a:hover { color: #fff; }
       <div class="section-title">Nuestros servicios</div>
     </div>
   </div>
-  <div class="servicios-grid">
-    <div class="servicio-card fade-up">
-      <div class="servicio-icon">🚗</div>
-      <div class="servicio-title">Compra, venta y permuta</div>
-      <div class="servicio-desc">Usados seleccionados y 0km de todas las marcas. Entregá tu auto en parte de pago con tasación justa y proceso simple.</div>
-    </div>
-    <div class="servicio-card fade-up">
-      <div class="servicio-icon">🤝</div>
-      <div class="servicio-title">Consignaciones</div>
-      <div class="servicio-desc">Dejanos encargarnos de la venta de tu auto. Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.</div>
-    </div>
-    <div class="servicio-card fade-up">
-      <div class="servicio-icon">💳</div>
-      <div class="servicio-title">Financiación</div>
-      <div class="servicio-desc">Créditos bancarios y financiación flexible. Cuotas fijas en pesos o dólares.</div>
-    </div>
-    <div class="servicio-card fade-up">
-      <div class="servicio-icon">📋</div>
-      <div class="servicio-title">Gestoría</div>
-      <div class="servicio-desc">Nos encargamos de toda la transferencia y documentación. Sin vueltas.</div>
-    </div>
+  <div class="servicios-grid" id="serviciosGrid">
+    <!-- renderizado por JS -->
+    <div class="servicio-card fade-up"><div class="servicio-icon">🚗</div><div class="servicio-title">Compra, venta y permuta</div><div class="servicio-desc">Usados seleccionados y 0km de todas las marcas.</div></div>
+    <div class="servicio-card fade-up"><div class="servicio-icon">🤝</div><div class="servicio-title">Consignaciones</div><div class="servicio-desc">Dejanos encargarnos de la venta de tu auto.</div></div>
+    <div class="servicio-card fade-up"><div class="servicio-icon">💳</div><div class="servicio-title">Financiación</div><div class="servicio-desc">Créditos bancarios y financiación flexible.</div></div>
+    <div class="servicio-card fade-up"><div class="servicio-icon">📋</div><div class="servicio-title">Gestoría</div><div class="servicio-desc">Transferencia y documentación sin vueltas.</div></div>
   </div>
 </section>
 
@@ -706,9 +635,9 @@ footer a:hover { color: #fff; }
 <section class="financiacion-section">
   <div class="fin-text fade-up">
     <div class="section-label">Financiación</div>
-    <div class="section-title">Tu auto con las<br>cuotas que podés pagar</div>
-    <p>Trabajamos con los principales bancos y financieras del país. Te asesoramos para encontrar la opción que mejor se adapta a tu situación.</p>
-    <div class="fin-features">
+    <div class="section-title" id="finTitulo">Tu auto con las<br>cuotas que podés pagar</div>
+    <p id="finDesc">Trabajamos con los principales bancos y financieras del país. Te asesoramos para encontrar la opción que mejor se adapta a tu situación.</p>
+    <div class="fin-features" id="finFeatures">
       <div class="fin-feature">Hasta 60 cuotas fijas</div>
       <div class="fin-feature">Créditos prendarios bancarios</div>
       <div class="fin-feature">Gestión rápida y sin burocracia</div>
@@ -763,21 +692,21 @@ footer a:hover { color: #fff; }
         <div class="contacto-item-icon">📍</div>
         <div>
           <div class="contacto-item-label">Dirección</div>
-          <div class="contacto-item-val">Mar del Plata, Buenos Aires</div>
+          <div class="contacto-item-val" id="ctaDireccion">Mar del Plata, Buenos Aires</div>
         </div>
       </div>
       <div class="contacto-item">
         <div class="contacto-item-icon">📱</div>
         <div>
           <div class="contacto-item-label">WhatsApp</div>
-          <div class="contacto-item-val"><a href="#" onclick="abrirWspModal('index');return false;" style="color:var(--accent);text-decoration:none;">+54 9 223 600-0000</a></div>
+          <div class="contacto-item-val"><a href="#" onclick="abrirWspModal('index');return false;" style="color:var(--accent);text-decoration:none;" id="ctaTelefono">+54 9 223 600-0000</a></div>
         </div>
       </div>
       <div class="contacto-item">
         <div class="contacto-item-icon">🕐</div>
         <div>
           <div class="contacto-item-label">Horario</div>
-          <div class="contacto-item-val">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
+          <div class="contacto-item-val" id="ctaHorario">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
         </div>
       </div>
       <button onclick="abrirWspModal('index')" class="btn-wsp" style="width:fit-content;margin-top:8px;">
@@ -871,6 +800,7 @@ footer a:hover { color: #fff; }
   </div>
 </div>
 
+
 <script>
 
 // ── SISTEMA WSP ROTATIVO ──────────────────────────────────────────
@@ -895,12 +825,6 @@ function cerrarWspModal() {
   document.getElementById('wspModal').classList.remove('open');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('wspModal').addEventListener('click', function(e) {
-    if (e.target === this) cerrarWspModal();
-  });
-});
-
 async function enviarWspModal() {
   const nombre = document.getElementById('wspNombre').value.trim();
   const telefono = document.getElementById('wspTelefono').value.trim();
@@ -910,15 +834,11 @@ async function enviarWspModal() {
   if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); valido = false; }
   else document.getElementById('wspTelefono').classList.remove('inp-err');
   if (!valido) return;
-
   const btn = document.getElementById('wspBtn');
-  btn.disabled = true;
-  btn.textContent = 'Conectando...';
-
+  btn.disabled = true; btn.textContent = 'Conectando...';
   try {
     const r = await fetch(WSP_ROTATOR, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre, telefono, contexto: wspContexto })
     });
     const data = await r.json();
@@ -931,10 +851,14 @@ async function enviarWspModal() {
     window.open('https://wa.me/' + WSP_FALLBACK + '?text=' + encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank');
   }
 }
-// ─────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('wspModal').addEventListener('click', function(e) {
+    if (e.target === this) cerrarWspModal();
+  });
+});
 
+// ─────────────────────────────────────────────────────────────────
 const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
 const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
 const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
@@ -944,7 +868,7 @@ let stockData = [];
 
 // ── CARRUSEL ──
 let slideActual = 0;
-const totalSlides = 3;
+let totalSlides = 3;
 let autoPlay;
 
 function irASlide(n) {
@@ -961,38 +885,140 @@ function reiniciarAutoPlay() {
   autoPlay = setInterval(() => moverCarrusel(1), 5000);
 }
 
-// Swipe en mobile
-let touchStart = 0;
-document.getElementById('carousel')?.addEventListener('touchstart', e => touchStart = e.touches[0].clientX);
+document.getElementById('carousel')?.addEventListener('touchstart', e => window._touchStart = e.touches[0].clientX);
 document.getElementById('carousel')?.addEventListener('touchend', e => {
-  const diff = touchStart - e.changedTouches[0].clientX;
+  const diff = (window._touchStart||0) - e.changedTouches[0].clientX;
   if(Math.abs(diff) > 50) moverCarrusel(diff > 0 ? 1 : -1);
 });
 
-reiniciarAutoPlay();
+// ── CONTENIDO DINÁMICO ── 
+// Fallbacks hardcodeados (se usan si Supabase falla)
+const FALLBACK_SLIDES = [
+  { tag:'Mar del Plata', titulo:'Tu próximo auto, a tu medida.', subtitulo:'Usados seleccionados y 0km con financiación flexible.', btn1_texto:'Ver stock →', btn1_url:'stock.html', btn2_texto:'Hablar con un asesor', imagen_url:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=85' },
+  { tag:'Financiación', titulo:'Cuotas fijas, sin vueltas.', subtitulo:'Créditos bancarios y financiación propia. Hasta 60 cuotas.', btn1_texto:'Conocer opciones →', btn1_url:'financiacion.html', btn2_texto:'Consultar', imagen_url:'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85' },
+  { tag:'Permuta', titulo:'Entregá el tuyo, llevate el mejor.', subtitulo:'Tasación justa y proceso simple. Permutamos tu auto.', btn1_texto:'Tasar mi auto →', btn1_url:'#contacto', btn2_texto:'Ver stock', imagen_url:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1600&q=85' },
+];
+const FALLBACK_SERVICIOS = [
+  { icono:'🚗', titulo:'Compra, venta y permuta', descripcion:'Usados seleccionados y 0km de todas las marcas. Entregá tu auto en parte de pago con tasación justa y proceso simple.' },
+  { icono:'🤝', titulo:'Consignaciones', descripcion:'Dejanos encargarnos de la venta de tu auto. Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.' },
+  { icono:'💳', titulo:'Financiación', descripcion:'Créditos bancarios y financiación flexible. Cuotas fijas en pesos o dólares.' },
+  { icono:'📋', titulo:'Gestoría', descripcion:'Nos encargamos de toda la transferencia y documentación. Sin vueltas.' },
+];
+
+function g(rows, seccion, clave) {
+  const row = rows.find(r => r.seccion === seccion && r.clave === clave);
+  return row?.valor || '';
+}
+
+function renderSlides(slides) {
+  totalSlides = slides.length;
+  const track = document.getElementById('carouselTrack');
+  const nav = document.getElementById('carouselNav');
+  track.innerHTML = slides.map((s, i) => `
+    <div class="carousel-slide">
+      <img src="${s.imagen_url}" alt="Fernández Autos" loading="${i===0?'eager':'lazy'}">
+      <div class="carousel-overlay"></div>
+      <div class="carousel-content">
+        <div class="carousel-tag">${s.tag}</div>
+        <h1>${s.titulo.replace(/, /,'<br>').replace(/\. /,'<br>')}</h1>
+        <p class="carousel-sub">${s.subtitulo}</p>
+        <div class="carousel-btns">
+          <a href="${s.btn1_url||'stock.html'}" class="btn-primary">${s.btn1_texto}</a>
+          <a href="#contacto" class="btn-secondary">${s.btn2_texto}</a>
+        </div>
+      </div>
+    </div>`).join('');
+  nav.innerHTML = slides.map((_,i) =>
+    `<button class="carousel-dot ${i===0?'active':''}" onclick="irASlide(${i})"></button>`
+  ).join('');
+}
+
+function renderServicios(servicios) {
+  document.getElementById('serviciosGrid').innerHTML = servicios.map(s => `
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon">${s.icono}</div>
+      <div class="servicio-title">${s.titulo}</div>
+      <div class="servicio-desc">${s.descripcion}</div>
+    </div>`).join('');
+  // re-observar fade-up nuevos
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+}
+
+async function cargarContenidoHome() {
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/contenido_web?pagina=eq.home&order=seccion.asc,orden.asc`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    if (!r.ok) throw new Error(r.status);
+    const rows = await r.json();
+    if (!rows.length) throw new Error('vacío');
+
+    // Slides
+    const slides = [1,2,3].map(i => ({
+      tag:         g(rows, `hero_slide_${i}`, 'tag'),
+      titulo:      g(rows, `hero_slide_${i}`, 'titulo'),
+      subtitulo:   g(rows, `hero_slide_${i}`, 'subtitulo'),
+      btn1_texto:  g(rows, `hero_slide_${i}`, 'btn1_texto'),
+      btn1_url:    g(rows, `hero_slide_${i}`, 'btn1_url'),
+      btn2_texto:  g(rows, `hero_slide_${i}`, 'btn2_texto'),
+      imagen_url:  g(rows, `hero_slide_${i}`, 'imagen_url'),
+    })).filter(s => s.titulo);
+    renderSlides(slides.length ? slides : FALLBACK_SLIDES);
+
+    // Stats
+    const expVal = g(rows,'stat_experiencia','valor'); if(expVal) document.getElementById('statExpVal').textContent = expVal;
+    const expLbl = g(rows,'stat_experiencia','label'); if(expLbl) document.getElementById('statExpLabel').textContent = expLbl;
+    const atnVal = g(rows,'stat_atencion','valor'); if(atnVal) document.getElementById('statAtenVal').textContent = atnVal;
+    const atnLbl = g(rows,'stat_atencion','label'); if(atnLbl) document.getElementById('statAtenLabel').textContent = atnLbl;
+
+    // Servicios
+    const srvKeys = ['servicio_compraventa','servicio_consignaciones','servicio_financiacion','servicio_gestoria'];
+    const servicios = srvKeys.map(k => ({
+      icono:       g(rows, k, 'icono'),
+      titulo:      g(rows, k, 'titulo'),
+      descripcion: g(rows, k, 'descripcion'),
+    })).filter(s => s.titulo);
+    if (servicios.length) renderServicios(servicios);
+
+    // Sección financiación
+    const finTit = g(rows,'fin_texto','titulo');
+    const finDsc = g(rows,'fin_texto','descripcion');
+    if(finTit) document.getElementById('finTitulo').textContent = finTit;
+    if(finDsc) document.getElementById('finDesc').textContent = finDsc;
+    const features = ['feature_1','feature_2','feature_3','feature_4']
+      .map(k => g(rows,'fin_texto',k)).filter(Boolean);
+    if(features.length) {
+      document.getElementById('finFeatures').innerHTML =
+        features.map(f => `<div class="fin-feature">${f}</div>`).join('');
+    }
+
+    // Contacto
+    const dir = g(rows,'contacto','direccion');
+    const tel = g(rows,'contacto','telefono');
+    const hor = g(rows,'contacto','horario');
+    if(dir) document.getElementById('ctaDireccion').textContent = dir;
+    if(tel) document.getElementById('ctaTelefono').textContent = tel;
+    if(hor) document.getElementById('ctaHorario').innerHTML = hor.replace(' / ','<br>');
+
+  } catch(e) {
+    console.warn('CMS: usando fallback hardcodeado:', e.message);
+    renderSlides(FALLBACK_SLIDES);
+    // servicios ya están hardcodeados en el HTML como fallback
+  }
+  reiniciarAutoPlay();
+}
 
 // ── STOCK ──
-// Cargar autos desde Supabase
 async function cargarStock() {
   try {
     const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
     stockData = await r.json();
-
-    // Actualizar contador hero
     document.getElementById('statStock').textContent = stockData.length;
-
-    // Poblar marcas en buscador
     const marcas = [...new Set(stockData.map(v => v.marca).filter(Boolean))].sort();
     const selMarca = document.getElementById('sMarca');
-    marcas.forEach(m => {
-      const opt = document.createElement('option');
-      opt.value = m; opt.textContent = m;
-      selMarca.appendChild(opt);
-    });
-
-    // Mostrar primeros 6
+    marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; selMarca.appendChild(opt); });
     renderAutos(stockData.slice(0, 6));
   } catch(e) {
     document.getElementById('autosGrid').innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">Error al cargar el stock.</div>';
@@ -1001,17 +1027,12 @@ async function cargarStock() {
 
 function renderAutos(autos) {
   const grid = document.getElementById('autosGrid');
-  if(!autos.length) {
-    grid.innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">No se encontraron autos con esos criterios.</div>';
-    return;
-  }
+  if(!autos.length) { grid.innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">No se encontraron autos con esos criterios.</div>'; return; }
   const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio';
   grid.innerHTML = autos.map(v => `
     <a href="stock.html?id=${v.id}" class="auto-card">
       <div class="auto-card-img">
-        ${v.foto_portada
-          ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">`
-          : `<div class="auto-card-img-placeholder">🚗</div>`}
+        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-placeholder">🚗</div>`}
         <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
       </div>
       <div class="auto-card-body">
@@ -1029,11 +1050,6 @@ function buscar() {
   const tipo = document.getElementById('sTipo').value;
   const marca = document.getElementById('sMarca').value;
   const precio = parseInt(document.getElementById('sPrecio').value) || 0;
-  let filtrados = stockData;
-  if(tipo) filtrados = filtrados.filter(v => v.tipo === tipo);
-  if(marca) filtrados = filtrados.filter(v => v.marca === marca);
-  if(precio) filtrados = filtrados.filter(v => v.precio <= precio);
-  // Ir a stock con filtros
   const params = new URLSearchParams();
   if(tipo) params.set('tipo', tipo);
   if(marca) params.set('marca', marca);
@@ -1041,21 +1057,17 @@ function buscar() {
   window.location.href = 'stock.html?' + params.toString();
 }
 
-// Calculadora de cuotas
 function calcularCuota() {
   const valor = parseFloat(document.getElementById('calcValor').value) || 0;
   const entradaPct = parseInt(document.getElementById('calcEntrada').value) || 0;
   const cuotas = parseInt(document.getElementById('calcCuotas').value) || 36;
   if(!valor) { document.getElementById('calcResultado').textContent = '$ —'; return; }
   const financiado = valor * (1 - entradaPct/100);
-  const tasa = 0.06; // 6% mensual estimado
+  const tasa = 0.06;
   const cuota = financiado * (tasa * Math.pow(1+tasa, cuotas)) / (Math.pow(1+tasa, cuotas) - 1);
   document.getElementById('calcResultado').textContent = '$ '+Math.round(cuota).toLocaleString('es-AR');
 }
 
-// Enviar consulta → crear lead en CRM
-// 1. Intenta el webhook (asigna vendedor por rotacion + notificaciones automaticas)
-// 2. Si el webhook falla, cae al metodo viejo (inserts directos) como fallback
 async function enviarConsulta(e) {
   e.preventDefault();
   const nombre = document.getElementById('fNombre').value.trim();
@@ -1065,36 +1077,24 @@ async function enviarConsulta(e) {
   const mensaje = document.getElementById('fMensaje').value.trim();
   const msg = document.getElementById('formMsg');
 
-  // ── Intento 1: webhook (camino principal) ───────────────────────────────
   try {
     const r = await fetch(WEBHOOK_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SB_KEY}`,
-        'x-webhook-secret': WEBHOOK_SECRET
-      },
-      body: JSON.stringify({
-        nombre, tel, email, interes,
-        nota: mensaje,
-        origen_detalle: 'home_contacto'
-      })
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_KEY}`, 'x-webhook-secret': WEBHOOK_SECRET },
+      body: JSON.stringify({ nombre, tel, email, interes, nota: mensaje, origen_detalle: 'home_contacto' })
     });
     const data = await r.json();
     if (r.ok && data.ok) {
       msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
       msg.className = 'form-msg ok'; msg.style.display = 'block';
-      e.target.reset();
-      return;
+      e.target.reset(); return;
     }
-    throw new Error('webhook failed: ' + (data.error || r.status));
+    throw new Error('webhook failed');
   } catch (err) {
     console.warn('Webhook fallido, usando fallback:', err);
   }
 
-  // ── Intento 2: fallback (inserts directos sin asignacion) ───────────────
   try {
-    // Crear cliente en Supabase
     const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
       method: 'POST',
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
@@ -1102,31 +1102,20 @@ async function enviarConsulta(e) {
     });
     const cli = await cliR.json();
     const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
-
-    // Crear prospecto (queda sin asignar - el admin lo asigna manualmente)
     await fetch(`${SB_URL}/rest/v1/prospectos`, {
       method: 'POST',
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({
-        cliente_id: clienteId, nombre, tel, email, interes,
-        nota: mensaje, col: 'nueva', cerrado: false,
-        origen: 'web', origen_detalle: 'home_contacto_fallback',
-        ultimo_contacto: new Date().toISOString()
-      })
+      body: JSON.stringify({ cliente_id: clienteId, nombre, tel, email, interes, nota: mensaje, col: 'nueva', cerrado: false, origen: 'web', origen_detalle: 'home_contacto_fallback', ultimo_contacto: new Date().toISOString() })
     });
-
-    // Notificar al admin (fallback: solo admin, sin asignacion a vendedor)
     await fetch(`${SB_URL}/rest/v1/notificaciones`, {
       method: 'POST',
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
       body: JSON.stringify({ para: 'admin', tipo: 'nuevo_lead', titulo: '🌐 Nuevo lead desde la web (sin asignar)', mensaje: nombre+' · '+tel+' · '+interes, leida: false })
     });
-
     msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
     msg.className = 'form-msg ok'; msg.style.display = 'block';
     e.target.reset();
   } catch(err) {
-    console.error(err);
     msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
     msg.className = 'form-msg err'; msg.style.display = 'block';
   }
@@ -1135,26 +1124,16 @@ async function enviarConsulta(e) {
 // Animaciones scroll
 const observer = new IntersectionObserver(entries => {
   entries.forEach((entry, i) => {
-    if(entry.isIntersecting) {
-      setTimeout(() => entry.target.classList.add('visible'), i * 80);
-    }
+    if(entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-// Cerrar menú al hacer click en un link (manejado con onclick en cada <a> del panel)
-// El panel mobile tiene onclick="toggleMenu()" en cada link directamente
-
-// Exponer enviarConsulta globalmente para que el onsubmit del <form> la encuentre
 window.enviarConsulta = enviarConsulta;
 
-
-
-
-// Iniciar
+// Iniciar todo
+cargarContenidoHome();
 cargarStock();
-
-}); // DOMContentLoaded
 
 function toggleMenu() {
   const panel = document.getElementById('navMenu');

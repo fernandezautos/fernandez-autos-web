@@ -426,8 +426,8 @@ footer a:hover { color: #fff; }
 <section class="hero">
   <div class="hero-text">
     <div class="hero-tag">Financiación</div>
-    <h1>Tu auto, <span>con las cuotas que podés pagar.</span></h1>
-    <p>Trabajamos con los principales bancos del país y te asesoramos para encontrar la opción que mejor se adapta a tu situación. Sin vueltas, sin letra chica.</p>
+    <h1 id="finHeroTitulo">Tu auto, <span>con las cuotas que podés pagar.</span></h1>
+    <p id="finHeroDesc">Trabajamos con los principales bancos del país y te asesoramos para encontrar la opción que mejor se adapta a tu situación. Sin vueltas, sin letra chica.</p>
     <div class="hero-btns">
       <a href="#formulario" class="btn-primary">Quiero financiar mi auto →</a>
       <button onclick="abrirWspModal(\'financiacion\')" class="btn-wsp-hero">
@@ -437,21 +437,21 @@ footer a:hover { color: #fff; }
     </div>
   </div>
   <div class="hero-stats">
-    <div class="stat-card">
+    <div class="stat-card" id="finStat1">
       <div class="stat-icon">🏦</div>
       <div>
         <div class="stat-title">Crédito bancario</div>
         <div class="stat-desc">Gestionamos el crédito con los principales bancos del país. Tasas competitivas y aprobación ágil.</div>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="finStat2">
       <div class="stat-icon">🔄</div>
       <div>
         <div class="stat-title">Permuta como parte de pago</div>
         <div class="stat-desc">Usá tu auto actual como parte del pago. Tasación justa y proceso simple.</div>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="finStat3">
       <div class="stat-icon">📋</div>
       <div>
         <div class="stat-title">Gestión integral</div>
@@ -465,8 +465,8 @@ footer a:hover { color: #fff; }
 <section class="opciones-section">
   <div class="section-label">Cómo financiamos</div>
   <div class="section-title">Opciones disponibles</div>
-  <div class="opciones-grid">
-    <div class="opcion-card destacada">
+  <div class="opciones-grid" id="opcionesGrid">
+    <div class="opcion-card destacada" id="opcion1">
       <div class="opcion-num">01</div>
       <div class="opcion-icon">🏦</div>
       <div class="opcion-title">Crédito bancario</div>
@@ -509,7 +509,7 @@ footer a:hover { color: #fff; }
 <section class="proceso-section">
   <div class="section-label">Paso a paso</div>
   <div class="section-title">¿Cómo es el proceso?</div>
-  <div class="proceso-steps">
+  <div class="proceso-steps" id="procesoSteps">
     <div class="paso">
       <div class="paso-num">1</div>
       <div class="paso-title">Elegís el auto</div>
@@ -811,5 +811,93 @@ document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click',
     <div class="wsp-modal-nota">Al continuar, acept&#225;s que un asesor se ponga en contacto con vos.</div>
   </div>
 </div>
+
+<script>
+// ── CMS: contenido dinámico desde Supabase ──
+(async function() {
+  const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+  const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+
+  function g(rows, sec, clave) {
+    const r = rows.find(r => r.seccion === sec && r.clave === clave);
+    return r?.valor || '';
+  }
+
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/contenido_web?pagina=eq.financiacion&order=seccion.asc,orden.asc`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    if (!r.ok) throw new Error(r.status);
+    const rows = await r.json();
+    if (!rows.length) throw new Error('vacío');
+
+    // Hero
+    const ht = g(rows,'hero','titulo'); if(ht) { const el = document.getElementById('finHeroTitulo'); if(el) el.innerHTML = ht; }
+    const hd = g(rows,'hero','descripcion'); if(hd) { const el = document.getElementById('finHeroDesc'); if(el) el.textContent = hd; }
+
+    // Stat cards
+    [1,2,3].forEach(i => {
+      const card = document.getElementById('finStat'+i);
+      if (!card) return;
+      const icono = g(rows,`hero_stat_${i}`,'icono');
+      const titulo = g(rows,`hero_stat_${i}`,'titulo');
+      const desc = g(rows,`hero_stat_${i}`,'descripcion');
+      if (icono || titulo || desc) {
+        card.innerHTML = `
+          <div class="stat-icon">${icono||card.querySelector('.stat-icon')?.textContent||''}</div>
+          <div>
+            <div class="stat-title">${titulo||''}</div>
+            <div class="stat-desc">${desc||''}</div>
+          </div>`;
+      }
+    });
+
+    // Opciones
+    const grid = document.getElementById('opcionesGrid');
+    if (grid) {
+      const opciones = [1,2,3].map(i => ({
+        icono:      g(rows,`opcion_${i}`,'icono'),
+        titulo:     g(rows,`opcion_${i}`,'titulo'),
+        desc:       g(rows,`opcion_${i}`,'descripcion'),
+        items:      [1,2,3,4].map(j => g(rows,`opcion_${i}`,`item_${j}`)).filter(Boolean),
+        destacada:  g(rows,`opcion_${i}`,'destacada') === 'true',
+      })).filter(o => o.titulo);
+      if (opciones.length) {
+        grid.innerHTML = opciones.map((o,idx) => `
+          <div class="opcion-card ${o.destacada?'destacada':''}">
+            <div class="opcion-num">0${idx+1}</div>
+            <div class="opcion-icon">${o.icono}</div>
+            <div class="opcion-title">${o.titulo}</div>
+            <div class="opcion-desc">${o.desc}</div>
+            <div class="opcion-items">
+              ${o.items.map(it => `<div class="opcion-item">${it}</div>`).join('')}
+            </div>
+          </div>`).join('');
+      }
+    }
+
+    // Proceso
+    const pasos = document.getElementById('procesoSteps');
+    if (pasos) {
+      const steps = [1,2,3,4].map(i => ({
+        titulo: g(rows,`proceso_${i}`,'titulo'),
+        desc:   g(rows,`proceso_${i}`,'descripcion'),
+      })).filter(s => s.titulo);
+      if (steps.length) {
+        pasos.innerHTML = steps.map((s,i) => `
+          <div class="paso">
+            <div class="paso-num">${i+1}</div>
+            <div class="paso-title">${s.titulo}</div>
+            <div class="paso-desc">${s.desc}</div>
+          </div>`).join('');
+      }
+    }
+
+  } catch(e) {
+    console.warn('CMS financiacion: usando fallback:', e.message);
+  }
+})();
+</script>
+
 </body>
 </html>

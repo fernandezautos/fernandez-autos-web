@@ -344,8 +344,8 @@ footer a:hover { color: #fff; }
 
 <!-- HERO -->
 <div class="hero">
-  <h1>Tu auto, vendido por nosotros</h1>
-  <p>Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.</p>
+  <h1 id="consHeroTitulo">Tu auto, vendido por nosotros</h1>
+  <p id="consHeroDesc">Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.</p>
 </div>
 
 <!-- BENEFICIOS -->
@@ -736,5 +736,22 @@ document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click',
     <div class="wsp-modal-nota">Al continuar, acept&#225;s que un asesor se ponga en contacto con vos.</div>
   </div>
 </div>
+
+<script>
+(async function() {
+  const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+  const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
+  function g(rows, sec, clave) { return rows.find(r => r.seccion===sec && r.clave===clave)?.valor || ''; }
+  try {
+    const r = await fetch(`${SB_URL}/rest/v1/contenido_web?pagina=eq.consignaciones`, {
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+    });
+    const rows = await r.json();
+    const t = g(rows,'hero','titulo'); if(t) { const el=document.getElementById('consHeroTitulo'); if(el) el.textContent=t; }
+    const d = g(rows,'hero','descripcion'); if(d) { const el=document.getElementById('consHeroDesc'); if(el) el.textContent=d; }
+  } catch(e) { console.warn('CMS consignaciones fallback:', e.message); }
+})();
+</script>
+
 </body>
 </html>
