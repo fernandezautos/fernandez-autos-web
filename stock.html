@@ -207,31 +207,83 @@ nav a:hover, nav a.active { color: var(--black); }
 .btn-ver:hover { background: var(--accent-light); }
 
 .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); grid-column: 1/-1; }
-.empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+.empty-state-icon { font-size: 3rem; margin-bottom: 16px; color: #c5c1b5; display:flex; align-items:center; justify-content:center; }
 .empty-state h3 { font-size: 1.1rem; margin-bottom: 8px; color: var(--black); }
 
 /* MODAL FICHA */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
-  align-items: center; justify-content: center; padding: 16px;
+  background: rgba(0,0,0,.82); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 20px;
   overflow-y: auto;
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: #fff; border-radius: 20px; width: 100%; max-width: 560px;
-  max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 32px 80px rgba(0,0,0,.4);
-  margin: auto;
+  background: #1c1c1c; border-radius: 18px; width: 100%; max-width: 960px;
+  max-height: 90vh; overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,.7);
+  margin: auto; display: grid; grid-template-columns: 1fr 1fr;
 }
 
-/* Galería arriba — sin padding, foto a sangría */
+/* Lado izquierdo — galería */
 .galeria-wrap {
-  position: relative; border-radius: 20px 20px 0 0; overflow: hidden;
-  background: #111; height: 300px;
+  position: relative; overflow: hidden;
+  background: #111; min-height: 480px;
+  display: flex; flex-direction: column;
+  border-radius: 18px 0 0 18px;
 }
-.galeria-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
-.galeria-wrap-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+.galeria-wrap img { width: 100%; flex: 1; object-fit: cover; display: block; cursor: zoom-in; min-height: 0; }
+.galeria-wrap-ph { flex: 1; display: flex; align-items: center; justify-content: center; }
+
+/* Miniaturas */
+.galeria-thumbs {
+  display: flex; gap: 6px; padding: 10px 12px; background: #111;
+  overflow-x: auto; flex-shrink: 0;
+}
+.galeria-thumbs::-webkit-scrollbar { height: 3px; }
+.galeria-thumbs::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+.galeria-thumb {
+  width: 52px; height: 40px; object-fit: cover; border-radius: 6px;
+  cursor: pointer; flex-shrink: 0; opacity: .55; transition: opacity .15s;
+  border: 2px solid transparent;
+}
+.galeria-thumb.active { opacity: 1; border-color: var(--accent); }
+
+/* Lado derecho — datos */
+.modal-body {
+  padding: 32px 28px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 0;
+  background: #1c1c1c;
+  border-radius: 0 18px 18px 0;
+}
+.modal-marca-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px;
+  color: var(--accent); font-weight: 700; margin-bottom: 6px;
+}
+.modal-nombre { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #fff; line-height: 1.15; margin-bottom: 18px; }
+.modal-precio { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 20px; letter-spacing: -.5px; }
+.modal-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; }
+.modal-spec-item {
+  background: #282828; border-radius: 10px; padding: 12px 14px;
+}
+.modal-spec-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.2px; color: #888; margin-bottom: 4px; }
+.modal-spec-val { font-weight: 700; font-size: 0.9rem; color: #fff; }
+.modal-desc-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-bottom: 8px; margin-top: 4px; }
+.modal-desc-text { font-size: 0.86rem; color: #aaa; line-height: 1.7; margin-bottom: 20px; }
+.modal-btns { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 8px; }
+.btn-modal-wsp {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #25d366; color: #fff; border: none; border-radius: 10px;
+  padding: 14px; font-family: var(--sans); font-size: 0.92rem; font-weight: 700;
+  cursor: pointer; transition: background .2s;
+}
+.btn-modal-wsp:hover { background: #1fba57; }
+.btn-modal-sec {
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; color: #888; border: 1.5px solid #333;
+  border-radius: 10px; padding: 12px; font-family: var(--sans); font-size: 0.86rem;
+  font-weight: 500; cursor: pointer; transition: all .2s;
+}
+.btn-modal-sec:hover { border-color: #555; color: #ccc; }
 
 /* ── LIGHTBOX ── */
 .lightbox {
@@ -276,14 +328,16 @@ nav a:hover, nav a.active { color: var(--black); }
 .galeria-prev { left: 12px; }
 .galeria-next { right: 12px; }
 .galeria-prev:hover, .galeria-next:hover { background: rgba(0,0,0,.7); }
-/* Botón cerrar sobre la foto */
 .modal-close-float {
-  position: absolute; top: 12px; right: 12px; z-index: 3;
-  background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  background: rgba(255,255,255,.12); backdrop-filter: blur(4px);
   border: none; border-radius: 50%; width: 36px; height: 36px;
   color: #fff; font-size: 1rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
 }
+.modal-close-float:hover { background: rgba(255,255,255,.22); }
+.modal-body { position: relative; }
 /* Dots */
 .galeria-dots {
   position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
@@ -345,8 +399,9 @@ nav a:hover, nav a.active { color: var(--black); }
   .hamburger{display:flex;}
   .btn-wsp{display:none;}
   .modal-overlay { padding: 0; align-items: flex-end; }
-  .modal-box { border-radius: 20px 20px 0 0; max-height: 92vh; max-width: 100%; }
-  .galeria-wrap { height: 260px; border-radius: 20px 20px 0 0; }
+  .modal-box { border-radius: 20px 20px 0 0; max-height: 92vh; max-width: 100%; grid-template-columns: 1fr; }
+  .galeria-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
+  .modal-body { border-radius: 0; max-height: 50vh; }
 }
 
 /* WhatsApp flotante */
@@ -508,7 +563,7 @@ nav a:hover, nav a.active { color: var(--black); }
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
     </button>
-    <a href="stock.html" class="btn-outline">Ver stock →</a>
+    <a href="stock.html" class="btn-outline">Ver stock</a>
   </div>
 </header>
 
@@ -586,7 +641,7 @@ nav a:hover, nav a.active { color: var(--black); }
 <div class="stock-body">
   <div class="autos-grid" id="autosGrid">
     <div class="empty-state">
-      <div class="empty-state-icon">🔍</div>
+      <div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
       <p>Cargando autos...</p>
     </div>
   </div>
@@ -595,20 +650,16 @@ nav a:hover, nav a.active { color: var(--black); }
 <!-- MODAL FICHA DEL AUTO -->
 <div class="modal-overlay" id="modalAuto">
   <div class="modal-box">
-    <!-- Galería a sangría arriba -->
+    <!-- Lado izquierdo: galería -->
     <div class="galeria-wrap" id="galeriaWrap">
-      <div class="galeria-wrap-ph">🚗</div>
-      <button class="modal-close-float" onclick="cerrarModal()">✕</button>
+      <div class="galeria-wrap-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
     </div>
-    <!-- Cuerpo -->
+    <!-- Lado derecho: datos -->
     <div class="modal-body">
-      <div class="modal-header-info">
-        <div class="modal-nombre" id="modalNombre">—</div>
-        <div class="modal-precio-wrap">
-          <div class="modal-precio" id="modalPrecio">—</div>
-          <div class="modal-financiacion">Financiación disponible</div>
-        </div>
-      </div>
+      <button class="modal-close-float" onclick="cerrarModal()">✕</button>
+      <div class="modal-marca-label" id="modalMarcaLabel">—</div>
+      <div class="modal-nombre" id="modalNombre">—</div>
+      <div class="modal-precio" id="modalPrecio">—</div>
       <div class="modal-specs-grid" id="modalSpecs"></div>
       <div id="modalDescWrap" style="display:none;">
         <div class="modal-desc-label">Descripción</div>
@@ -619,7 +670,7 @@ nav a:hover, nav a.active { color: var(--black); }
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Consultar por WhatsApp
         </button>
-        <button class="btn-modal-sec" onclick="cerrarModal()">← Volver al stock</button>
+        <button class="btn-modal-sec" onclick="cerrarModal()">Volver al stock</button>
       </div>
     </div>
   </div>
@@ -731,7 +782,7 @@ async function cargarStock() {
       if(auto) abrirModal(auto);
     }
   } catch(e) {
-    document.getElementById('autosGrid').innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Error al cargar el stock</h3><p>Por favor intentá de nuevo o contactanos por WhatsApp.</p></div>';
+    document.getElementById('autosGrid').innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><h3>Error al cargar el stock</h3><p>Por favor intentá de nuevo o contactanos por WhatsApp.</p></div>';
   }
 }
 
@@ -787,28 +838,28 @@ function limpiarFiltros() {
 function renderGrilla(autos) {
   const grid = document.getElementById('autosGrid');
   if(!autos.length) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>No encontramos autos con esos filtros</h3><p>Probá cambiando los criterios de búsqueda.</p></div>';
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>No encontramos autos con esos filtros</h3><p>Probá cambiando los criterios de búsqueda.</p></div>';
     return;
   }
   grid.innerHTML = autos.map(v => `
     <div class="auto-card" onclick="abrirModal(${JSON.stringify(v).replace(/"/g,'&quot;')})">
       <div class="auto-card-img">
-        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph">🚗</div>`}
+        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`}
         <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
       </div>
       <div class="auto-card-body">
         <div class="auto-nombre">${v.marca} ${v.modelo}</div>
         <div class="auto-specs">
-          ${v.anio?`<span class="auto-spec">📅 ${v.anio}</span>`:''}
-          ${v.km?`<span class="auto-spec">🛣 ${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
-          ${v.transmision?`<span class="auto-spec">⚙️ ${v.transmision}</span>`:''}
-          ${v.color?`<span class="auto-spec">🎨 ${v.color}</span>`:''}
+          ${v.anio?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${v.anio}</span>`:''}
+          ${v.km?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
+          ${v.transmision?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 12h6m0-5H8l-2 5 2 5h7"/></svg>${v.transmision}</span>`:''}
+          ${v.combustible?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>${v.combustible}</span>`:''}
         </div>
         <div class="auto-footer">
           <div>
             <div class="auto-precio">${fmt(v.precio)}</div>
           </div>
-          <button class="btn-ver">Ver ficha →</button>
+          <button class="btn-ver">Ver detalle</button>
         </div>
       </div>
     </div>`).join('');
@@ -819,34 +870,39 @@ let fotosModal = [];
 let fotoActual = 0;
 
 async function abrirModal(v) {
-  document.getElementById('modalNombre').textContent = (v.marca+' '+v.modelo+' '+v.anio).toUpperCase();
+  document.getElementById('modalMarcaLabel').textContent = (v.marca || '').toUpperCase();
+  document.getElementById('modalNombre').textContent = ((v.modelo||'') + (v.anio ? ' '+v.anio : '') + (v.version ? ' '+v.version : '')).toUpperCase();
   document.getElementById('modalPrecio').textContent = fmt(v.precio);
 
-  // Specs con iconos
+  const svgAnio  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+  const svgKm    = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+  const svgTrans = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 12h6m0-5H8l-2 5 2 5h7"/></svg>`;
+  const svgColor = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>`;
+  const svgCarr  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="8.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/><path d="M15 5v4h5"/></svg>`;
+  const svgComb  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>`;
+  const svgPuert = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M9 3v18"/><circle cx="7" cy="12" r="1" fill="#1a4a8a"/></svg>`;
+
   const specs = [
-    {icon:'📅', label:'Año', val:v.anio},
-    {icon:'🛣', label:'Kilometraje', val:v.km ? Number(v.km).toLocaleString('es-AR')+' km' : '0 km'},
-    {icon:'⚙️', label:'Transmisión', val:v.transmision},
-    {icon:'🎨', label:'Color', val:v.color},
-    {icon:'🚗', label:'Carrocería', val:v.carroceria},
-    {icon:'⛽', label:'Combustible', val:v.combustible},
-  ].filter(s => s.val && s.val !== '—' && s.val !== '' && s.val !== undefined);
+    {label:'Año',        val:v.anio},
+    {label:'Kilometraje',val:v.km ? Number(v.km).toLocaleString('es-AR')+' km' : '0 km'},
+    {label:'Transmisión',val:v.transmision},
+    {label:'Combustible',val:v.combustible},
+    {label:'Carrocería', val:v.carroceria},
+    {label:'Color',      val:v.color},
+    {label:'Puertas',    val:v.puertas ? v.puertas+' puertas' : null},
+  ].filter(s => s.val && s.val !== '—' && s.val !== '');
+
   document.getElementById('modalSpecs').innerHTML = specs.map(s =>
     `<div class="modal-spec-item">
-      <div class="modal-spec-icon">${s.icon}</div>
-      <div class="modal-spec-text">
-        <div class="modal-spec-label">${s.label}</div>
-        <div class="modal-spec-val">${s.val}</div>
-      </div>
+      <div class="modal-spec-label">${s.label}</div>
+      <div class="modal-spec-val">${s.val}</div>
     </div>`
   ).join('');
 
-  // Descripción
   const descWrap = document.getElementById('modalDescWrap');
   const descEl = document.getElementById('modalDesc');
   if(v.obs){ descEl.textContent = v.obs; descWrap.style.display='block'; } else descWrap.style.display='none';
 
-  // WhatsApp: guardar contexto del auto para el modal
   window._wspAutoActual = `${v.marca} ${v.modelo} ${v.anio||''}`;
 
   await cargarFotosModal(v);
@@ -869,21 +925,23 @@ async function cargarFotosModal(v) {
 function renderGaleriaModal() {
   const wrap = document.getElementById('galeriaWrap');
   if(!fotosModal.length) {
-    wrap.innerHTML = `<div class="galeria-wrap-ph">🚗</div><button class="modal-close-float" onclick="cerrarModal()">✕</button>`;
+    wrap.innerHTML = `<div class="galeria-wrap-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
     return;
   }
+  const thumbs = fotosModal.length > 1
+    ? `<div class="galeria-thumbs">${fotosModal.map((url,i)=>`<img class="galeria-thumb ${i===fotoActual?'active':''}" src="${url}" onclick="cambiarFoto(${i})" loading="lazy">`).join('')}</div>`
+    : '';
+  const navBtns = fotosModal.length > 1
+    ? `<button class="galeria-prev" onclick="cambiarFoto((fotoActual-1+fotosModal.length)%fotosModal.length)">‹</button>
+       <button class="galeria-next" onclick="cambiarFoto((fotoActual+1)%fotosModal.length)">›</button>`
+    : '';
   wrap.innerHTML = `
-    <img src="${fotosModal[fotoActual]}" alt="Foto del auto" onclick="abrirLightbox(${fotoActual})">
-    <button class="modal-close-float" onclick="cerrarModal()">✕</button>
-    ${fotosModal.length > 1 ? `
-      <button class="galeria-prev" onclick="cambiarFoto((fotoActual-1+fotosModal.length)%fotosModal.length)">‹</button>
-      <button class="galeria-next" onclick="cambiarFoto((fotoActual+1)%fotosModal.length)">›</button>
-      <div class="galeria-dots">${fotosModal.map((_,i)=>`<button class="galeria-dot ${i===fotoActual?'active':''}" onclick="cambiarFoto(${i})"></button>`).join('')}</div>
-    ` : ''}`;
-  let tx = 0;
-  wrap.ontouchstart = e => tx = e.touches[0].clientX;
+    <img src="${fotosModal[fotoActual]}" alt="Foto del auto" onclick="abrirLightbox(${fotoActual})" style="flex:1;width:100%;object-fit:cover;display:block;cursor:zoom-in;min-height:0;">
+    ${navBtns}
+    ${thumbs}`;
+  wrap.ontouchstart = e => { wrap._tx = e.touches[0].clientX; };
   wrap.ontouchend = e => {
-    const diff = tx - e.changedTouches[0].clientX;
+    const diff = wrap._tx - e.changedTouches[0].clientX;
     if(Math.abs(diff) > 40) cambiarFoto(diff > 0 ? (fotoActual+1)%fotosModal.length : (fotoActual-1+fotosModal.length)%fotosModal.length);
   };
 }
