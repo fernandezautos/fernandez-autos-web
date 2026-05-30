@@ -3,19 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
-
-<!-- Fuente Audiowide para SVG del logo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
 <title>Fernández Autos — Concesionaria en Mar del Plata</title>
 <meta name="description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
-<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fernández Autos — Concesionaria en Mar del Plata">
 <meta property="og:description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
@@ -23,9 +18,6 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-
-
-
 <style>
 :root {
   --black: #0e0d0b;
@@ -33,11 +25,10 @@
   --cream: #f4f2ec;
   --accent: #1a4a8a;
   --accent-light: #2558a3;
-  --gold: #c9a84c;
   --muted: #7a7870;
   --border: #e2dfd5;
-  --sans: Arial, sans-serif;
-  --serif: Arial, sans-serif;
+  --sans: 'Helvetica Neue', Arial, sans-serif;
+  --serif: Georgia, 'Times New Roman', serif;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -45,28 +36,28 @@ body { font-family: var(--sans); background: var(--white); color: var(--black); 
 
 /* ── HEADER ── */
 header {
-  position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+  position: sticky; top: 0; z-index: 200;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 48px; height: 62px;
   background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
 .logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
-.logo img { height: 44px; object-fit: contain; }
-nav { display: flex; align-items: center; gap: 28px; }
-nav a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
-nav a:hover, nav a.active { color: var(--black); }
-.header-cta { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.nav-desktop { display: flex; align-items: center; gap: 28px; }
+.nav-desktop a { font-size: 0.9rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
+.nav-desktop a:hover { color: var(--black); }
+.header-cta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .btn-wsp {
   display: flex; align-items: center; gap: 8px;
   background: #25d366; color: #fff; border: none; border-radius: 8px;
-  padding: 8px 16px; font-size: 0.84rem; font-weight: 600;
-  cursor: pointer; text-decoration: none; font-family: var(--sans);
+  padding: 9px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all .2s;
 }
+.btn-wsp:hover { background: #1fba57; }
 .btn-outline {
-  display: flex; align-items: center; gap: 8px;
+  display: flex; align-items: center; gap: 6px;
   border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
-  padding: 8px 16px; font-size: 0.84rem; font-weight: 500;
+  padding: 8px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 500;
   cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
 }
 .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
@@ -80,57 +71,50 @@ nav a:hover, nav a.active { color: var(--black); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* MENÚ MOBILE — ver bloque RESPONSIVE más abajo */
+/* ── DRAWER MOBILE ── */
+.nav-mobile-panel {
+  display: block; position: fixed; top: 0; left: 0; bottom: 0;
+  width: 68%; max-width: 300px; background: #fff; z-index: 99999;
+  overflow-y: auto; transform: translateX(-100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 4px 0 32px rgba(0,0,0,.15); padding-top: 24px;
+}
+.nav-mobile-panel.open { transform: translateX(0); }
+.nav-mobile-panel .drawer-logo { padding: 0 24px 24px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
+.nav-mobile-panel a {
+  font-size: 1rem; font-weight: 500; padding: 16px 24px;
+  border-left: 3px solid transparent; color: var(--muted);
+  text-decoration: none; display: block; transition: all .15s;
+}
+.nav-mobile-panel a:hover { color: var(--black); border-left-color: var(--accent); background: var(--cream); }
+.nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 99998; }
+.nav-overlay.open { display: block; }
 
-
-.btn-wsp {
-  display: flex; align-items: center; gap: 8px;
-  background: #25d366; color: #fff; border: none; border-radius: 8px;
-  padding: 9px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 600;
-  cursor: pointer; text-decoration: none; transition: all .2s;
-}
-.btn-wsp:hover { background: #1fba57; transform: translateY(-1px); }
-.btn-outline {
-  display: flex; align-items: center; gap: 8px;
-  border: 1.5px solid var(--border); background: transparent; border-radius: 8px;
-  padding: 8px 18px; font-family: var(--sans); font-size: 0.84rem; font-weight: 500;
-  cursor: pointer; text-decoration: none; color: var(--black); transition: all .2s;
-}
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-
-.carousel {
-  position: relative; width: 100%; height: 580px;
-  overflow: hidden;
-}
-.carousel-track {
-  display: flex; height: 100%;
-  transition: transform .7s cubic-bezier(.77,0,.175,1);
-}
-.carousel-slide {
-  min-width: 100%; height: 100%; position: relative; flex-shrink: 0;
-}
-.carousel-slide img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
+/* ── CARRUSEL HERO ── */
+.carousel { position: relative; width: 100%; height: 580px; overflow: hidden; background: #111; }
+.carousel-track { display: flex; height: 100%; transition: transform .7s cubic-bezier(.77,0,.175,1); }
+.carousel-slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; }
+.carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-slide-ph { width: 100%; height: 100%; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); display: flex; align-items: center; justify-content: center; }
 .carousel-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(0,0,0,.6) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+  background: linear-gradient(to right, rgba(0,0,0,.65) 0%, rgba(0,0,0,.25) 60%, transparent 100%);
 }
 .carousel-content {
   position: absolute; top: 50%; left: 72px; transform: translateY(-50%);
-  color: #fff; max-width: 500px; z-index: 2;
+  color: #fff; max-width: 520px; z-index: 2;
 }
 .carousel-tag {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--accent); color: #fff;
-  font-size: 0.72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
   padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
 }
 .carousel-content h1 {
   font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.1; font-weight: 400; margin-bottom: 12px; color: #fff;
+  line-height: 1.1; font-weight: 400; margin-bottom: 14px;
 }
-.carousel-content h1 em { font-style: italic; color: #a8c4f0; }
 .carousel-sub {
   font-size: 0.95rem; color: rgba(255,255,255,.8); line-height: 1.6;
   margin-bottom: 28px; font-weight: 300;
@@ -145,14 +129,12 @@ nav a:hover, nav a.active { color: var(--black); }
 .btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,74,138,.35); }
 .btn-secondary {
   background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
-  color: #fff; border: 1.5px solid rgba(255,255,255,.4);
-  border-radius: 10px; padding: 11px 24px; font-family: var(--sans); font-size: 0.9rem;
-  font-weight: 500; cursor: pointer; text-decoration: none; transition: all .22s;
+  color: #fff; border: 1.5px solid rgba(255,255,255,.4); border-radius: 10px;
+  padding: 11px 24px; font-family: var(--sans); font-size: 0.9rem; font-weight: 500;
+  cursor: pointer; text-decoration: none; transition: all .22s;
   display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-secondary:hover { background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.7); }
-
-/* Estadísticas sobre el carrusel */
+.btn-secondary:hover { background: rgba(255,255,255,.25); }
 .carousel-stats {
   position: absolute; top: 50%; right: 72px; transform: translateY(-50%);
   z-index: 2; display: flex; flex-direction: column; gap: 12px;
@@ -162,86 +144,63 @@ nav a:hover, nav a.active { color: var(--black); }
   border: 1px solid rgba(255,255,255,.2); border-radius: 10px;
   padding: 12px 20px; text-align: center; color: #fff;
 }
-.stat-num { font-family: var(--serif); font-size: 1.7rem; line-height: 1; color: #fff; }
+.stat-num { font-family: var(--serif); font-size: 1.7rem; line-height: 1; }
 .stat-label { font-size: 0.7rem; color: rgba(255,255,255,.65); margin-top: 3px; letter-spacing: .5px; }
-
-/* Navegación carrusel */
-.carousel-nav {
-  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 8px; z-index: 3;
-}
-.carousel-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: rgba(255,255,255,.4); border: none; cursor: pointer;
-  transition: all .3s; padding: 0;
-}
+.carousel-nav { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+.carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.4); border: none; cursor: pointer; transition: all .3s; padding: 0; }
 .carousel-dot.active { background: #fff; width: 22px; border-radius: 4px; }
 .carousel-arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.2); color: #fff; border-radius: 50%;
   width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 1.1rem; transition: all .2s; z-index: 3;
+  cursor: pointer; font-size: 1.1rem; transition: all .2s; z-index: 3; border: none;
 }
 .carousel-arrow:hover { background: rgba(255,255,255,.3); }
 .carousel-arrow.prev { left: 20px; }
 .carousel-arrow.next { right: 20px; }
 
-@media (max-width: 768px) {
-  .carousel { height: 460px; }
-  .carousel-content { left: 24px; right: 24px; }
-  .carousel-stats { display: none; }
-  .carousel-content h1 { font-size: 1.8rem; }
+/* ── QUIÉNES SOMOS ── */
+.quienes-section { background: var(--cream); padding: 88px 48px; }
+.quienes-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.quienes-text .section-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 10px; }
+.quienes-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+.quienes-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.quienes-razones { display: flex; flex-direction: column; gap: 16px; }
+.razon-item { display: flex; align-items: flex-start; gap: 16px; }
+.razon-icon {
+  width: 44px; height: 44px; border-radius: 10px; background: var(--accent);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
+.razon-icon svg { color: #fff; }
+.razon-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
+.razon-text p { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
 
-/* ── BUSCADOR ── */
-.search-section { background: var(--black); padding: 48px; }
-.search-box {
-  max-width: 900px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 12px; align-items: end;
-}
-.search-title { color: #fff; font-family: var(--serif); font-size: 1.6rem; margin-bottom: 28px; text-align: center; grid-column: 1/-1; }
-.search-field { display: flex; flex-direction: column; gap: 6px; }
-.search-field label { font-size: 0.72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-.search-field select, .search-field input {
-  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
-  color: #fff; border-radius: 8px; padding: 12px 16px;
-  font-family: var(--sans); font-size: 0.9rem; outline: none;
-  transition: border-color .2s;
-}
-.search-field select:focus, .search-field input:focus { border-color: rgba(255,255,255,.4); }
-.search-field select option { background: #1a1917; }
-.btn-search {
-  background: var(--accent); color: #fff; border: none; border-radius: 8px;
-  padding: 12px 28px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600;
-  cursor: pointer; transition: all .2s; white-space: nowrap;
-}
-.btn-search:hover { background: var(--accent-light); }
-
-/* ── STOCK PREVIEW ── */
-.stock-section { padding: 80px 48px; background: var(--white); }
+/* ── ÚLTIMOS INGRESOS ── */
+.stock-section { padding: 88px 48px; background: var(--white); }
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
-.section-label { font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
-.section-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.6rem); color: var(--black); font-weight: 400; }
-.ver-todo { font-size: 0.88rem; color: var(--accent); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.section-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
+.section-title { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 400; }
+.ver-todo { font-size: 0.88rem; color: var(--accent); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .ver-todo:hover { text-decoration: underline; }
-
 .autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
 .auto-card {
-  border-radius: 16px; overflow: hidden; background: #fff;
-  border: 1px solid var(--border); transition: all .22s; cursor: pointer;
-  text-decoration: none; color: inherit;
-  display: block;
+  border-radius: 14px; overflow: hidden; background: #fff;
+  border: 1px solid var(--border); transition: all .22s;
+  text-decoration: none; color: inherit; display: block;
 }
 .auto-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); border-color: transparent; }
 .auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
 .auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .auto-card:hover .auto-card-img img { transform: scale(1.04); }
-.auto-card-img-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.auto-card-img-ph {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  background: var(--cream);
+}
+.auto-card-img-ph svg { color: #c5c1b5; }
 .auto-tag {
   position: absolute; top: 12px; left: 12px;
-  font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
   padding: 4px 10px; border-radius: 20px;
 }
 .tag-usado { background: var(--black); color: #fff; }
@@ -250,46 +209,102 @@ nav a:hover, nav a.active { color: var(--black); }
 .auto-nombre { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
 .auto-detalle { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
 .auto-footer { display: flex; align-items: center; justify-content: space-between; }
-.auto-precio { font-family: var(--serif); font-size: 1.3rem; color: var(--accent); }
-.auto-km { font-size: 0.78rem; color: var(--muted); }
+.auto-precio { font-family: var(--serif); font-size: 1.25rem; color: var(--accent); font-weight: 400; }
 .auto-cta {
   background: var(--accent); color: #fff; border: none; border-radius: 7px;
   padding: 7px 14px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
   font-family: var(--sans); transition: background .2s; text-decoration: none;
 }
 .auto-cta:hover { background: var(--accent-light); }
-.loading-autos { text-align: center; padding: 60px; color: var(--muted); font-size: 0.9rem; }
+.loading-autos { text-align: center; padding: 60px; color: var(--muted); font-size: 0.9rem; grid-column: 1/-1; }
+.stock-cta-wrap { text-align: center; margin-top: 48px; }
+.btn-stock-full {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--black); color: #fff; border: none; border-radius: 10px;
+  padding: 14px 32px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
+  text-decoration: none; transition: all .2s;
+}
+.btn-stock-full:hover { background: #2a2925; transform: translateY(-2px); }
+
+/* ── CONSIGNACIONES ── */
+.consig-section { background: var(--accent); padding: 88px 48px; position: relative; overflow: hidden; }
+.consig-section::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(255,255,255,.05);
+}
+.consig-section::after {
+  content: ''; position: absolute; bottom: -80px; left: 30%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+}
+.consig-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
+.consig-text .section-label { color: rgba(255,255,255,.6); }
+.consig-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 400; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+.consig-text p { font-size: 0.95rem; color: rgba(255,255,255,.8); line-height: 1.8; margin-bottom: 28px; }
+.consig-pasos { display: flex; flex-direction: column; gap: 20px; }
+.consig-paso { display: flex; align-items: flex-start; gap: 16px; }
+.consig-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.4); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.82rem; font-weight: 700; flex-shrink: 0;
+}
+.consig-paso-text h4 { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 3px; }
+.consig-paso-text p { font-size: 0.84rem; color: rgba(255,255,255,.7); line-height: 1.5; }
+.consig-card {
+  background: rgba(255,255,255,.1); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 36px;
+}
+.consig-card h3 { font-family: var(--serif); font-size: 1.4rem; color: #fff; font-weight: 400; margin-bottom: 24px; }
+.consig-beneficios { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+.consig-beneficio { display: flex; align-items: center; gap: 12px; }
+.consig-check {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.consig-check svg { color: #fff; }
+.consig-beneficio span { font-size: 0.9rem; color: rgba(255,255,255,.9); }
+.btn-consig {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #fff; color: var(--accent); border: none; border-radius: 10px;
+  padding: 14px; font-family: var(--sans); font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; text-decoration: none; transition: all .2s; width: 100%;
+}
+.btn-consig:hover { background: var(--cream); transform: translateY(-1px); }
 
 /* ── SERVICIOS ── */
-.servicios-section { background: var(--cream); padding: 80px 48px; }
-.servicios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+.servicios-section { background: var(--cream); padding: 88px 48px; }
+.servicios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
 .servicio-card {
   background: #fff; border-radius: 16px; padding: 32px 28px;
   border: 1px solid var(--border); transition: all .22s;
 }
 .servicio-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
-.servicio-icon { font-size: 2rem; margin-bottom: 16px; }
+.servicio-icon-wrap {
+  width: 52px; height: 52px; border-radius: 12px; background: var(--cream);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+}
+.servicio-icon-wrap svg { color: var(--accent); }
 .servicio-title { font-weight: 600; font-size: 1rem; margin-bottom: 8px; }
 .servicio-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.6; }
 
 /* ── FINANCIACIÓN ── */
 .financiacion-section {
-  padding: 80px 48px; background: var(--white);
+  padding: 88px 48px; background: var(--white);
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
 }
-.fin-text .section-label { margin-bottom: 8px; }
-.fin-text .section-title { margin-bottom: 20px; }
-.fin-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
-.fin-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.fin-text .section-label { margin-bottom: 10px; }
+.fin-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 400; margin-bottom: 20px; line-height: 1.2; }
+.fin-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 28px; }
+.fin-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
 .fin-feature { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
-.fin-feature::before { content: '✓'; width: 24px; height: 24px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
-.fin-calc {
-  background: var(--black); border-radius: 20px; padding: 36px;
-  color: #fff;
-}
+.fin-check { width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fin-check svg { color: #fff; }
+.fin-calc { background: var(--black); border-radius: 20px; padding: 36px; color: #fff; }
 .fin-calc h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
 .calc-field { margin-bottom: 18px; }
-.calc-field label { font-size: 0.72rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+.calc-field label { font-size: 0.7rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
 .calc-field input, .calc-field select {
   width: 100%; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
   color: #fff; border-radius: 8px; padding: 11px 14px;
@@ -297,35 +312,47 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .calc-field select option { background: #1a1917; }
 .calc-result { background: rgba(255,255,255,.08); border-radius: 10px; padding: 18px; margin-top: 20px; text-align: center; }
-.calc-result-label { font-size: 0.75rem; color: rgba(255,255,255,.5); margin-bottom: 6px; }
-.calc-result-val { font-family: var(--serif); font-size: 2rem; color: var(--gold); }
-.calc-result-sub { font-size: 0.72rem; color: rgba(255,255,255,.4); margin-top: 4px; }
-.btn-calc { width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: var(--sans); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background .2s; }
+.calc-result-label { font-size: 0.72rem; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+.calc-result-val { font-family: var(--serif); font-size: 2rem; color: #a8c4f0; }
+.calc-result-sub { font-size: 0.7rem; color: rgba(255,255,255,.35); margin-top: 4px; }
+.btn-calc {
+  width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: none;
+  border-radius: 8px; padding: 13px; font-family: var(--sans); font-size: 0.9rem;
+  font-weight: 600; cursor: pointer; transition: background .2s;
+}
 .btn-calc:hover { background: var(--accent-light); }
 
 /* ── CONTACTO ── */
-.contacto-section { background: var(--cream); padding: 80px 48px; }
+.contacto-section { background: var(--cream); padding: 88px 48px; }
 .contacto-inner { max-width: 1000px; margin: 0 auto; }
-.contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 0; align-items: start; }
+.contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 48px; align-items: start; }
 .contacto-info { display: flex; flex-direction: column; gap: 24px; }
 .contacto-item { display: flex; gap: 16px; align-items: flex-start; }
-.contacto-item-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
-.contacto-item-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.contacto-item-icon {
+  width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.contacto-item-icon svg { color: #fff; }
+.contacto-item-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
 .contacto-item-val { font-weight: 600; font-size: 0.95rem; }
 .contacto-form { background: #fff; border-radius: 20px; padding: 36px; border: 1px solid var(--border); }
 .contacto-form h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field.full { grid-column: 1/-1; }
-.form-field label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; font-weight: 500; }
+.form-field label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; font-weight: 500; }
 .form-field input, .form-field select, .form-field textarea {
   border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 14px;
   font-family: var(--sans); font-size: 0.9rem; outline: none; transition: border-color .2s;
-  background: #fafaf7; color: var(--black);
+  background: var(--white); color: var(--black);
 }
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--accent); }
 .form-field textarea { resize: vertical; min-height: 90px; }
-.btn-form { width: 100%; margin-top: 8px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: var(--sans); font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+.btn-form {
+  width: 100%; margin-top: 8px; background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; padding: 14px; font-family: var(--sans); font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: all .2s;
+}
 .btn-form:hover { background: var(--accent-light); transform: translateY(-1px); }
 .form-msg { display: none; text-align: center; padding: 12px; border-radius: 8px; font-size: 0.88rem; margin-top: 12px; font-weight: 500; }
 .form-msg.ok { background: #e8f5e9; color: #2d6a30; }
@@ -334,25 +361,25 @@ nav a:hover, nav a.active { color: var(--black); }
 /* ── FOOTER ── */
 footer {
   background: var(--black); color: rgba(255,255,255,.5);
-  padding: 48px; display: flex; align-items: center; justify-content: space-between;
-  font-size: 0.84rem;
+  padding: 40px 48px; display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.84rem; flex-wrap: wrap; gap: 16px;
 }
-footer .logo img { height: 28px; }
-footer a { color: rgba(255,255,255,.5); text-decoration: none; }
+footer a { color: rgba(255,255,255,.5); text-decoration: none; transition: color .2s; }
 footer a:hover { color: #fff; }
+.footer-links { display: flex; gap: 24px; }
 
 /* ── WHATSAPP FLOTANTE ── */
 .wsp-float {
   position: fixed; bottom: 28px; right: 28px; z-index: 200;
   width: 58px; height: 58px; background: #25d366; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(37,211,102,.4); text-decoration: none;
-  transition: all .2s; animation: pulse 2.5s infinite;
+  box-shadow: 0 4px 20px rgba(37,211,102,.4); transition: all .2s;
+  animation: pulse 2.5s infinite; border: none;
 }
-.wsp-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,.5); }
+.wsp-float:hover { transform: scale(1.1); }
 .wsp-float svg { width: 28px; height: 28px; fill: #fff; }
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,.4); }
+  0%,100% { box-shadow: 0 4px 20px rgba(37,211,102,.4); }
   50% { box-shadow: 0 4px 32px rgba(37,211,102,.65); }
 }
 
@@ -360,90 +387,7 @@ footer a:hover { color: #fff; }
 .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* ── RESPONSIVE ── */
-
-/* Nav desktop: visible solo en desktop */
-.nav-desktop { display: flex; align-items: center; gap: 28px; }
-.nav-desktop a { font-size: 0.95rem; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s; }
-.nav-desktop a:hover, .nav-desktop a.active { color: var(--black); }
-
-/* Panel mobile: drawer lateral desde la izquierda */
-.nav-mobile-panel {
-  display: block;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: 68%;
-  max-width: 300px;
-  background: #fff;
-  z-index: 99999;
-  flex-direction: column;
-  overflow-y: auto;
-  transform: translateX(-100%);
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
-  box-shadow: 4px 0 32px rgba(0,0,0,.15);
-  padding-top: 24px;
-}
-.nav-mobile-panel.open {
-  transform: translateX(0);
-}
-/* Logo dentro del drawer */
-.nav-mobile-panel .drawer-logo {
-  padding: 0 24px 24px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 8px;
-}
-.nav-mobile-panel .drawer-logo svg { height: 28px; display: block; overflow: visible; }
-.nav-mobile-panel a {
-  font-size: 1rem; font-weight: 500;
-  padding: 16px 24px;
-  border-left: 3px solid transparent;
-  color: var(--muted);
-  text-decoration: none;
-  display: block;
-  transition: all .15s;
-}
-.nav-mobile-panel a:hover,
-.nav-mobile-panel a.active {
-  color: var(--black);
-  border-left-color: var(--accent);
-  background: var(--cream);
-}
-
-/* Overlay oscuro detrás del drawer */
-.nav-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  z-index: 99998;
-}
-.nav-overlay.open { display: block; }
-
-@media (max-width: 768px) {
-  header { padding: 0 14px; gap: 0; justify-content: space-between; }
-  .nav-desktop { display: none; }
-  .hamburger { display: flex; }
-  .btn-wsp { display: none; }
-  .logo { position: static; transform: none; }
-  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
-  .hero { grid-template-columns: 1fr; padding: 100px 20px 60px; }
-  .hero::before { display: none; }
-  .hero-visual { display: none; }
-  .search-section { padding: 32px 20px; }
-  .search-box { grid-template-columns: 1fr; }
-  .stock-section, .servicios-section, .contacto-section { padding: 60px 20px; }
-  .servicios-grid { grid-template-columns: 1fr 1fr; }
-  .financiacion-section { grid-template-columns: 1fr; padding: 60px 20px; }
-  .contacto-grid { grid-template-columns: 1fr; }
-  .form-grid { grid-template-columns: 1fr; }
-  footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px 20px; }
-}
-@media (min-width: 769px) {
-  .hamburger { display: none; }
-  .nav-mobile-panel { display: none !important; }
-}
-
-/* ── MODAL WSP ROTATIVO ── */
+/* ── MODAL WSP ── */
 .wsp-modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 9999;
   background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
@@ -455,33 +399,19 @@ footer a:hover { color: #fff; }
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
-.wsp-modal-close {
-  position: absolute; top: 16px; right: 18px;
-  background: none; border: none; font-size: 1.2rem; cursor: pointer;
-  color: #9e9e9e; line-height: 1;
-}
+.wsp-modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #9e9e9e; line-height: 1; }
 .wsp-modal-close:hover { color: #333; }
-.wsp-modal-icon {
-  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 16px; font-size: 1.6rem;
-}
-.wsp-modal-title {
-  text-align: center; font-size: 1.1rem; font-weight: 700;
-  color: #0e0d0b; margin-bottom: 6px;
-}
-.wsp-modal-sub {
-  text-align: center; font-size: 0.82rem; color: #7a7870;
-  margin-bottom: 24px; line-height: 1.5;
-}
+.wsp-modal-icon { width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.wsp-modal-title { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+.wsp-modal-sub { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
 .wsp-modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.wsp-modal-field label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .8px; color: #7a7870; font-weight: 600; }
+.wsp-modal-field label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 600; }
 .wsp-modal-field input {
-  border: 1.5px solid #e2dfd5; border-radius: 10px; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px;
   font-size: 0.92rem; outline: none; transition: border-color .2s;
-  font-family: var(--sans); color: #0e0d0b; background: #fafaf7;
+  font-family: var(--sans); color: var(--black); background: var(--white);
 }
-.wsp-modal-field input:focus { border-color: #1a4a8a; }
+.wsp-modal-field input:focus { border-color: var(--accent); }
 .wsp-modal-field input.inp-err { border-color: #d32f2f; }
 .wsp-modal-btn {
   width: 100%; margin-top: 8px; background: #25d366; color: #fff; border: none;
@@ -489,9 +419,35 @@ footer a:hover { color: #fff; }
   cursor: pointer; transition: all .2s; display: flex; align-items: center;
   justify-content: center; gap: 10px; font-family: var(--sans);
 }
-.wsp-modal-btn:hover { background: #1fba57; transform: translateY(-1px); }
-.wsp-modal-btn:disabled { background: #9e9e9e; cursor: not-allowed; transform: none; }
-.wsp-modal-nota { text-align: center; font-size: 0.73rem; color: #9e9e9e; margin-top: 12px; }
+.wsp-modal-btn:hover { background: #1fba57; }
+.wsp-modal-btn:disabled { background: #9e9e9e; cursor: not-allowed; }
+.wsp-modal-nota { text-align: center; font-size: 0.72rem; color: #9e9e9e; margin-top: 12px; }
+
+/* ── RESPONSIVE ── */
+@media (min-width: 769px) {
+  .hamburger { display: none; }
+  .nav-mobile-panel { display: none !important; }
+}
+@media (max-width: 768px) {
+  header { padding: 0 16px; }
+  .nav-desktop { display: none; }
+  .hamburger { display: flex; }
+  .btn-wsp { display: none; }
+  .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
+  .carousel { height: 460px; }
+  .carousel-content { left: 24px; right: 24px; max-width: 100%; }
+  .carousel-stats { display: none; }
+  .carousel-content h1 { font-size: 1.8rem; }
+  .quienes-inner { grid-template-columns: 1fr; gap: 40px; }
+  .stock-section, .servicios-section, .contacto-section, .quienes-section, .consig-section { padding: 60px 20px; }
+  .servicios-grid { grid-template-columns: 1fr 1fr; }
+  .financiacion-section { grid-template-columns: 1fr; padding: 60px 20px; gap: 40px; }
+  .contacto-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .consig-inner { grid-template-columns: 1fr; gap: 40px; }
+  footer { flex-direction: column; text-align: center; padding: 32px 20px; }
+  .footer-links { justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -499,30 +455,31 @@ footer a:hover { color: #fff; }
 <!-- HEADER -->
 <header>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-  <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
-  </text>
-</svg></a>
-  <!-- NAV desktop (visible en desktop, oculto en mobile) -->
-  <nav id="navMenuDesktop" class="nav-desktop">
-    <a href="index.html">Inicio</a>
-    <a href="stock.html">Stock</a>
-    <a href="financiacion.html">Financiación</a>
-    <a href="consignaciones.html">Consignaciones</a>
+  <a href="index.html" class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      </text>
+    </svg>
+  </a>
+  <nav class="nav-desktop">
+    <a href="#quienes">Nosotros</a>
+    <a href="#stock">Stock</a>
+    <a href="#consignaciones">Consignaciones</a>
     <a href="#servicios">Servicios</a>
+    <a href="#financiacion">Financiación</a>
     <a href="#contacto">Contacto</a>
   </nav>
   <div class="header-cta">
-    <button onclick="abrirWspModal('index')" class="btn-wsp">
+    <button onclick="abrirWspModal('header')" class="btn-wsp">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       WhatsApp
     </button>
-    <a href="stock.html" class="btn-outline">Ver stock →</a>
+    <a href="stock.html" class="btn-outline">Ver stock</a>
   </div>
 </header>
 
-<!-- MENÚ MOBILE — fuera del header para evitar problemas de stacking context -->
+<!-- DRAWER MOBILE -->
 <div id="navMenu" class="nav-mobile-panel">
   <div class="drawer-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
@@ -531,22 +488,18 @@ footer a:hover { color: #fff; }
       </text>
     </svg>
   </div>
-  <a href="index.html" onclick="toggleMenu()">Home</a>
-  <a href="stock.html" onclick="toggleMenu()">Stock</a>
-  <a href="financiacion.html" onclick="toggleMenu()">Financiación</a>
-  <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
+  <a href="#quienes" onclick="toggleMenu()">Nosotros</a>
+  <a href="#stock" onclick="toggleMenu()">Stock</a>
+  <a href="#consignaciones" onclick="toggleMenu()">Consignaciones</a>
   <a href="#servicios" onclick="toggleMenu()">Servicios</a>
+  <a href="#financiacion" onclick="toggleMenu()">Financiación</a>
   <a href="#contacto" onclick="toggleMenu()">Contacto</a>
 </div>
 <div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
 
-<!-- CARRUSEL HERO — contenido dinámico desde Supabase -->
+<!-- HERO CARRUSEL -->
 <div class="carousel" id="carousel">
-  <div class="carousel-track" id="carouselTrack">
-    <!-- slides se renderizan por JS -->
-  </div>
-
-  <!-- Estadísticas -->
+  <div class="carousel-track" id="carouselTrack"></div>
   <div class="carousel-stats">
     <div class="stat">
       <div class="stat-num" id="statStock">—</div>
@@ -561,56 +514,153 @@ footer a:hover { color: #fff; }
       <div class="stat-label" id="statAtenLabel">Atención personalizada</div>
     </div>
   </div>
-
-  <!-- Flechas -->
-  <button class="carousel-arrow prev" onclick="moverCarrusel(-1)">‹</button>
-  <button class="carousel-arrow next" onclick="moverCarrusel(1)">›</button>
-
-  <!-- Puntos — se generan por JS -->
+  <button class="carousel-arrow prev" onclick="moverCarrusel(-1)">&#8249;</button>
+  <button class="carousel-arrow next" onclick="moverCarrusel(1)">&#8250;</button>
   <div class="carousel-nav" id="carouselNav"></div>
 </div>
 
-<!-- BUSCADOR -->
-<section class="search-section">
-  <div class="search-box">
-    <div class="section-title" style="color:#fff;font-family:var(--serif);font-size:1.5rem;grid-column:1/-1;margin-bottom:8px;">Buscá tu auto ideal</div>
-    <div class="search-field">
-      <label>Tipo</label>
-      <select id="sTipo">
-        <option value="">Todos</option>
-        <option value="Usado">Usado</option>
-        <option value="Nuevo">0 km</option>
-      </select>
+<!-- QUIÉNES SOMOS -->
+<section class="quienes-section" id="quienes">
+  <div class="quienes-inner">
+    <div class="quienes-text fade-up">
+      <div class="section-label">Quiénes somos</div>
+      <h2 id="quienesTitulo">Tu concesionaria de confianza en Mar del Plata</h2>
+      <p id="quienesDesc">En Fernández Autos nos especializamos en la compra, venta y financiación de vehículos usados y 0km. Atendemos a cada cliente de forma personalizada, con honestidad y compromiso desde el primer contacto.</p>
+      <p id="quienesDesc2">Nuestra gestión integral incluye desde la financiación hasta la transferencia del vehículo, para que solo tengas que preocuparte por manejar.</p>
     </div>
-    <div class="search-field">
-      <label>Marca</label>
-      <select id="sMarca"><option value="">Todas</option></select>
+    <div class="quienes-razones fade-up" id="quienesRazones">
+      <div class="razon-item">
+        <div class="razon-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="razon-text">
+          <h4>Transparencia total</h4>
+          <p>Sin costos ocultos ni sorpresas. Te explicamos cada detalle del proceso.</p>
+        </div>
+      </div>
+      <div class="razon-item">
+        <div class="razon-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="razon-text">
+          <h4>Gestión rápida</h4>
+          <p>Transferencias y trámites resueltos en el menor tiempo posible.</p>
+        </div>
+      </div>
+      <div class="razon-item">
+        <div class="razon-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="razon-text">
+          <h4>Atención personalizada</h4>
+          <p>Un asesor dedicado te acompaña desde la consulta hasta la entrega.</p>
+        </div>
+      </div>
+      <div class="razon-item">
+        <div class="razon-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="razon-text">
+          <h4>Financiación flexible</h4>
+          <p>Trabajamos con los principales bancos y financieras del país.</p>
+        </div>
+      </div>
     </div>
-    <div class="search-field">
-      <label>Precio máximo</label>
-      <select id="sPrecio">
-        <option value="">Sin límite</option>
-        <option value="10000000">Hasta $10.000.000</option>
-        <option value="20000000">Hasta $20.000.000</option>
-        <option value="30000000">Hasta $30.000.000</option>
-        <option value="50000000">Hasta $50.000.000</option>
-      </select>
-    </div>
-    <button class="btn-search" onclick="buscar()">Buscar →</button>
   </div>
 </section>
 
-<!-- STOCK PREVIEW -->
-<section class="stock-section">
+<!-- ÚLTIMOS INGRESOS -->
+<section class="stock-section" id="stock">
   <div class="section-header fade-up">
     <div>
-      <div class="section-label">Disponible ahora</div>
-      <div class="section-title">Nuestro stock</div>
+      <div class="section-label">Últimos ingresos</div>
+      <div class="section-title">Autos disponibles</div>
     </div>
-    <a href="stock.html" class="ver-todo">Ver todos los autos →</a>
+    <a href="stock.html" class="ver-todo">Ver todo el stock
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
   </div>
   <div class="autos-grid" id="autosGrid">
-    <div class="loading-autos" style="grid-column:1/-1;">Cargando autos disponibles...</div>
+    <div class="loading-autos">Cargando autos disponibles...</div>
+  </div>
+  <div class="stock-cta-wrap fade-up">
+    <a href="stock.html" class="btn-stock-full">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Ver todos los autos disponibles
+    </a>
+  </div>
+</section>
+
+<!-- CONSIGNACIONES -->
+<section class="consig-section" id="consignaciones">
+  <div class="consig-inner">
+    <div class="consig-text fade-up">
+      <div class="section-label">Consignaciones</div>
+      <h2 id="consigTitulo">Vendemos tu auto.<br>Vos no hacés nada.</h2>
+      <p id="consigDesc">Dejanos el auto y nosotros nos encargamos de todo: la publicación, las consultas, las visitas y el papeleo. Cobrás cuando vendemos.</p>
+      <div class="consig-pasos" id="consigPasos">
+        <div class="consig-paso">
+          <div class="consig-num">1</div>
+          <div class="consig-paso-text">
+            <h4>Traé el auto</h4>
+            <p>Lo tasamos sin compromiso y acordamos el precio de venta.</p>
+          </div>
+        </div>
+        <div class="consig-paso">
+          <div class="consig-num">2</div>
+          <div class="consig-paso-text">
+            <h4>Nosotros lo publicamos</h4>
+            <p>Lo incorporamos al stock, sacamos fotos y lo difundimos.</p>
+          </div>
+        </div>
+        <div class="consig-paso">
+          <div class="consig-num">3</div>
+          <div class="consig-paso-text">
+            <h4>Cobrás cuando vendemos</h4>
+            <p>Sin adelantos ni complicaciones. Liquidación clara y transparente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="consig-card fade-up">
+      <h3>¿Por qué consignar con nosotros?</h3>
+      <div class="consig-beneficios" id="consigBeneficios">
+        <div class="consig-beneficio">
+          <div class="consig-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Sin costo de publicación</span>
+        </div>
+        <div class="consig-beneficio">
+          <div class="consig-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Exposición en nuestro local y web</span>
+        </div>
+        <div class="consig-beneficio">
+          <div class="consig-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Atención a compradores incluida</span>
+        </div>
+        <div class="consig-beneficio">
+          <div class="consig-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Gestión de transferencia incluida</span>
+        </div>
+        <div class="consig-beneficio">
+          <div class="consig-check">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span>Liquidación transparente</span>
+        </div>
+      </div>
+      <a href="consignaciones.html" class="btn-consig">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Consignar mi auto
+      </a>
+    </div>
   </div>
 </section>
 
@@ -623,27 +673,55 @@ footer a:hover { color: #fff; }
     </div>
   </div>
   <div class="servicios-grid" id="serviciosGrid">
-    <!-- renderizado por JS -->
-    <div class="servicio-card fade-up"><div class="servicio-icon">🚗</div><div class="servicio-title">Compra, venta y permuta</div><div class="servicio-desc">Usados seleccionados y 0km de todas las marcas.</div></div>
-    <div class="servicio-card fade-up"><div class="servicio-icon">🤝</div><div class="servicio-title">Consignaciones</div><div class="servicio-desc">Dejanos encargarnos de la venta de tu auto.</div></div>
-    <div class="servicio-card fade-up"><div class="servicio-icon">💳</div><div class="servicio-title">Financiación</div><div class="servicio-desc">Créditos bancarios y financiación flexible.</div></div>
-    <div class="servicio-card fade-up"><div class="servicio-icon">📋</div><div class="servicio-title">Gestoría</div><div class="servicio-desc">Transferencia y documentación sin vueltas.</div></div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div class="servicio-title" id="srv1Titulo">Compra, venta y permuta</div>
+      <div class="servicio-desc" id="srv1Desc">Usados seleccionados y 0km de todas las marcas. Tomamos tu auto en parte de pago.</div>
+    </div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <div class="servicio-title" id="srv2Titulo">Financiación</div>
+      <div class="servicio-desc" id="srv2Desc">Créditos bancarios y financiación flexible. Te asesoramos para encontrar la mejor opción.</div>
+    </div>
+    <div class="servicio-card fade-up">
+      <div class="servicio-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="servicio-title" id="srv3Titulo">Gestoría</div>
+      <div class="servicio-desc" id="srv3Desc">Transferencia y toda la documentación sin vueltas. Nos encargamos del papeleo por vos.</div>
+    </div>
   </div>
 </section>
 
 <!-- FINANCIACIÓN -->
-<section class="financiacion-section">
+<section class="financiacion-section" id="financiacion">
   <div class="fin-text fade-up">
     <div class="section-label">Financiación</div>
-    <div class="section-title" id="finTitulo">Tu auto con las<br>cuotas que podés pagar</div>
+    <h2 id="finTitulo">Tu auto con las cuotas que podés pagar</h2>
     <p id="finDesc">Trabajamos con los principales bancos y financieras del país. Te asesoramos para encontrar la opción que mejor se adapta a tu situación.</p>
     <div class="fin-features" id="finFeatures">
-      <div class="fin-feature">Hasta 60 cuotas fijas</div>
-      <div class="fin-feature">Créditos prendarios bancarios</div>
-      <div class="fin-feature">Gestión rápida y sin burocracia</div>
-      <div class="fin-feature">Aprobación en el día</div>
+      <div class="fin-feature">
+        <div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        Hasta 60 cuotas fijas
+      </div>
+      <div class="fin-feature">
+        <div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        Créditos prendarios bancarios
+      </div>
+      <div class="fin-feature">
+        <div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        Gestión rápida y sin burocracia
+      </div>
+      <div class="fin-feature">
+        <div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        Aprobación en el día
+      </div>
     </div>
-    <a href="financiacion.html" class="btn-primary">Más información →</a>
+    <a href="financiacion.html" class="btn-primary">Más información</a>
   </div>
   <div class="fin-calc fade-up">
     <h3>Calculá tu cuota estimada</h3>
@@ -673,7 +751,7 @@ footer a:hover { color: #fff; }
     <div class="calc-result">
       <div class="calc-result-label">Cuota mensual estimada</div>
       <div class="calc-result-val" id="calcResultado">$ —</div>
-      <div class="calc-result-sub">* Valor referencial. Consultá condiciones reales con un asesor.</div>
+      <div class="calc-result-sub">* Valor referencial. Consultá condiciones con un asesor.</div>
     </div>
     <button class="btn-calc" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">Quiero financiar mi auto</button>
   </div>
@@ -682,96 +760,108 @@ footer a:hover { color: #fff; }
 <!-- CONTACTO -->
 <section class="contacto-section" id="contacto">
   <div class="contacto-inner">
-  <div class="contacto-grid">
-    <div class="contacto-info fade-up">
-      <div class="fade-up" style="margin-bottom:24px;">
-        <div class="section-label">Contacto</div>
-        <div class="section-title">Hablemos</div>
-      </div>
-      <div class="contacto-item">
-        <div class="contacto-item-icon">📍</div>
-        <div>
-          <div class="contacto-item-label">Dirección</div>
-          <div class="contacto-item-val" id="ctaDireccion">Mar del Plata, Buenos Aires</div>
-        </div>
-      </div>
-      <div class="contacto-item">
-        <div class="contacto-item-icon">📱</div>
-        <div>
-          <div class="contacto-item-label">WhatsApp</div>
-          <div class="contacto-item-val"><a href="#" onclick="abrirWspModal('index');return false;" style="color:var(--accent);text-decoration:none;" id="ctaTelefono">+54 9 223 600-0000</a></div>
-        </div>
-      </div>
-      <div class="contacto-item">
-        <div class="contacto-item-icon">🕐</div>
-        <div>
-          <div class="contacto-item-label">Horario</div>
-          <div class="contacto-item-val" id="ctaHorario">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
-        </div>
-      </div>
-      <button onclick="abrirWspModal('index')" class="btn-wsp" style="width:fit-content;margin-top:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Escribinos por WhatsApp
-      </button>
+    <div class="fade-up" style="margin-bottom:40px;">
+      <div class="section-label">Contacto</div>
+      <div class="section-title">Hablemos</div>
     </div>
-    <div class="contacto-form fade-up">
-      <h3>Dejanos tu consulta</h3>
-      <form onsubmit="enviarConsulta(event)">
-        <div class="form-grid">
-          <div class="form-field">
-            <label>Nombre *</label>
-            <input type="text" id="fNombre" placeholder="Tu nombre" required>
+    <div class="contacto-grid">
+      <div class="contacto-info fade-up">
+        <div class="contacto-item">
+          <div class="contacto-item-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
-          <div class="form-field">
-            <label>Teléfono *</label>
-            <input type="tel" id="fTel" placeholder="223 000-0000" required>
-          </div>
-          <div class="form-field">
-            <label>Email</label>
-            <input type="email" id="fEmail" placeholder="tu@email.com">
-          </div>
-          <div class="form-field">
-            <label>Interés</label>
-            <select id="fInteres">
-              <option value="Compra de auto usado">Compra de auto usado</option>
-              <option value="Compra de auto 0km">Compra de auto 0km</option>
-              <option value="Financiación">Financiación</option>
-              <option value="Permuta">Permuta</option>
-              <option value="Consulta general">Consulta general</option>
-            </select>
-          </div>
-          <div class="form-field full">
-            <label>Mensaje</label>
-            <textarea id="fMensaje" placeholder="Contanos en qué podemos ayudarte..."></textarea>
+          <div>
+            <div class="contacto-item-label">Dirección</div>
+            <div class="contacto-item-val" id="ctaDireccion">Mar del Plata, Buenos Aires</div>
           </div>
         </div>
-        <button type="submit" class="btn-form">Enviar consulta →</button>
-        <div class="form-msg" id="formMsg"></div>
-      </form>
+        <div class="contacto-item">
+          <div class="contacto-item-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div>
+            <div class="contacto-item-label">WhatsApp</div>
+            <div class="contacto-item-val"><a href="#" onclick="abrirWspModal('contacto');return false;" style="color:var(--accent);text-decoration:none;" id="ctaTelefono">+54 9 223 600-0000</a></div>
+          </div>
+        </div>
+        <div class="contacto-item">
+          <div class="contacto-item-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="contacto-item-label">Horario</div>
+            <div class="contacto-item-val" id="ctaHorario">Lunes a Viernes 9:00 – 19:00<br>Sábados 9:00 – 14:00</div>
+          </div>
+        </div>
+        <button onclick="abrirWspModal('contacto')" class="btn-wsp" style="width:fit-content;margin-top:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Escribinos por WhatsApp
+        </button>
+      </div>
+      <div class="contacto-form fade-up">
+        <h3>Dejanos tu consulta</h3>
+        <form onsubmit="enviarConsulta(event)">
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Nombre</label>
+              <input type="text" id="fNombre" placeholder="Tu nombre" autocomplete="given-name">
+            </div>
+            <div class="form-field">
+              <label>Apellido</label>
+              <input type="text" id="fApellido" placeholder="Tu apellido" autocomplete="family-name">
+            </div>
+            <div class="form-field">
+              <label>Teléfono</label>
+              <input type="tel" id="fTel" placeholder="223 000-0000" autocomplete="tel">
+            </div>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" id="fEmail" placeholder="tu@email.com" autocomplete="email">
+            </div>
+            <div class="form-field">
+              <label>Interés</label>
+              <select id="fInteres">
+                <option value="Compra de auto usado">Compra de auto usado</option>
+                <option value="Compra de auto 0km">Compra de auto 0km</option>
+                <option value="Financiación">Financiación</option>
+                <option value="Permuta">Permuta</option>
+                <option value="Consignación">Consignación</option>
+                <option value="Consulta general">Consulta general</option>
+              </select>
+            </div>
+            <div class="form-field full">
+              <label>Mensaje</label>
+              <textarea id="fMensaje" placeholder="Contanos en qué podemos ayudarte..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-form">Enviar consulta</button>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
     </div>
-  </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <a href="index.html" class="logo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
-  </text>
-</svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="28" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+        <tspan fill="rgba(255,255,255,.6)">Fernandez</tspan><tspan fill="rgba(255,255,255,.4)"> Autos</tspan>
+      </text>
+    </svg>
   </a>
   <div>© 2026 Fernández Autos · Mar del Plata</div>
-  <div style="display:flex;gap:20px;">
-    <a href="stock.html">Stock</a>
-    <a href="financiacion.html">Financiación</a>
-    <a href="#contacto">Contacto</a>
+  <div class="footer-links">
+    <a href="#stock">Stock</a>
+    <a href="#consignaciones">Consignaciones</a>
+    <a href="#financiacion">Financiación</a>
+    <a href="privacidad.html">Privacidad</a>
   </div>
 </footer>
 
 <!-- WHATSAPP FLOTANTE -->
-<button onclick="abrirWspModal('index')" class="wsp-float" title="WhatsApp">
+<button onclick="abrirWspModal('flotante')" class="wsp-float" title="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </button>
 
@@ -794,154 +884,73 @@ footer a:hover { color: #fff; }
     </div>
     <button class="wsp-modal-btn" id="wspBtn" onclick="enviarWspModal()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Continuar a WhatsApp &#8594;
+      Continuar a WhatsApp
     </button>
     <div class="wsp-modal-nota">Al continuar, aceptás que un asesor se ponga en contacto con vos.</div>
   </div>
 </div>
 
-
 <script>
+const SB_URL  = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
+const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqZ2ttcmdrZ2pweWRwYW5ld3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODU4NjgsImV4cCI6MjA5MzA2MTg2OH0.DLfBLH9H3UGSh1ISzylt4lLc6pExr6YOyy0sb-cbZec';
+const WEBHOOK_URL    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/webhook-web';
+const WEBHOOK_SECRET = 'fa_wh_9k2m4p7x1n3q8z5j';
+const WSP_ROTATOR    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
+const WSP_FALLBACK   = '5492236249445';
 
-// ── SISTEMA WSP ROTATIVO ──────────────────────────────────────────
-const WSP_ROTATOR = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
-const WSP_FALLBACK = '5492236249445';
-let wspContexto = null;
+// ── CARRUSEL ──────────────────────────────────────────────────────
+let slides = [], slideCurrent = 0, autoPlayTimer;
 
-function abrirWspModal(contexto) {
-  wspContexto = contexto || null;
-  document.getElementById('wspNombre').value = '';
-  document.getElementById('wspTelefono').value = '';
-  document.getElementById('wspNombre').classList.remove('inp-err');
-  document.getElementById('wspTelefono').classList.remove('inp-err');
-  const btn = document.getElementById('wspBtn');
-  btn.disabled = false;
-  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Continuar a WhatsApp →';
-  document.getElementById('wspModal').classList.add('open');
-  setTimeout(() => document.getElementById('wspNombre').focus(), 100);
-}
+const FALLBACK_SLIDES = [{
+  tag: 'Bienvenidos',
+  titulo: 'Tu próximo auto está acá',
+  subtitulo: 'Usados seleccionados y 0km en Mar del Plata. Financiación disponible.',
+  btn1_texto: 'Ver stock', btn1_url: '#stock',
+  btn2_texto: 'Consultanos', btn2_url: '#contacto',
+  imagen_url: ''
+}];
 
-function cerrarWspModal() {
-  document.getElementById('wspModal').classList.remove('open');
-}
-
-async function enviarWspModal() {
-  const nombre = document.getElementById('wspNombre').value.trim();
-  const telefono = document.getElementById('wspTelefono').value.trim();
-  let valido = true;
-  if (!nombre || nombre.length < 2) { document.getElementById('wspNombre').classList.add('inp-err'); valido = false; }
-  else document.getElementById('wspNombre').classList.remove('inp-err');
-  if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); valido = false; }
-  else document.getElementById('wspTelefono').classList.remove('inp-err');
-  if (!valido) return;
-  const btn = document.getElementById('wspBtn');
-  btn.disabled = true; btn.textContent = 'Conectando...';
-  try {
-    const r = await fetch(WSP_ROTATOR, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, telefono, contexto: wspContexto })
-    });
-    const data = await r.json();
-    if (data.ok && data.numero_vendedor) {
-      cerrarWspModal();
-      window.open('https://wa.me/' + data.numero_vendedor + '?text=' + encodeURIComponent(data.mensaje || ''), '_blank');
-    } else { throw new Error('sin numero'); }
-  } catch(e) {
-    cerrarWspModal();
-    window.open('https://wa.me/' + WSP_FALLBACK + '?text=' + encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('wspModal').addEventListener('click', function(e) {
-    if (e.target === this) cerrarWspModal();
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────
-const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
-const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
-const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
-const WEBHOOK_SECRET = '2babb2e0-7da3-43a1-ab18-7ab1fb7938b08905c42e-9766-477f-acb2-88b579d45e29';
-
-let stockData = [];
-
-// ── CARRUSEL ──
-let slideActual = 0;
-let totalSlides = 3;
-let autoPlay;
-
-function irASlide(n) {
-  slideActual = n;
-  document.getElementById('carouselTrack').style.transform = `translateX(-${n * 100}%)`;
-  document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === n));
-}
-function moverCarrusel(dir) {
-  irASlide((slideActual + dir + totalSlides) % totalSlides);
-  reiniciarAutoPlay();
-}
-function reiniciarAutoPlay() {
-  clearInterval(autoPlay);
-  autoPlay = setInterval(() => moverCarrusel(1), 5000);
-}
-
-document.getElementById('carousel')?.addEventListener('touchstart', e => window._touchStart = e.touches[0].clientX);
-document.getElementById('carousel')?.addEventListener('touchend', e => {
-  const diff = (window._touchStart||0) - e.changedTouches[0].clientX;
-  if(Math.abs(diff) > 50) moverCarrusel(diff > 0 ? 1 : -1);
-});
-
-// ── CONTENIDO DINÁMICO ── 
-// Fallbacks hardcodeados (se usan si Supabase falla)
-const FALLBACK_SLIDES = [
-  { tag:'Mar del Plata', titulo:'Tu próximo auto, a tu medida.', subtitulo:'Usados seleccionados y 0km con financiación flexible.', btn1_texto:'Ver stock →', btn1_url:'stock.html', btn2_texto:'Hablar con un asesor', imagen_url:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1600&q=85' },
-  { tag:'Financiación', titulo:'Cuotas fijas, sin vueltas.', subtitulo:'Créditos bancarios y financiación propia. Hasta 60 cuotas.', btn1_texto:'Conocer opciones →', btn1_url:'financiacion.html', btn2_texto:'Consultar', imagen_url:'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=1600&q=85' },
-  { tag:'Permuta', titulo:'Entregá el tuyo, llevate el mejor.', subtitulo:'Tasación justa y proceso simple. Permutamos tu auto.', btn1_texto:'Tasar mi auto →', btn1_url:'#contacto', btn2_texto:'Ver stock', imagen_url:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1600&q=85' },
-];
-const FALLBACK_SERVICIOS = [
-  { icono:'🚗', titulo:'Compra, venta y permuta', descripcion:'Usados seleccionados y 0km de todas las marcas. Entregá tu auto en parte de pago con tasación justa y proceso simple.' },
-  { icono:'🤝', titulo:'Consignaciones', descripcion:'Dejanos encargarnos de la venta de tu auto. Nos ocupamos de la publicación, las consultas y toda la gestión hasta concretar la operación.' },
-  { icono:'💳', titulo:'Financiación', descripcion:'Créditos bancarios y financiación flexible. Cuotas fijas en pesos o dólares.' },
-  { icono:'📋', titulo:'Gestoría', descripcion:'Nos encargamos de toda la transferencia y documentación. Sin vueltas.' },
-];
-
-function g(rows, seccion, clave) {
-  const row = rows.find(r => r.seccion === seccion && r.clave === clave);
-  return row?.valor || '';
-}
-
-function renderSlides(slides) {
-  totalSlides = slides.length;
+function renderSlides(data) {
+  slides = data;
   const track = document.getElementById('carouselTrack');
-  const nav = document.getElementById('carouselNav');
-  track.innerHTML = slides.map((s, i) => `
+  const nav   = document.getElementById('carouselNav');
+  track.innerHTML = slides.map((s,i) => `
     <div class="carousel-slide">
-      <img src="${s.imagen_url}" alt="Fernández Autos" loading="${i===0?'eager':'lazy'}">
+      ${s.imagen_url
+        ? `<img src="${s.imagen_url}" alt="${s.titulo||''}" loading="${i===0?'eager':'lazy'}">`
+        : `<div class="carousel-slide-ph"></div>`}
       <div class="carousel-overlay"></div>
       <div class="carousel-content">
-        <div class="carousel-tag">${s.tag}</div>
-        <h1>${s.titulo.replace(/, /,'<br>').replace(/\. /,'<br>')}</h1>
-        <p class="carousel-sub">${s.subtitulo}</p>
+        ${s.tag ? `<div class="carousel-tag">${s.tag}</div>` : ''}
+        <h1>${s.titulo||''}</h1>
+        ${s.subtitulo ? `<p class="carousel-sub">${s.subtitulo}</p>` : ''}
         <div class="carousel-btns">
-          <a href="${s.btn1_url||'stock.html'}" class="btn-primary">${s.btn1_texto}</a>
-          <a href="#contacto" class="btn-secondary">${s.btn2_texto}</a>
+          ${s.btn1_texto ? `<a href="${s.btn1_url||'#stock'}" class="btn-primary">${s.btn1_texto}</a>` : ''}
+          ${s.btn2_texto ? `<a href="${s.btn2_url||'#contacto'}" class="btn-secondary">${s.btn2_texto}</a>` : ''}
         </div>
       </div>
     </div>`).join('');
-  nav.innerHTML = slides.map((_,i) =>
-    `<button class="carousel-dot ${i===0?'active':''}" onclick="irASlide(${i})"></button>`
-  ).join('');
+  nav.innerHTML = slides.map((_,i) => `<button class="carousel-dot${i===0?' active':''}" onclick="irASlide(${i})"></button>`).join('');
 }
 
-function renderServicios(servicios) {
-  document.getElementById('serviciosGrid').innerHTML = servicios.map(s => `
-    <div class="servicio-card fade-up">
-      <div class="servicio-icon">${s.icono}</div>
-      <div class="servicio-title">${s.titulo}</div>
-      <div class="servicio-desc">${s.descripcion}</div>
-    </div>`).join('');
-  // re-observar fade-up nuevos
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+function irASlide(i) {
+  slideCurrent = i;
+  document.getElementById('carouselTrack').style.transform = `translateX(-${i*100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d,j) => d.classList.toggle('active', j===i));
+}
+function moverCarrusel(dir) {
+  irASlide((slideCurrent + dir + slides.length) % slides.length);
+  reiniciarAutoPlay();
+}
+function reiniciarAutoPlay() {
+  clearInterval(autoPlayTimer);
+  if (slides.length > 1) autoPlayTimer = setInterval(() => moverCarrusel(1), 5000);
+}
+
+// ── CMS ───────────────────────────────────────────────────────────
+function g(rows, seccion, clave) {
+  const r = rows.find(r => r.seccion === seccion && r.clave === clave);
+  return r?.valor || '';
 }
 
 async function cargarContenidoHome() {
@@ -949,133 +958,164 @@ async function cargarContenidoHome() {
     const r = await fetch(`${SB_URL}/rest/v1/contenido_web?pagina=eq.home&order=seccion.asc,orden.asc`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
-    if (!r.ok) throw new Error(r.status);
     const rows = await r.json();
-    if (!rows.length) throw new Error('vacío');
 
     // Slides
-    const slides = [1,2,3].map(i => ({
-      tag:         g(rows, `hero_slide_${i}`, 'tag'),
-      titulo:      g(rows, `hero_slide_${i}`, 'titulo'),
-      subtitulo:   g(rows, `hero_slide_${i}`, 'subtitulo'),
-      btn1_texto:  g(rows, `hero_slide_${i}`, 'btn1_texto'),
-      btn1_url:    g(rows, `hero_slide_${i}`, 'btn1_url'),
-      btn2_texto:  g(rows, `hero_slide_${i}`, 'btn2_texto'),
-      imagen_url:  g(rows, `hero_slide_${i}`, 'imagen_url'),
-    })).filter(s => s.titulo);
-    renderSlides(slides.length ? slides : FALLBACK_SLIDES);
+    const slidesData = [];
+    for (let i = 1; i <= 3; i++) {
+      const s = `hero_slide_${i}`;
+      const titulo = g(rows, s, 'titulo');
+      if (titulo) slidesData.push({
+        tag:        g(rows, s, 'tag'),
+        titulo,
+        subtitulo:  g(rows, s, 'subtitulo'),
+        btn1_texto: g(rows, s, 'btn1_texto'),
+        btn1_url:   g(rows, s, 'btn1_url'),
+        btn2_texto: g(rows, s, 'btn2_texto'),
+        imagen_url: g(rows, s, 'imagen_url'),
+      });
+    }
+    renderSlides(slidesData.length ? slidesData : FALLBACK_SLIDES);
 
-    // Stats
-    const expVal = g(rows,'stat_experiencia','valor'); if(expVal) document.getElementById('statExpVal').textContent = expVal;
-    const expLbl = g(rows,'stat_experiencia','label'); if(expLbl) document.getElementById('statExpLabel').textContent = expLbl;
-    const atnVal = g(rows,'stat_atencion','valor'); if(atnVal) document.getElementById('statAtenVal').textContent = atnVal;
-    const atnLbl = g(rows,'stat_atencion','label'); if(atnLbl) document.getElementById('statAtenLabel').textContent = atnLbl;
+    // Stats carrusel
+    const expVal = g(rows, 'stat_experiencia', 'valor');
+    const expLbl = g(rows, 'stat_experiencia', 'label');
+    const atnVal = g(rows, 'stat_atencion', 'valor');
+    const atnLbl = g(rows, 'stat_atencion', 'label');
+    if (expVal) document.getElementById('statExpVal').textContent = expVal;
+    if (expLbl) document.getElementById('statExpLabel').textContent = expLbl;
+    if (atnVal) document.getElementById('statAtenVal').textContent = atnVal;
+    if (atnLbl) document.getElementById('statAtenLabel').textContent = atnLbl;
+
+    // Quiénes somos
+    const qTit  = g(rows, 'quienes', 'titulo');
+    const qDesc = g(rows, 'quienes', 'descripcion');
+    const qDesc2= g(rows, 'quienes', 'descripcion2');
+    if (qTit)  document.getElementById('quienesTitulo').textContent = qTit;
+    if (qDesc) document.getElementById('quienesDesc').textContent  = qDesc;
+    if (qDesc2)document.getElementById('quienesDesc2').textContent = qDesc2;
+
+    // Razones (4 razones editables)
+    const razones = [1,2,3,4].map(i => ({
+      titulo: g(rows, `razon_${i}`, 'titulo'),
+      desc:   g(rows, `razon_${i}`, 'descripcion'),
+    })).filter(r => r.titulo);
+    if (razones.length) {
+      const iconos = [
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+      ];
+      document.getElementById('quienesRazones').innerHTML = razones.map((r,i) => `
+        <div class="razon-item">
+          <div class="razon-icon">${iconos[i]||iconos[0]}</div>
+          <div class="razon-text"><h4>${r.titulo}</h4><p>${r.desc}</p></div>
+        </div>`).join('');
+    }
+
+    // Consignaciones
+    const cTit  = g(rows, 'consig_texto', 'titulo');
+    const cDesc = g(rows, 'consig_texto', 'descripcion');
+    if (cTit)  document.getElementById('consigTitulo').innerHTML = cTit.replace('\n','<br>');
+    if (cDesc) document.getElementById('consigDesc').textContent = cDesc;
 
     // Servicios
-    const srvKeys = ['servicio_compraventa','servicio_consignaciones','servicio_financiacion','servicio_gestoria'];
-    const servicios = srvKeys.map(k => ({
-      icono:       g(rows, k, 'icono'),
-      titulo:      g(rows, k, 'titulo'),
-      descripcion: g(rows, k, 'descripcion'),
-    })).filter(s => s.titulo);
-    if (servicios.length) renderServicios(servicios);
+    const srvMap = [
+      { s: 'servicio_compraventa',  t: 'srv1Titulo', d: 'srv1Desc' },
+      { s: 'servicio_financiacion', t: 'srv2Titulo', d: 'srv2Desc' },
+      { s: 'servicio_gestoria',     t: 'srv3Titulo', d: 'srv3Desc' },
+    ];
+    srvMap.forEach(m => {
+      const t = g(rows, m.s, 'titulo');
+      const d = g(rows, m.s, 'descripcion');
+      if (t) document.getElementById(m.t).textContent = t;
+      if (d) document.getElementById(m.d).textContent = d;
+    });
 
-    // Sección financiación
-    const finTit = g(rows,'fin_texto','titulo');
-    const finDsc = g(rows,'fin_texto','descripcion');
-    if(finTit) document.getElementById('finTitulo').textContent = finTit;
-    if(finDsc) document.getElementById('finDesc').textContent = finDsc;
-    const features = ['feature_1','feature_2','feature_3','feature_4']
-      .map(k => g(rows,'fin_texto',k)).filter(Boolean);
-    if(features.length) {
-      document.getElementById('finFeatures').innerHTML =
-        features.map(f => `<div class="fin-feature">${f}</div>`).join('');
+    // Financiación
+    const finTit = g(rows, 'fin_texto', 'titulo');
+    const finDsc = g(rows, 'fin_texto', 'descripcion');
+    if (finTit) document.getElementById('finTitulo').textContent = finTit;
+    if (finDsc) document.getElementById('finDesc').textContent  = finDsc;
+    const features = [1,2,3,4].map(i => g(rows, 'fin_texto', `feature_${i}`)).filter(Boolean);
+    if (features.length) {
+      const checkSvg = `<div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`;
+      document.getElementById('finFeatures').innerHTML = features.map(f => `<div class="fin-feature">${checkSvg}${f}</div>`).join('');
     }
 
     // Contacto
-    const dir = g(rows,'contacto','direccion');
-    const tel = g(rows,'contacto','telefono');
-    const hor = g(rows,'contacto','horario');
-    if(dir) document.getElementById('ctaDireccion').textContent = dir;
-    if(tel) document.getElementById('ctaTelefono').textContent = tel;
-    if(hor) document.getElementById('ctaHorario').innerHTML = hor.replace(' / ','<br>');
+    const dir = g(rows, 'contacto', 'direccion');
+    const tel = g(rows, 'contacto', 'telefono');
+    const hor = g(rows, 'contacto', 'horario');
+    if (dir) document.getElementById('ctaDireccion').textContent = dir;
+    if (tel) document.getElementById('ctaTelefono').textContent  = tel;
+    if (hor) document.getElementById('ctaHorario').innerHTML    = hor.replace(' / ','<br>');
 
   } catch(e) {
-    console.warn('CMS: usando fallback hardcodeado:', e.message);
+    console.warn('CMS: usando fallback:', e.message);
     renderSlides(FALLBACK_SLIDES);
-    // servicios ya están hardcodeados en el HTML como fallback
   }
   reiniciarAutoPlay();
 }
 
-// ── STOCK ──
+// ── STOCK ─────────────────────────────────────────────────────────
 async function cargarStock() {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc`, {
+    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc&limit=6`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
-    stockData = await r.json();
-    document.getElementById('statStock').textContent = stockData.length;
-    const marcas = [...new Set(stockData.map(v => v.marca).filter(Boolean))].sort();
-    const selMarca = document.getElementById('sMarca');
-    marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; selMarca.appendChild(opt); });
-    renderAutos(stockData.slice(0, 6));
+    const data = await r.json();
+    document.getElementById('statStock').textContent = data.length < 6 ? data.length : data.length + '+';
+    renderAutos(data);
   } catch(e) {
-    document.getElementById('autosGrid').innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">Error al cargar el stock.</div>';
+    document.getElementById('autosGrid').innerHTML = '<div class="loading-autos">Error al cargar el stock.</div>';
   }
 }
 
 function renderAutos(autos) {
   const grid = document.getElementById('autosGrid');
-  if(!autos.length) { grid.innerHTML = '<div class="loading-autos" style="grid-column:1/-1;">No se encontraron autos con esos criterios.</div>'; return; }
-  const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio';
+  if (!autos.length) { grid.innerHTML = '<div class="loading-autos">No hay autos disponibles en este momento.</div>'; return; }
+  const fmt = n => n ? (Number(n) > 100000 ? '$ '+Number(n).toLocaleString('es-AR') : 'USD '+Number(n).toLocaleString('es-AR')) : 'Consultar precio';
+  const phSvg = `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
   grid.innerHTML = autos.map(v => `
     <a href="stock.html?id=${v.id}" class="auto-card">
       <div class="auto-card-img">
-        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-placeholder">🚗</div>`}
+        ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : phSvg}
         <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
       </div>
       <div class="auto-card-body">
-        <div class="auto-nombre">${v.marca} ${v.modelo}</div>
-        <div class="auto-detalle">${v.anio||''}${v.km?' · '+Number(v.km).toLocaleString('es-AR')+' km':''} ${v.transmision?'· '+v.transmision:''}</div>
+        <div class="auto-nombre">${v.marca} ${v.modelo}${v.anio?' '+v.anio:''}</div>
+        <div class="auto-detalle">${[v.km?Number(v.km).toLocaleString('es-AR')+' km':'',v.transmision,v.color].filter(Boolean).join(' · ')}</div>
         <div class="auto-footer">
           <div class="auto-precio">${fmt(v.precio)}</div>
-          <span class="auto-cta">Ver auto →</span>
+          <span class="auto-cta">Ver detalle</span>
         </div>
       </div>
     </a>`).join('');
 }
 
-function buscar() {
-  const tipo = document.getElementById('sTipo').value;
-  const marca = document.getElementById('sMarca').value;
-  const precio = parseInt(document.getElementById('sPrecio').value) || 0;
-  const params = new URLSearchParams();
-  if(tipo) params.set('tipo', tipo);
-  if(marca) params.set('marca', marca);
-  if(precio) params.set('precio', precio);
-  window.location.href = 'stock.html?' + params.toString();
-}
-
+// ── CALCULADORA ───────────────────────────────────────────────────
 function calcularCuota() {
-  const valor = parseFloat(document.getElementById('calcValor').value) || 0;
-  const entradaPct = parseInt(document.getElementById('calcEntrada').value) || 0;
+  const valor  = parseFloat(document.getElementById('calcValor').value) || 0;
+  const entPct = parseInt(document.getElementById('calcEntrada').value) || 0;
   const cuotas = parseInt(document.getElementById('calcCuotas').value) || 36;
-  if(!valor) { document.getElementById('calcResultado').textContent = '$ —'; return; }
-  const financiado = valor * (1 - entradaPct/100);
+  if (!valor) { document.getElementById('calcResultado').textContent = '$ —'; return; }
+  const financiado = valor * (1 - entPct / 100);
   const tasa = 0.06;
   const cuota = financiado * (tasa * Math.pow(1+tasa, cuotas)) / (Math.pow(1+tasa, cuotas) - 1);
-  document.getElementById('calcResultado').textContent = '$ '+Math.round(cuota).toLocaleString('es-AR');
+  document.getElementById('calcResultado').textContent = '$ ' + Math.round(cuota).toLocaleString('es-AR');
 }
 
+// ── FORMULARIO CONTACTO ───────────────────────────────────────────
 async function enviarConsulta(e) {
   e.preventDefault();
-  const nombre = document.getElementById('fNombre').value.trim();
-  const tel = document.getElementById('fTel').value.trim();
-  const email = document.getElementById('fEmail').value.trim();
+  const nombre  = (document.getElementById('fNombre').value.trim() + ' ' + (document.getElementById('fApellido')?.value.trim()||'')).trim();
+  const tel     = document.getElementById('fTel').value.trim();
+  const email   = document.getElementById('fEmail').value.trim();
   const interes = document.getElementById('fInteres').value;
   const mensaje = document.getElementById('fMensaje').value.trim();
-  const msg = document.getElementById('formMsg');
+  const msg     = document.getElementById('formMsg');
 
   try {
     const r = await fetch(WEBHOOK_URL, {
@@ -1085,65 +1125,93 @@ async function enviarConsulta(e) {
     });
     const data = await r.json();
     if (r.ok && data.ok) {
-      msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
+      msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
       msg.className = 'form-msg ok'; msg.style.display = 'block';
       e.target.reset(); return;
     }
     throw new Error('webhook failed');
-  } catch (err) {
-    console.warn('Webhook fallido, usando fallback:', err);
-  }
-
-  try {
-    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-      body: JSON.stringify({ nombre, tel, email, interes, estado: 'Prospecto', notas: mensaje })
-    });
-    const cli = await cliR.json();
-    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
-    await fetch(`${SB_URL}/rest/v1/prospectos`, {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ cliente_id: clienteId, nombre, tel, email, interes, nota: mensaje, col: 'nueva', cerrado: false, origen: 'web', origen_detalle: 'home_contacto_fallback', ultimo_contacto: new Date().toISOString() })
-    });
-    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
-      method: 'POST',
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ para: 'admin', tipo: 'nuevo_lead', titulo: '🌐 Nuevo lead desde la web (sin asignar)', mensaje: nombre+' · '+tel+' · '+interes, leida: false })
-    });
-    msg.textContent = '✓ ¡Consulta enviada! Te contactamos a la brevedad.';
-    msg.className = 'form-msg ok'; msg.style.display = 'block';
-    e.target.reset();
   } catch(err) {
-    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
-    msg.className = 'form-msg err'; msg.style.display = 'block';
+    // Fallback directo a Supabase
+    try {
+      const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+        body: JSON.stringify({ nombre, tel, email, interes, estado: 'Prospecto', notas: mensaje })
+      });
+      const cli = await cliR.json();
+      const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
+      await fetch(`${SB_URL}/rest/v1/prospectos`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ cliente_id: clienteId, nombre, tel, email, interes, nota: mensaje, col: 'nueva', cerrado: false, origen: 'web', origen_detalle: 'home_contacto_fallback', ultimo_contacto: new Date().toISOString() })
+      });
+      msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
+      msg.className = 'form-msg ok'; msg.style.display = 'block';
+      e.target.reset();
+    } catch(err2) {
+      msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
+      msg.className = 'form-msg err'; msg.style.display = 'block';
+    }
   }
 }
-
-// Animaciones scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach((entry, i) => {
-    if(entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
-  });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
 window.enviarConsulta = enviarConsulta;
 
-// Iniciar todo
-cargarContenidoHome();
-cargarStock();
+// ── WSP ROTATIVO ──────────────────────────────────────────────────
+let wspContexto = null;
+function abrirWspModal(ctx) {
+  wspContexto = ctx || null;
+  document.getElementById('wspNombre').value = '';
+  document.getElementById('wspTelefono').value = '';
+  ['wspNombre','wspTelefono'].forEach(id => document.getElementById(id).classList.remove('inp-err'));
+  const btn = document.getElementById('wspBtn');
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Continuar a WhatsApp`;
+  document.getElementById('wspModal').classList.add('open');
+  setTimeout(() => document.getElementById('wspNombre').focus(), 100);
+}
+function cerrarWspModal() { document.getElementById('wspModal').classList.remove('open'); }
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('wspModal').addEventListener('click', e => { if (e.target === e.currentTarget) cerrarWspModal(); });
+});
+async function enviarWspModal() {
+  const nombre   = document.getElementById('wspNombre').value.trim();
+  const telefono = document.getElementById('wspTelefono').value.trim();
+  let ok = true;
+  if (!nombre || nombre.length < 2)             { document.getElementById('wspNombre').classList.add('inp-err');    ok = false; } else document.getElementById('wspNombre').classList.remove('inp-err');
+  if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); ok = false; } else document.getElementById('wspTelefono').classList.remove('inp-err');
+  if (!ok) return;
+  const btn = document.getElementById('wspBtn');
+  btn.disabled = true; btn.textContent = 'Conectando...';
+  try {
+    const r = await fetch(WSP_ROTATOR, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nombre, telefono, contexto: wspContexto }) });
+    const data = await r.json();
+    if (data.ok && data.numero_vendedor) { cerrarWspModal(); window.open('https://wa.me/'+data.numero_vendedor+'?text='+encodeURIComponent(data.mensaje||''), '_blank'); }
+    else throw new Error();
+  } catch { cerrarWspModal(); window.open('https://wa.me/'+WSP_FALLBACK+'?text='+encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank'); }
+}
 
+// ── DRAWER MOBILE ─────────────────────────────────────────────────
 function toggleMenu() {
-  const panel = document.getElementById('navMenu');
-  const btn = document.getElementById('hamburger');
+  const panel   = document.getElementById('navMenu');
+  const btn     = document.getElementById('hamburger');
   const overlay = document.getElementById('navOverlay');
   panel.classList.toggle('open');
   btn.classList.toggle('open');
   overlay.classList.toggle('open');
   document.body.style.overflow = panel.classList.contains('open') ? 'hidden' : '';
 }
+
+// ── ANIMACIONES SCROLL ────────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('visible'), i * 80);
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── INIT ──────────────────────────────────────────────────────────
+cargarContenidoHome();
+cargarStock();
 </script>
 </body>
 </html>
