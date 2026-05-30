@@ -219,16 +219,16 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: #1c1c1c; border-radius: 18px; width: 100%; max-width: 960px;
+  background: #fff; border-radius: 18px; width: 100%; max-width: 960px;
   max-height: 90vh; overflow: hidden;
-  box-shadow: 0 40px 100px rgba(0,0,0,.7);
+  box-shadow: 0 40px 100px rgba(0,0,0,.25);
   margin: auto; display: grid; grid-template-columns: 1fr 1fr;
 }
 
 /* Lado izquierdo — galería */
 .galeria-wrap {
   position: relative; overflow: hidden;
-  background: #111; min-height: 480px;
+  background: #f4f2ec; min-height: 480px;
   display: flex; flex-direction: column;
   border-radius: 18px 0 0 18px;
 }
@@ -237,11 +237,11 @@ nav a:hover, nav a.active { color: var(--black); }
 
 /* Miniaturas */
 .galeria-thumbs {
-  display: flex; gap: 6px; padding: 10px 12px; background: #111;
+  display: flex; gap: 6px; padding: 10px 12px; background: #eae8e3;
   overflow-x: auto; flex-shrink: 0;
 }
 .galeria-thumbs::-webkit-scrollbar { height: 3px; }
-.galeria-thumbs::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+.galeria-thumbs::-webkit-scrollbar-thumb { background: #c5c1b5; border-radius: 2px; }
 .galeria-thumb {
   width: 52px; height: 40px; object-fit: cover; border-radius: 6px;
   cursor: pointer; flex-shrink: 0; opacity: .55; transition: opacity .15s;
@@ -251,24 +251,23 @@ nav a:hover, nav a.active { color: var(--black); }
 
 /* Lado derecho — datos */
 .modal-body {
-  padding: 32px 28px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 0;
-  background: #1c1c1c;
-  border-radius: 0 18px 18px 0;
+  padding: 32px 28px 28px; overflow-y: auto; display: flex; flex-direction: column;
+  background: #fff; border-radius: 0 18px 18px 0; position: relative;
 }
 .modal-marca-label {
   font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px;
   color: var(--accent); font-weight: 700; margin-bottom: 6px;
 }
-.modal-nombre { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #fff; line-height: 1.15; margin-bottom: 18px; }
-.modal-precio { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 20px; letter-spacing: -.5px; }
+.modal-nombre { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: .3px; color: var(--black); line-height: 1.15; margin-bottom: 16px; }
+.modal-precio { font-size: 1.9rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; letter-spacing: -.5px; }
 .modal-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; }
 .modal-spec-item {
-  background: #282828; border-radius: 10px; padding: 12px 14px;
+  background: #f4f2ec; border-radius: 10px; padding: 12px 14px;
 }
-.modal-spec-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.2px; color: #888; margin-bottom: 4px; }
-.modal-spec-val { font-weight: 700; font-size: 0.9rem; color: #fff; }
-.modal-desc-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: #888; font-weight: 600; margin-bottom: 8px; margin-top: 4px; }
-.modal-desc-text { font-size: 0.86rem; color: #aaa; line-height: 1.7; margin-bottom: 20px; }
+.modal-spec-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 4px; }
+.modal-spec-val { font-weight: 700; font-size: 0.9rem; color: var(--black); }
+.modal-desc-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; margin-bottom: 8px; margin-top: 4px; }
+.modal-desc-text { font-size: 0.86rem; color: var(--muted); line-height: 1.7; margin-bottom: 20px; }
 .modal-btns { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 8px; }
 .btn-modal-wsp {
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -279,11 +278,11 @@ nav a:hover, nav a.active { color: var(--black); }
 .btn-modal-wsp:hover { background: #1fba57; }
 .btn-modal-sec {
   display: flex; align-items: center; justify-content: center;
-  background: transparent; color: #888; border: 1.5px solid #333;
+  background: transparent; color: var(--muted); border: 1.5px solid var(--border);
   border-radius: 10px; padding: 12px; font-family: var(--sans); font-size: 0.86rem;
   font-weight: 500; cursor: pointer; transition: all .2s;
 }
-.btn-modal-sec:hover { border-color: #555; color: #ccc; }
+.btn-modal-sec:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ── LIGHTBOX ── */
 .lightbox {
@@ -330,13 +329,13 @@ nav a:hover, nav a.active { color: var(--black); }
 .galeria-prev:hover, .galeria-next:hover { background: rgba(0,0,0,.7); }
 .modal-close-float {
   position: absolute; top: 14px; right: 14px; z-index: 3;
-  background: rgba(255,255,255,.12); backdrop-filter: blur(4px);
+  background: rgba(0,0,0,.08); backdrop-filter: blur(4px);
   border: none; border-radius: 50%; width: 36px; height: 36px;
-  color: #fff; font-size: 1rem; cursor: pointer;
+  color: var(--black); font-size: 1rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: background .15s;
 }
-.modal-close-float:hover { background: rgba(255,255,255,.22); }
+.modal-close-float:hover { background: rgba(0,0,0,.15); }
 .modal-body { position: relative; }
 /* Dots */
 .galeria-dots {
@@ -400,7 +399,7 @@ nav a:hover, nav a.active { color: var(--black); }
   .btn-wsp{display:none;}
   .modal-overlay { padding: 0; align-items: flex-end; }
   .modal-box { border-radius: 20px 20px 0 0; max-height: 92vh; max-width: 100%; grid-template-columns: 1fr; }
-  .galeria-wrap { min-height: 260px; border-radius: 20px 20px 0 0; }
+  .galeria-wrap { min-height: 260px; border-radius: 20px 20px 0 0; background: #f4f2ec; }
   .modal-body { border-radius: 0; max-height: 50vh; }
 }
 
@@ -851,8 +850,8 @@ function renderGrilla(autos) {
         <div class="auto-nombre">${v.marca} ${v.modelo}</div>
         <div class="auto-specs">
           ${v.anio?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${v.anio}</span>`:''}
-          ${v.km?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
-          ${v.transmision?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 12h6m0-5H8l-2 5 2 5h7"/></svg>${v.transmision}</span>`:''}
+          ${v.km?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12l4-6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
+          ${v.transmision?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="18" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="5" y1="8" x2="5" y2="16"/><line x1="19" y1="8" x2="12" y2="8"/></svg>${v.transmision}</span>`:''}
           ${v.combustible?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>${v.combustible}</span>`:''}
         </div>
         <div class="auto-footer">
@@ -875,8 +874,8 @@ async function abrirModal(v) {
   document.getElementById('modalPrecio').textContent = fmt(v.precio);
 
   const svgAnio  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
-  const svgKm    = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
-  const svgTrans = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 12h6m0-5H8l-2 5 2 5h7"/></svg>`;
+  const svgKm    = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12l4-6"/><circle cx="12" cy="12" r="1" fill="#1a4a8a"/></svg>`;
+  const svgTrans = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="18" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="5" y1="8" x2="5" y2="16"/><line x1="19" y1="8" x2="12" y2="8"/></svg>`;
   const svgColor = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>`;
   const svgCarr  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h13l4 4v6a2 2 0 0 1-2 2h-2"/><circle cx="8.5" cy="17" r="2.5"/><circle cx="17.5" cy="17" r="2.5"/><path d="M15 5v4h5"/></svg>`;
   const svgComb  = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1a4a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V8l9-6 9 6v14"/><path d="M9 22V12h6v10"/></svg>`;
