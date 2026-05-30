@@ -891,7 +891,7 @@ footer a:hover { color: #fff; }
 
 <script>
 const SB_URL  = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
-const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqZ2ttcmdrZ2pweWRwYW5ld3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODU4NjgsImV4cCI6MjA5MzA2MTg2OH0.DLfBLH9H3UGSh1ISzylt4lLc6pExr6YOyy0sb-cbZec';
+const SB_KEY  = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
 const WEBHOOK_URL    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/webhook-web';
 const WEBHOOK_SECRET = 'fa_wh_9k2m4p7x1n3q8z5j';
 const WSP_ROTATOR    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
@@ -958,6 +958,7 @@ async function cargarContenidoHome() {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
     const rows = await r.json();
+    if (!Array.isArray(rows)) throw new Error('respuesta inesperada de contenido_web');
 
     // Slides
     const slidesData = [];
