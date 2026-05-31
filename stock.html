@@ -390,9 +390,9 @@ nav a:hover, nav a.active { color: var(--black); }
   .hamburger{display:flex;}
   .btn-wsp{display:none;}
   .modal-overlay { padding: 0; align-items: flex-end; }
-  .modal-box { border-radius: 20px 20px 0 0; max-height: 92vh; max-width: 100%; grid-template-columns: 1fr; }
-  .galeria-wrap { min-height: 260px; border-radius: 20px 20px 0 0; background: #f4f2ec; }
-  .modal-body { border-radius: 0; max-height: 60vh; overflow-y: auto; padding-bottom: 32px; }
+  .modal-box { border-radius: 20px 20px 0 0; max-height: 95vh; max-width: 100%; grid-template-columns: 1fr; display: flex; flex-direction: column; }
+  .galeria-wrap { min-height: 200px; max-height: 220px; border-radius: 20px 20px 0 0; background: #f4f2ec; flex-shrink: 0; }
+  .modal-body { border-radius: 0; flex: 1; overflow-y: auto; padding-bottom: 32px; max-height: none; }
 }
 
 /* WhatsApp flotante */
