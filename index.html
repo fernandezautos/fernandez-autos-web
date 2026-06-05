@@ -1212,6 +1212,102 @@ document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 // ── INIT ──────────────────────────────────────────────────────────
 cargarContenidoHome();
 cargarStock();
+
+// ── PREVIEW desde marketing.html ──────────────────────────────────
+// Escucha datos de preview enviados por postMessage desde el panel de marketing.
+// Si llega un mensaje válido, aplica los datos sin tocar Supabase.
+// Si no llega nada, el comportamiento es exactamente igual al normal.
+window.addEventListener('message', function(e) {
+  if (!e.data || e.data.type !== 'fa_preview') return;
+  const rows = e.data.rows;
+  if (!Array.isArray(rows) || !rows.length) return;
+
+  // Helper local para este contexto
+  function gp(seccion, clave) {
+    const r = rows.find(r => r.seccion === seccion && r.clave === clave);
+    return r?.valor || '';
+  }
+
+  // Slides
+  const slidesData = [];
+  for (let i = 1; i <= 3; i++) {
+    const s = `hero_slide_${i}`;
+    const titulo = gp(s, 'titulo');
+    if (titulo) slidesData.push({
+      tag:        gp(s, 'tag'),
+      titulo,
+      subtitulo:  gp(s, 'subtitulo'),
+      btn1_texto: gp(s, 'btn1_texto'),
+      btn1_url:   gp(s, 'btn1_url'),
+      btn2_texto: gp(s, 'btn2_texto'),
+      imagen_url: gp(s, 'imagen_url'),
+    });
+  }
+  if (slidesData.length) { clearInterval(autoPlayTimer); renderSlides(slidesData); reiniciarAutoPlay(); }
+
+  // Stats carrusel
+  const expVal = gp('stat_experiencia','valor'); const expLbl = gp('stat_experiencia','label');
+  const atnVal = gp('stat_atencion','valor');    const atnLbl = gp('stat_atencion','label');
+  if (expVal) document.getElementById('statExpVal').textContent = expVal;
+  if (expLbl) document.getElementById('statExpLabel').textContent = expLbl;
+  if (atnVal) document.getElementById('statAtenVal').textContent = atnVal;
+  if (atnLbl) document.getElementById('statAtenLabel').textContent = atnLbl;
+
+  // Quiénes somos
+  const qTit = gp('quienes','titulo'); const qDesc = gp('quienes','descripcion'); const qDesc2 = gp('quienes','descripcion2');
+  if (qTit)  document.getElementById('quienesTitulo').textContent = qTit;
+  if (qDesc) document.getElementById('quienesDesc').textContent  = qDesc;
+  if (qDesc2)document.getElementById('quienesDesc2').textContent = qDesc2;
+
+  // Razones
+  const razones = [1,2,3,4].map(i => ({ titulo: gp(`razon_${i}`,'titulo'), desc: gp(`razon_${i}`,'descripcion') })).filter(r => r.titulo);
+  if (razones.length) {
+    const iconos = [
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+    ];
+    document.getElementById('quienesRazones').innerHTML = razones.map((r,i) => `
+      <div class="razon-item">
+        <div class="razon-icon">${iconos[i]||iconos[0]}</div>
+        <div class="razon-text"><h4>${r.titulo}</h4><p>${r.desc}</p></div>
+      </div>`).join('');
+  }
+
+  // Consignaciones
+  const cTit = gp('consig_texto','titulo'); const cDesc = gp('consig_texto','descripcion');
+  if (cTit)  document.getElementById('consigTitulo').innerHTML = cTit.replace('\n','<br>');
+  if (cDesc) document.getElementById('consigDesc').textContent = cDesc;
+
+  // Servicios
+  const srvMap = [
+    { s:'servicio_compraventa',  t:'srv1Titulo', d:'srv1Desc' },
+    { s:'servicio_financiacion', t:'srv2Titulo', d:'srv2Desc' },
+    { s:'servicio_gestoria',     t:'srv3Titulo', d:'srv3Desc' },
+  ];
+  srvMap.forEach(m => {
+    const t = gp(m.s,'titulo'); const d = gp(m.s,'descripcion');
+    if (t) document.getElementById(m.t).textContent = t;
+    if (d) document.getElementById(m.d).textContent = d;
+  });
+
+  // Financiación
+  const finTit = gp('fin_texto','titulo'); const finDsc = gp('fin_texto','descripcion');
+  if (finTit) document.getElementById('finTitulo').textContent = finTit;
+  if (finDsc) document.getElementById('finDesc').textContent  = finDsc;
+  const features = [1,2,3,4].map(i => gp('fin_texto',`feature_${i}`)).filter(Boolean);
+  if (features.length) {
+    const chk = `<div class="fin-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>`;
+    document.getElementById('finFeatures').innerHTML = features.map(f => `<div class="fin-feature">${chk}${f}</div>`).join('');
+  }
+
+  // Contacto
+  const dir = gp('contacto','direccion'); const tel = gp('contacto','telefono'); const hor = gp('contacto','horario');
+  if (dir) document.getElementById('ctaDireccion').textContent = dir;
+  if (tel) document.getElementById('ctaTelefono').textContent  = tel;
+  if (hor) document.getElementById('ctaHorario').innerHTML    = hor.replace(' / ','<br>');
+});
 </script>
 </body>
 </html>
