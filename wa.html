@@ -235,6 +235,10 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqZ2ttcmdrZ2pweWRwYW5ld3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODU4NjgsImV4cCI6MjA5MzA2MTg2OH0.DLfBLH9H3UGSh1ISzylt4lLc6pExr6YOyy0sb-cbZec';
     const FALLBACK_NUM = '5492236249445';
 
+    // Leer origen desde la URL (?origen=instagram, ?origen=facebook, etc.)
+    const urlParams = new URLSearchParams(window.location.search);
+    const origenParam = urlParams.get('origen') || 'web';
+
     function limpiar(id) {
       document.getElementById(id).classList.remove('error');
       document.getElementById('err-' + id).classList.remove('visible');
@@ -273,7 +277,7 @@
 
       const nombreCompleto = `${nombre} ${apellido}`;
       let numeroDestino = FALLBACK_NUM;
-      let mensaje = `Hola, soy ${nombreCompleto}, los contacto desde Instagram para consultar sobre un auto.`;
+      let mensaje = `Hola, soy ${nombreCompleto}, los contacto desde la web de Fernandez Autos.`;
 
       try {
         const res = await fetch(`${SUPABASE_URL}/functions/v1/whatsapp-rotator`, {
@@ -285,7 +289,7 @@
           body: JSON.stringify({
             nombre: nombreCompleto,
             telefono: telefono,
-            contexto: 'instagram'
+            contexto: origenParam
           })
         });
 
