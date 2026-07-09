@@ -625,38 +625,91 @@ async function enviarConsignacion() {
     fotosSeleccionadas = []; renderFotos();
   }
 
-  // ── Intento 1: webhook ─────────────────────────────────────────────────
-  try {
-    const r = await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SB_KEY}`,
-        'x-webhook-secret': WEBHOOK_SECRET
-      },
-      body: JSON.stringify({
-        nombre, tel, email,
-        interes, nota,
-        origen_detalle: 'consignacion',
-        payload_extra: { marca, modelo, anio, km, precio, transmision: transm, descripcion: desc }
-      })
-    });
-    const data = await r.json();
-    if (r.ok && data.ok && data.prospecto_id) {
-      // Webhook creó el lead. Subimos las fotos asociadas.
-      await subirFotos(data.prospecto_id);
-      msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
-      msg.className = 'form-msg ok'; msg.style.display = 'block';
-      btn.textContent = '✓ Enviado';
-      limpiarForm();
-      return;
-    }
-    throw new Error('webhook failed: ' + (data.error || r.status));
-  } catch (err) {
-    console.warn('Webhook fallido, usando fallback:', err);
+  // ── helper: cierre exitoso (sube fotos + mensaje ok + limpia) ──
+  async function finalizarExito(prospectoId) {
+    await subirFotos(prospectoId);
+    msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
+    msg.className = 'form-msg ok'; msg.style.display = 'block';
+    btn.textContent = '✓ Enviado';
+    limpiarForm();
   }
 
-  // ── Intento 2: fallback (inserts directos sin asignar) ─────────────────
+  // Datos del lead, compartidos por todos los intentos
+  const payloadExtra = { marca, modelo, anio, km, precio, transmision: transm, descripcion: desc };
+
+  // ── helper: una llamada al webhook. Devuelve el prospecto_id o null. ──
+  async function intentarWebhook() {
+    try {
+      const r = await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SB_KEY}`,
+          'x-webhook-secret': WEBHOOK_SECRET
+        },
+        body: JSON.stringify({
+          nombre, tel, email, interes, nota,
+          origen_detalle: 'consignacion',
+          payload_extra: payloadExtra
+        })
+      });
+      const data = await r.json();
+      if (r.ok && data.ok && data.prospecto_id) return data.prospecto_id;
+      return null;
+    } catch (err) {
+      console.warn('Webhook: intento fallido:', err);
+      return null;
+    }
+  }
+
+  // ── Intento 1: webhook ─────────────────────────────────────────────────
+  let prospectoId = await intentarWebhook();
+
+  // ── Intento 2: reintento del webhook (por si fue un hipo de red) ────────
+  if (!prospectoId) {
+    console.warn('Webhook falló, reintentando una vez...');
+    await new Promise(res => setTimeout(res, 800)); // pequeña espera antes de reintentar
+    prospectoId = await intentarWebhook();
+  }
+
+  // ── Intento 3: RPC crear_lead_automatico (mantiene la rotación) ─────────
+  // Llama a la MISMA función que usa el webhook, así el lead queda asignado
+  // por rotación con historial y notificaciones, sin duplicar lógica.
+  if (!prospectoId) {
+    console.warn('Webhook caído, usando RPC crear_lead_automatico...');
+    try {
+      const rpcR = await fetch(`${SB_URL}/rest/v1/rpc/crear_lead_automatico`, {
+        method: 'POST',
+        headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json'},
+        body: JSON.stringify({
+          p_nombre: nombre,
+          p_tel: tel || null,
+          p_email: email || null,
+          p_interes: interes,
+          p_nota: nota,
+          p_origen: 'web',
+          p_origen_detalle: 'consignacion_rpc',
+          p_payload: payloadExtra
+        })
+      });
+      const rpcData = await rpcR.json();
+      if (rpcR.ok && rpcData && rpcData.ok && rpcData.prospecto_id) {
+        prospectoId = rpcData.prospecto_id;
+      }
+    } catch (err) {
+      console.warn('RPC crear_lead_automatico falló:', err);
+    }
+  }
+
+  // Si el webhook o la RPC funcionaron → cierre exitoso (lead con rotación)
+  if (prospectoId) {
+    await finalizarExito(prospectoId);
+    return;
+  }
+
+  // ── Intento 4 (último recurso): inserts directos SIN asignar ───────────
+  // Solo si TODO lo anterior falló. Preserva el lead para no perderlo,
+  // aunque quede sin vendedor asignado. Te llega una notificación al admin.
   try {
     // 1. Crear cliente
     const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
@@ -681,12 +734,9 @@ async function enviarConsignacion() {
       })
     });
     const prosp = await prospR.json();
-    const prospectoId = Array.isArray(prosp) ? prosp[0]?.id : prosp?.id;
+    const prospectoIdCrudo = Array.isArray(prosp) ? prosp[0]?.id : prosp?.id;
 
-    // 3. Subir fotos
-    await subirFotos(prospectoId);
-
-    // 4. Notificar al admin
+    // 3. Notificar al admin (sin asignar)
     await fetch(`${SB_URL}/rest/v1/notificaciones`, {
       method: 'POST',
       headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
@@ -698,10 +748,8 @@ async function enviarConsignacion() {
       })
     });
 
-    msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
-    msg.className = 'form-msg ok'; msg.style.display = 'block';
-    btn.textContent = '✓ Enviado';
-    limpiarForm();
+    // 4. Subir fotos y cerrar
+    await finalizarExito(prospectoIdCrudo);
 
   } catch(err) {
     console.error(err);
