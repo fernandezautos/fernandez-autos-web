@@ -893,7 +893,7 @@ footer a:hover { color: #fff; }
 const SB_URL  = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
 const SB_KEY  = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
 const WEBHOOK_URL    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/webhook-web';
-const WEBHOOK_SECRET = 'fa_wh_9k2m4p7x1n3q8z5j';
+const WEBHOOK_SECRET = 'fa_wh_b99930925243ea1a210abdca847b4033dd91ffd2ab431a98';
 const WSP_ROTATOR    = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
 const WSP_FALLBACK   = '5492236249445';
 
@@ -1117,41 +1117,83 @@ async function enviarConsulta(e) {
   const mensaje = document.getElementById('fMensaje').value.trim();
   const msg     = document.getElementById('formMsg');
 
-  try {
-    const r = await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_KEY}`, 'x-webhook-secret': WEBHOOK_SECRET },
-      body: JSON.stringify({ nombre, tel, email, interes, nota: mensaje, origen_detalle: 'home_contacto' })
-    });
-    const data = await r.json();
-    if (r.ok && data.ok) {
-      msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
-      msg.className = 'form-msg ok'; msg.style.display = 'block';
-      e.target.reset(); return;
-    }
-    throw new Error('webhook failed');
-  } catch(err) {
-    // Fallback directo a Supabase
+  // ── helper: una llamada al webhook. Devuelve true si creó el lead. ──
+  async function intentarWebhook() {
     try {
-      const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+      const r = await fetch(WEBHOOK_URL, {
         method: 'POST',
-        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-        body: JSON.stringify({ nombre, tel, email, interes, estado: 'Prospecto', notas: mensaje })
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_KEY}`, 'x-webhook-secret': WEBHOOK_SECRET },
+        body: JSON.stringify({ nombre, tel, email, interes, nota: mensaje, origen_detalle: 'home_contacto' })
       });
-      const cli = await cliR.json();
-      const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
-      await fetch(`${SB_URL}/rest/v1/prospectos`, {
-        method: 'POST',
-        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ cliente_id: clienteId, nombre, tel, email, interes, nota: mensaje, col: 'nueva', cerrado: false, origen: 'web', origen_detalle: 'home_contacto_fallback', ultimo_contacto: new Date().toISOString() })
-      });
-      msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
-      msg.className = 'form-msg ok'; msg.style.display = 'block';
-      e.target.reset();
-    } catch(err2) {
-      msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
-      msg.className = 'form-msg err'; msg.style.display = 'block';
+      const data = await r.json();
+      return !!(r.ok && data.ok);
+    } catch (err) {
+      console.warn('Webhook: intento fallido:', err);
+      return false;
     }
+  }
+
+  function exito() {
+    msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
+    msg.className = 'form-msg ok'; msg.style.display = 'block';
+    e.target.reset();
+  }
+
+  // ── Intento 1: webhook ─────────────────────────────────────────────────
+  let ok = await intentarWebhook();
+
+  // ── Intento 2: reintento del webhook (por si fue un hipo de red) ────────
+  if (!ok) {
+    console.warn('Webhook falló, reintentando una vez...');
+    await new Promise(res => setTimeout(res, 800));
+    ok = await intentarWebhook();
+  }
+
+  // ── Intento 3: RPC crear_lead_automatico (mantiene la rotación) ─────────
+  if (!ok) {
+    console.warn('Webhook caído, usando RPC crear_lead_automatico...');
+    try {
+      const rpcR = await fetch(`${SB_URL}/rest/v1/rpc/crear_lead_automatico`, {
+        method: 'POST',
+        headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          p_nombre: nombre, p_tel: tel || null, p_email: email || null,
+          p_interes: interes, p_nota: mensaje,
+          p_origen: 'web', p_origen_detalle: 'home_contacto_rpc', p_payload: null
+        })
+      });
+      const rpcData = await rpcR.json();
+      if (rpcR.ok && rpcData && rpcData.ok && rpcData.prospecto_id) ok = true;
+    } catch (err) {
+      console.warn('RPC crear_lead_automatico falló:', err);
+    }
+  }
+
+  if (ok) { exito(); return; }
+
+  // ── Intento 4 (último recurso): inserts directos SIN asignar ───────────
+  try {
+    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+      body: JSON.stringify({ nombre, tel, email, interes, estado: 'Prospecto', notas: mensaje })
+    });
+    const cli = await cliR.json();
+    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
+    await fetch(`${SB_URL}/rest/v1/prospectos`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ cliente_id: clienteId, nombre, tel, email, interes, nota: mensaje, col: 'nueva', cerrado: false, origen: 'web', origen_detalle: 'home_contacto_fallback', ultimo_contacto: new Date().toISOString() })
+    });
+    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ para: 'admin', tipo: 'nuevo_lead', titulo: '🌐 Nueva consulta (sin asignar)', mensaje: `${nombre} · ${interes} · ${tel}`, leida: false })
+    });
+    exito();
+  } catch(err2) {
+    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
   }
 }
 window.enviarConsulta = enviarConsulta;
