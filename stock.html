@@ -763,7 +763,7 @@ const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio'
 
 async function cargarStock() {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&or=(estado.eq.Disponible,estado.eq.Reservado)&order=created_at.desc`, {
+    const r = await fetch(`${SB_URL}/rest/v1/vehiculos_publico?select=*&or=(estado.eq.Disponible,estado.eq.Reservado)&order=created_at.desc`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
     stockData = await r.json();

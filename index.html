@@ -1064,7 +1064,7 @@ async function cargarContenidoHome() {
 // ── STOCK ─────────────────────────────────────────────────────────
 async function cargarStock() {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/vehiculos?select=*&estado=eq.Disponible&order=created_at.desc&limit=6`, {
+    const r = await fetch(`${SB_URL}/rest/v1/vehiculos_publico?select=*&estado=eq.Disponible&order=created_at.desc&limit=6`, {
       headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
     });
     const data = await r.json();
