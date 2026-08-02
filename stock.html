@@ -843,7 +843,7 @@ function renderGrilla(autos) {
     return;
   }
   grid.innerHTML = autos.map(v => `
-    <div class="auto-card" onclick="abrirModal(${JSON.stringify(v).replace(/"/g,'&quot;')})">
+    <div class="auto-card" onclick="verAuto('${(v.slug||('id-'+v.id)).replace(/'/g,'')}')" style="cursor:pointer;">
       <div class="auto-card-img">
         ${v.foto_portada ? `<img src="${v.foto_portada}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`}
         <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
@@ -865,6 +865,12 @@ function renderGrilla(autos) {
         </div>
       </div>
     </div>`).join('');
+}
+
+// NAVEGAR A LA FICHA INDIVIDUAL DEL AUTO
+function verAuto(slug) {
+  if(!slug) return;
+  window.location.href = '/auto/' + slug;
 }
 
 // MODAL FICHA
