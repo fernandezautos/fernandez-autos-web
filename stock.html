@@ -662,8 +662,10 @@ let wspContexto = null;
 function abrirWspModal(contexto) {
   wspContexto = contexto || null;
   document.getElementById('wspNombre').value = '';
+  document.getElementById('wspApellido').value = '';
   document.getElementById('wspTelefono').value = '';
   document.getElementById('wspNombre').classList.remove('inp-err');
+  document.getElementById('wspApellido').classList.remove('inp-err');
   document.getElementById('wspTelefono').classList.remove('inp-err');
   const btn = document.getElementById('wspBtn');
   btn.disabled = false;
@@ -683,14 +685,19 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function enviarWspModal() {
-  const nombre = document.getElementById('wspNombre').value.trim();
+  const nombreInput = document.getElementById('wspNombre').value.trim();
+  const apellidoInput = document.getElementById('wspApellido').value.trim();
   const telefono = document.getElementById('wspTelefono').value.trim();
   let valido = true;
-  if (!nombre || nombre.length < 2) { document.getElementById('wspNombre').classList.add('inp-err'); valido = false; }
+  if (!nombreInput || nombreInput.length < 2) { document.getElementById('wspNombre').classList.add('inp-err'); valido = false; }
   else document.getElementById('wspNombre').classList.remove('inp-err');
+  if (!apellidoInput || apellidoInput.length < 2) { document.getElementById('wspApellido').classList.add('inp-err'); valido = false; }
+  else document.getElementById('wspApellido').classList.remove('inp-err');
   if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); valido = false; }
   else document.getElementById('wspTelefono').classList.remove('inp-err');
   if (!valido) return;
+  const nombre   = nombreInput;
+  const apellido = apellidoInput;
 
   const btn = document.getElementById('wspBtn');
   btn.disabled = true;
@@ -700,7 +707,7 @@ async function enviarWspModal() {
     const r = await fetch(WSP_ROTATOR, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, telefono, contexto: wspContexto })
+      body: JSON.stringify({ nombre, apellido, telefono, contexto: wspContexto })
     });
     const data = await r.json();
     if (data.ok && data.numero_vendedor) {
@@ -862,6 +869,10 @@ document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click',
     <div class="wsp-modal-field">
       <label>Nombre *</label>
       <input type="text" id="wspNombre" placeholder="Tu nombre" autocomplete="given-name">
+    </div>
+    <div class="wsp-modal-field">
+      <label>Apellido *</label>
+      <input type="text" id="wspApellido" placeholder="Tu apellido" autocomplete="family-name">
     </div>
     <div class="wsp-modal-field">
       <label>Tel&#233;fono *</label>
