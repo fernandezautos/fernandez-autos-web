@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
 <title>Fernández Autos — Concesionaria en Mar del Plata</title>
 <meta name="description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
 <meta property="og:type" content="website">
@@ -20,15 +20,15 @@
 <meta name="twitter:card" content="summary_large_image">
 <style>
 :root {
-  --black: #0e0d0b;
-  --white: #fafaf7;
-  --cream: #f4f2ec;
-  --accent: #1a4a8a;
-  --accent-light: #2558a3;
-  --muted: #7a7870;
-  --border: #e2dfd5;
+  --black: #131210;
+  --white: #faf9f6;
+  --cream: #edeae1;
+  --accent: #2f4d5e;
+  --accent-light: #3d6478;
+  --muted: #6f6d64;
+  --border: #dcd8cc;
   --sans: 'Helvetica Neue', Arial, sans-serif;
-  --serif: Georgia, 'Times New Roman', serif;
+  --serif: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -109,11 +109,11 @@ header {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--accent); color: #fff;
   font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 20px; margin-bottom: 16px;
+  padding: 5px 14px; border-radius: 10px; margin-bottom: 16px;
 }
 .carousel-content h1 {
   font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1.1; font-weight: 400; margin-bottom: 14px;
+  line-height: 1.1; font-weight: 700; margin-bottom: 14px;
 }
 .carousel-sub {
   font-size: 0.95rem; color: rgba(255,255,255,.8); line-height: 1.6;
@@ -126,7 +126,7 @@ header {
   cursor: pointer; text-decoration: none; transition: all .22s;
   display: inline-flex; align-items: center; gap: 8px;
 }
-.btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,74,138,.35); }
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 5px 14px rgba(47,77,94,.3); }
 .btn-secondary {
   background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
   color: #fff; border: 1.5px solid rgba(255,255,255,.4); border-radius: 10px;
@@ -140,8 +140,8 @@ header {
   z-index: 2; display: flex; flex-direction: column; gap: 12px;
 }
 .stat {
-  background: rgba(255,255,255,.12); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,.2); border-radius: 10px;
+  background: rgba(19,18,16,.55);
+  border: 1px solid rgba(255,255,255,.18); border-radius: 6px;
   padding: 12px 20px; text-align: center; color: #fff;
 }
 .stat-num { font-family: var(--serif); font-size: 1.7rem; line-height: 1; }
@@ -164,15 +164,15 @@ header {
 .quienes-section { background: var(--cream); padding: 88px 48px; }
 .quienes-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .quienes-text .section-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 10px; }
-.quienes-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 400; line-height: 1.2; margin-bottom: 20px; }
+.quienes-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
 .quienes-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
 .quienes-razones { display: flex; flex-direction: column; gap: 16px; }
 .razon-item { display: flex; align-items: flex-start; gap: 16px; }
 .razon-icon {
-  width: 44px; height: 44px; border-radius: 10px; background: var(--accent);
+  width: 44px; height: 44px; border-radius: 6px; background: transparent; border: 1.5px solid var(--border);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.razon-icon svg { color: #fff; }
+.razon-icon svg { color: var(--accent); }
 .razon-text h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 3px; }
 .razon-text p { font-size: 0.84rem; color: var(--muted); line-height: 1.5; }
 
@@ -180,16 +180,16 @@ header {
 .stock-section { padding: 88px 48px; background: var(--white); }
 .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px; }
 .section-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 8px; }
-.section-title { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 400; }
+.section-title { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 700; }
 .ver-todo { font-size: 0.88rem; color: var(--accent); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
 .ver-todo:hover { text-decoration: underline; }
 .autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
 .auto-card {
-  border-radius: 14px; overflow: hidden; background: #fff;
+  border-radius: 7px; overflow: hidden; background: #fff;
   border: 1px solid var(--border); transition: all .22s;
   text-decoration: none; color: inherit; display: block;
 }
-.auto-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); border-color: transparent; }
+.auto-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,.08); border-color: transparent; }
 .auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
 .auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .auto-card:hover .auto-card-img img { transform: scale(1.04); }
@@ -201,7 +201,7 @@ header {
 .auto-tag {
   position: absolute; top: 12px; left: 12px;
   font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-  padding: 4px 10px; border-radius: 20px;
+  padding: 4px 10px; border-radius: 10px;
 }
 .tag-usado { background: var(--black); color: #fff; }
 .tag-nuevo { background: var(--accent); color: #fff; }
@@ -209,7 +209,7 @@ header {
 .auto-nombre { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
 .auto-detalle { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
 .auto-footer { display: flex; align-items: center; justify-content: space-between; }
-.auto-precio { font-family: var(--serif); font-size: 1.25rem; color: var(--accent); font-weight: 400; }
+.auto-precio { font-family: var(--serif); font-size: 1.25rem; color: var(--accent); font-weight: 700; }
 .auto-cta {
   background: var(--accent); color: #fff; border: none; border-radius: 7px;
   padding: 7px 14px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
@@ -228,19 +228,9 @@ header {
 
 /* ── CONSIGNACIONES ── */
 .consig-section { background: var(--accent); padding: 88px 48px; position: relative; overflow: hidden; }
-.consig-section::before {
-  content: ''; position: absolute; top: -60px; right: -60px;
-  width: 300px; height: 300px; border-radius: 50%;
-  background: rgba(255,255,255,.05);
-}
-.consig-section::after {
-  content: ''; position: absolute; bottom: -80px; left: 30%;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: rgba(255,255,255,.04);
-}
 .consig-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; }
 .consig-text .section-label { color: rgba(255,255,255,.6); }
-.consig-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 400; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+.consig-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 20px; }
 .consig-text p { font-size: 0.95rem; color: rgba(255,255,255,.8); line-height: 1.8; margin-bottom: 28px; }
 .consig-pasos { display: flex; flex-direction: column; gap: 20px; }
 .consig-paso { display: flex; align-items: flex-start; gap: 16px; }
@@ -253,10 +243,10 @@ header {
 .consig-paso-text h4 { font-size: 0.95rem; font-weight: 600; color: #fff; margin-bottom: 3px; }
 .consig-paso-text p { font-size: 0.84rem; color: rgba(255,255,255,.7); line-height: 1.5; }
 .consig-card {
-  background: rgba(255,255,255,.1); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 36px;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 10px; padding: 36px;
 }
-.consig-card h3 { font-family: var(--serif); font-size: 1.4rem; color: #fff; font-weight: 400; margin-bottom: 24px; }
+.consig-card h3 { font-family: var(--serif); font-size: 1.4rem; color: #fff; font-weight: 700; margin-bottom: 24px; }
 .consig-beneficios { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
 .consig-beneficio { display: flex; align-items: center; gap: 12px; }
 .consig-check {
@@ -277,10 +267,10 @@ header {
 .servicios-section { background: var(--cream); padding: 88px 48px; }
 .servicios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
 .servicio-card {
-  background: #fff; border-radius: 16px; padding: 32px 28px;
+  background: #fff; border-radius: 8px; padding: 32px 28px;
   border: 1px solid var(--border); transition: all .22s;
 }
-.servicio-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+.servicio-card:hover { transform: translateY(-3px); box-shadow: 0 5px 16px rgba(0,0,0,.06); }
 .servicio-icon-wrap {
   width: 52px; height: 52px; border-radius: 12px; background: var(--cream);
   display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
@@ -295,14 +285,14 @@ header {
   display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
 }
 .fin-text .section-label { margin-bottom: 10px; }
-.fin-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 400; margin-bottom: 20px; line-height: 1.2; }
+.fin-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.4rem); font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
 .fin-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 28px; }
 .fin-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
 .fin-feature { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
 .fin-check { width: 24px; height: 24px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .fin-check svg { color: #fff; }
-.fin-calc { background: var(--black); border-radius: 20px; padding: 36px; color: #fff; }
-.fin-calc h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
+.fin-calc { background: var(--black); border-radius: 10px; padding: 36px; color: #fff; }
+.fin-calc h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 700; }
 .calc-field { margin-bottom: 18px; }
 .calc-field label { font-size: 0.7rem; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
 .calc-field input, .calc-field select {
@@ -313,7 +303,7 @@ header {
 .calc-field select option { background: #1a1917; }
 .calc-result { background: rgba(255,255,255,.08); border-radius: 10px; padding: 18px; margin-top: 20px; text-align: center; }
 .calc-result-label { font-size: 0.72rem; color: rgba(255,255,255,.5); margin-bottom: 6px; }
-.calc-result-val { font-family: var(--serif); font-size: 2rem; color: #a8c4f0; }
+.calc-result-val { font-family: var(--serif); font-size: 2rem; color: #a9c2cc; }
 .calc-result-sub { font-size: 0.7rem; color: rgba(255,255,255,.35); margin-top: 4px; }
 .btn-calc {
   width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: none;
@@ -329,14 +319,14 @@ header {
 .contacto-info { display: flex; flex-direction: column; gap: 24px; }
 .contacto-item { display: flex; gap: 16px; align-items: flex-start; }
 .contacto-item-icon {
-  width: 44px; height: 44px; background: var(--accent); border-radius: 10px;
+  width: 44px; height: 44px; background: transparent; border: 1.5px solid var(--border); border-radius: 6px;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.contacto-item-icon svg { color: #fff; }
+.contacto-item-icon svg { color: var(--accent); }
 .contacto-item-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
 .contacto-item-val { font-weight: 600; font-size: 0.95rem; }
-.contacto-form { background: #fff; border-radius: 20px; padding: 36px; border: 1px solid var(--border); }
-.contacto-form h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 400; }
+.contacto-form { background: #fff; border-radius: 10px; padding: 36px; border: 1px solid var(--border); }
+.contacto-form h3 { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 24px; font-weight: 700; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
 .form-field.full { grid-column: 1/-1; }
@@ -395,13 +385,13 @@ footer a:hover { color: #fff; }
 }
 .wsp-modal-overlay.open { display: flex; }
 .wsp-modal-box {
-  background: #fff; border-radius: 20px; padding: 36px 32px;
+  background: #fff; border-radius: 10px; padding: 36px 32px;
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
 .wsp-modal-close { position: absolute; top: 16px; right: 18px; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #9e9e9e; line-height: 1; }
 .wsp-modal-close:hover { color: #333; }
-.wsp-modal-icon { width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.wsp-modal-icon { width: 52px; height: 52px; background: #e8f5e9; border-radius: 7px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
 .wsp-modal-title { text-align: center; font-size: 1.1rem; font-weight: 700; color: var(--black); margin-bottom: 6px; }
 .wsp-modal-sub { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
 .wsp-modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
@@ -458,8 +448,8 @@ footer a:hover { color: #fff; }
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <a href="index.html" class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
       </text>
     </svg>
   </a>
@@ -484,8 +474,8 @@ footer a:hover { color: #fff; }
 <div id="navMenu" class="nav-mobile-panel">
   <div class="drawer-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
       </text>
     </svg>
   </div>
@@ -846,7 +836,7 @@ footer a:hover { color: #fff; }
 <footer>
   <a href="index.html" class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="28" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
         <tspan fill="rgba(255,255,255,.6)">Fernandez</tspan><tspan fill="rgba(255,255,255,.4)"> Autos</tspan>
       </text>
     </svg>

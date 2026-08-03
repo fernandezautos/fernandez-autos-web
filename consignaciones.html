@@ -12,7 +12,7 @@
 <!-- Fuente Audiowide para SVG del logo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
 <title>Consignaciones — Fernández Autos</title>
 <meta name="description" content="Vendé tu auto con nosotros. Te encargamos todo.">
 <!-- Open Graph -->
@@ -26,9 +26,9 @@
 
 <style>
 :root {
-  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
-  --accent: #1a4a8a; --accent-light: #2558a3;
-  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+  --black: #131210; --white: #faf9f6; --cream: #edeae1;
+  --accent: #2f4d5e; --accent-light: #3d6478;
+  --muted: #6f6d64; --border: #dcd8cc; --sans: Arial, sans-serif;
   --green: #2d6a30; --green-bg: #e8f5e9;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -150,7 +150,7 @@ nav a:hover, nav a.active { color: var(--black); }
 .form-wrap { max-width: 760px; margin: 40px auto; padding: 0 20px 60px; }
 
 .form-section-card {
-  background: #fff; border-radius: 16px; padding: 28px 32px;
+  background: #fff; border-radius: 8px; padding: 28px 32px;
   margin-bottom: 16px; border: 1px solid var(--border);
 }
 .form-section-title {
@@ -182,7 +182,7 @@ nav a:hover, nav a.active { color: var(--black); }
   background: #f0f6ff;
 }
 .upload-area:hover { border-color: var(--accent); background: #e8f0fb; }
-.upload-icon { font-size: 2rem; margin-bottom: 10px; color: var(--accent); }
+.upload-icon { display: flex; justify-content: center; margin-bottom: 10px; color: var(--accent); }
 .upload-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
 .upload-sub { font-size: 0.78rem; color: var(--muted); }
 .upload-input { display: none; }
@@ -254,7 +254,7 @@ footer a:hover { color: #fff; }
 }
 .wsp-modal-overlay.open { display: flex; }
 .wsp-modal-box {
-  background: #fff; border-radius: 20px; padding: 36px 32px;
+  background: #fff; border-radius: 10px; padding: 36px 32px;
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
@@ -265,7 +265,7 @@ footer a:hover { color: #fff; }
 }
 .wsp-modal-close:hover { color: #333; }
 .wsp-modal-icon {
-  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
+  width: 52px; height: 52px; background: #e8f5e9; border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
@@ -304,8 +304,8 @@ footer a:hover { color: #fff; }
 <header>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+    <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
   </text>
 </svg></a>
   <nav class="nav-desktop">
@@ -329,8 +329,8 @@ footer a:hover { color: #fff; }
 <div id="navMenu" class="nav-mobile-panel">
   <div class="drawer-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
       </text>
     </svg>
   </div>
@@ -420,7 +420,7 @@ footer a:hover { color: #fff; }
       <span class="form-section-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span> Fotos del vehículo
     </div>
     <div class="upload-area" onclick="document.getElementById('inputFotos').click()" id="uploadArea">
-      <div class="upload-icon">⬆️</div>
+      <div class="upload-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 8 12 3 17 8"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
       <div class="upload-title">Subí tus fotos</div>
       <div class="upload-sub" id="uploadSub">0 / 3 imágenes</div>
     </div>

@@ -12,7 +12,7 @@
 <!-- Fuente Audiowide para SVG del logo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
 <title>Financiación — Fernández Autos</title>
 <meta name="description" content="Financiá tu auto con las mejores condiciones del mercado.">
 <!-- Open Graph -->
@@ -26,9 +26,9 @@
 
 <style>
 :root {
-  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
-  --accent: #1a4a8a; --accent-light: #2558a3;
-  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+  --black: #131210; --white: #faf9f6; --cream: #edeae1;
+  --accent: #2f4d5e; --accent-light: #3d6478;
+  --muted: #6f6d64; --border: #dcd8cc; --sans: Arial, sans-serif;
   --green: #2d6a30; --green-bg: #e8f5e9;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -132,7 +132,7 @@ nav a:hover, nav a.active { color: var(--black); }
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--accent); color: #fff;
   font-size: 0.72rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+  padding: 5px 14px; border-radius: 10px; margin-bottom: 20px;
 }
 .hero-text h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
 .hero-text h1 span { color: #a8c4f0; }
@@ -157,9 +157,9 @@ nav a:hover, nav a.active { color: var(--black); }
 .hero-stats { display: flex; flex-direction: column; gap: 16px; }
 .stat-card {
   background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
-  border-radius: 14px; padding: 20px 24px; display: flex; align-items: center; gap: 18px;
+  border-radius: 7px; padding: 20px 24px; display: flex; align-items: center; gap: 18px;
 }
-.stat-icon { font-size: 2rem; flex-shrink: 0; }
+.stat-icon { width: 44px; height: 44px; flex-shrink: 0; border: 1.5px solid rgba(255,255,255,.25); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #a9c2cc; }
 .stat-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .stat-desc { font-size: 0.82rem; color: rgba(255,255,255,.55); line-height: 1.5; }
 
@@ -169,10 +169,10 @@ nav a:hover, nav a.active { color: var(--black); }
 .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 40px; }
 .opciones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .opcion-card {
-  border-radius: 16px; padding: 32px 28px; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 32px 28px; border: 1.5px solid var(--border);
   transition: all .22s; position: relative; overflow: hidden;
 }
-.opcion-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(26,74,138,.1); }
+.opcion-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 5px 16px rgba(47,77,94,.12); }
 .opcion-card.destacada { background: var(--accent); border-color: var(--accent); color: #fff; }
 .opcion-card.destacada .opcion-desc { color: rgba(255,255,255,.75); }
 .opcion-card.destacada .opcion-item { color: rgba(255,255,255,.85); }
@@ -240,8 +240,8 @@ nav a:hover, nav a.active { color: var(--black); }
 .form-text p { font-size: 0.92rem; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
 .form-text-items { display: flex; flex-direction: column; gap: 12px; }
 .form-text-item { display: flex; align-items: center; gap: 12px; color: var(--black); font-size: 0.88rem; }
-.form-text-item span:first-child { font-size: 1.2rem; }
-.form-box { background: var(--cream); border-radius: 20px; padding: 36px; border: 1px solid var(--border); }
+.form-text-item span:first-child { width: 30px; height: 30px; flex-shrink: 0; border: 1.5px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--accent); }
+.form-box { background: var(--cream); border-radius: 10px; padding: 36px; border: 1px solid var(--border); }
 .form-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; color: var(--black); }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 .form-field { display: flex; flex-direction: column; gap: 6px; }
@@ -334,7 +334,7 @@ footer a:hover { color: #fff; }
 }
 .wsp-modal-overlay.open { display: flex; }
 .wsp-modal-box {
-  background: #fff; border-radius: 20px; padding: 36px 32px;
+  background: #fff; border-radius: 10px; padding: 36px 32px;
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
@@ -345,7 +345,7 @@ footer a:hover { color: #fff; }
 }
 .wsp-modal-close:hover { color: #333; }
 .wsp-modal-icon {
-  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
+  width: 52px; height: 52px; background: #e8f5e9; border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
@@ -383,8 +383,8 @@ footer a:hover { color: #fff; }
 <header>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+    <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
   </text>
 </svg></a>
   <nav class="nav-desktop">
@@ -408,8 +408,8 @@ footer a:hover { color: #fff; }
 <div id="navMenu" class="nav-mobile-panel">
   <div class="drawer-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
       </text>
     </svg>
   </div>
@@ -438,21 +438,21 @@ footer a:hover { color: #fff; }
   </div>
   <div class="hero-stats">
     <div class="stat-card" id="finStat1">
-      <div class="stat-icon">🏦</div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21V13h6v8"/></svg></div>
       <div>
         <div class="stat-title">Crédito bancario</div>
         <div class="stat-desc">Gestionamos el crédito con los principales bancos del país. Tasas competitivas y aprobación ágil.</div>
       </div>
     </div>
     <div class="stat-card" id="finStat2">
-      <div class="stat-icon">🔄</div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 21l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
       <div>
         <div class="stat-title">Permuta como parte de pago</div>
         <div class="stat-desc">Usá tu auto actual como parte del pago. Tasación justa y proceso simple.</div>
       </div>
     </div>
     <div class="stat-card" id="finStat3">
-      <div class="stat-icon">📋</div>
+      <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
       <div>
         <div class="stat-title">Gestión integral</div>
         <div class="stat-desc">Nos encargamos de todo el papeleo. Vos solo elegís el auto y firmás.</div>
@@ -499,9 +499,9 @@ footer a:hover { color: #fff; }
     <h2>¿Querés que te <span>llamemos?</span></h2>
     <p>Dejanos tus datos y un asesor te contacta para explicarte las opciones disponibles según tu situación.</p>
     <div class="form-text-items">
-      <div class="form-text-item"><span>⚡</span><span>Respuesta en menos de 24hs hábiles</span></div>
-      <div class="form-text-item"><span>🔒</span><span>Tus datos son confidenciales</span></div>
-      <div class="form-text-item"><span>💬</span><span>Sin compromisos ni presiones</span></div>
+      <div class="form-text-item"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>Respuesta en menos de 24hs hábiles</span></div>
+      <div class="form-text-item"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span>Tus datos son confidenciales</span></div>
+      <div class="form-text-item"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>Sin compromisos ni presiones</span></div>
     </div>
   </div>
   <div class="form-box">
@@ -579,7 +579,7 @@ footer a:hover { color: #fff; }
 <footer>
   <a href="index.html" class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="28" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
         <tspan fill="rgba(255,255,255,.6)">Fernandez</tspan><tspan fill="rgba(255,255,255,.4)"> Autos</tspan>
       </text>
     </svg>

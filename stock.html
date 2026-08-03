@@ -12,7 +12,7 @@
 <!-- Fuente Audiowide para SVG del logo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
 <title>Stock de Autos — Fernández Autos</title>
 <meta name="description" content="Explorá nuestro stock de autos usados y 0km en Mar del Plata.">
 <!-- Open Graph -->
@@ -26,9 +26,9 @@
 
 <style>
 :root {
-  --black: #0e0d0b; --white: #fafaf7; --cream: #f4f2ec;
-  --accent: #1a4a8a; --accent-light: #2558a3;
-  --muted: #7a7870; --border: #e2dfd5; --sans: Arial, sans-serif;
+  --black: #131210; --white: #faf9f6; --cream: #edeae1;
+  --accent: #2f4d5e; --accent-light: #3d6478;
+  --muted: #6f6d64; --border: #dcd8cc; --sans: Arial, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -171,11 +171,11 @@ nav a:hover, nav a.active { color: var(--black); }
 .stock-body { padding: 32px 48px; }
 .autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 .auto-card {
-  border-radius: 14px; overflow: hidden; background: #fff;
+  border-radius: 7px; overflow: hidden; background: #fff;
   border: 1px solid var(--border); transition: all .22s;
   text-decoration: none; color: inherit; display: block; cursor: pointer;
 }
-.auto-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); border-color: transparent; }
+.auto-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,.08); border-color: transparent; }
 .auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
 .auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
 .auto-card:hover .auto-card-img img { transform: scale(1.04); }
@@ -183,7 +183,7 @@ nav a:hover, nav a.active { color: var(--black); }
 .auto-tag {
   position: absolute; top: 12px; left: 12px;
   font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-  padding: 4px 10px; border-radius: 20px;
+  padding: 4px 10px; border-radius: 10px;
 }
 .tag-usado { background: var(--black); color: #fff; }
 .tag-nuevo { background: var(--accent); color: #fff; }
@@ -192,13 +192,13 @@ nav a:hover, nav a.active { color: var(--black); }
   background: #92400e; color: #fff;
   font-size: 0.62rem; font-weight: 700;
   text-transform: uppercase; letter-spacing: 1.2px;
-  padding: 4px 10px; border-radius: 20px;
+  padding: 4px 10px; border-radius: 10px;
   font-family: Arial, sans-serif;
   z-index: 2;
 }
 .foto-count {
   position: absolute; bottom: 10px; right: 10px;
-  background: rgba(0,0,0,.6); color: #fff; border-radius: 20px;
+  background: rgba(0,0,0,.6); color: #fff; border-radius: 10px;
   padding: 3px 10px; font-size: 0.72rem; display: flex; align-items: center; gap: 4px;
 }
 .auto-card-body { padding: 16px 18px; }
@@ -228,7 +228,7 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .modal-overlay.open { display: flex; }
 .modal-box {
-  background: #fff; border-radius: 18px; width: 100%; max-width: 960px;
+  background: #fff; border-radius: 9px; width: 100%; max-width: 960px;
   max-height: 90vh; overflow: hidden;
   box-shadow: 0 40px 100px rgba(0,0,0,.25);
   margin: auto; display: grid; grid-template-columns: 1fr 1fr;
@@ -447,7 +447,7 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .wsp-modal-overlay.open { display: flex; }
 .wsp-modal-box {
-  background: #fff; border-radius: 20px; padding: 36px 32px;
+  background: #fff; border-radius: 10px; padding: 36px 32px;
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
@@ -458,7 +458,7 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .wsp-modal-close:hover { color: #333; }
 .wsp-modal-icon {
-  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
+  width: 52px; height: 52px; background: #e8f5e9; border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
@@ -497,7 +497,7 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .wsp-modal-overlay.open { display: flex; }
 .wsp-modal-box {
-  background: #fff; border-radius: 20px; padding: 36px 32px;
+  background: #fff; border-radius: 10px; padding: 36px 32px;
   width: 100%; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,.35);
   position: relative;
 }
@@ -508,7 +508,7 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .wsp-modal-close:hover { color: #333; }
 .wsp-modal-icon {
-  width: 52px; height: 52px; background: #e8f5e9; border-radius: 14px;
+  width: 52px; height: 52px; background: #e8f5e9; border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 16px;
 }
@@ -546,8 +546,8 @@ nav a:hover, nav a.active { color: var(--black); }
 <header>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <a href="index.html" class="logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="32" style="display:block;overflow:visible;">
-  <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-    <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+  <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+    <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
   </text>
 </svg></a>
   <nav class="nav-desktop">
@@ -571,8 +571,8 @@ nav a:hover, nav a.active { color: var(--black); }
 <div id="navMenu" class="nav-mobile-panel">
   <div class="drawer-logo">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" style="display:block;overflow:visible;">
-      <text y="60" font-family="Audiowide, sans-serif" font-size="56">
-        <tspan fill="#1A1B4B">Fernandez</tspan><tspan fill="#6E707A"> Autos</tspan>
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
       </text>
     </svg>
   </div>
