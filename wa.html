@@ -330,7 +330,8 @@
             'Authorization': `Bearer ${SUPABASE_KEY}`
           },
           body: JSON.stringify({
-            nombre: nombreCompleto,
+            nombre: nombre,
+            apellido: apellido,
             telefono: telefono,
             contexto: origenParam,
             turnstileToken: tsToken
