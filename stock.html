@@ -177,8 +177,8 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .auto-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,.08); border-color: transparent; }
 .auto-card-img { position: relative; height: 200px; background: var(--cream); overflow: hidden; }
-.auto-card-img img { width: 100%; height: 100%; object-fit: contain; transition: transform .4s; }
-.auto-card:hover .auto-card-img img { transform: scale(1.02); }
+.auto-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.auto-card:hover .auto-card-img img { transform: scale(1.04); }
 .auto-card-img-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
 .auto-tag {
   position: absolute; top: 12px; left: 12px;
@@ -732,14 +732,17 @@ const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio'
 // Redimensiona una imagen de Supabase Storage on-the-fly usando el transformador de imágenes.
 // Convierte .../object/public/... en .../render/image/public/...?width=&quality=
 // Defensiva: si la url no es de Supabase Storage, es null, o ya está transformada, la devuelve tal cual.
-function imgTransform(url, width, quality){
+function imgTransform(url, width, height, quality){
   if(!url || typeof url !== 'string') return url;
   if(url.indexOf('/render/image/') !== -1) return url; // ya transformada
   const marca = '/storage/v1/object/public/';
   if(url.indexOf(marca) === -1) return url; // no es Supabase Storage público
   const nueva = url.replace(marca, '/storage/v1/render/image/public/');
   const sep = nueva.indexOf('?') === -1 ? '?' : '&';
-  return `${nueva}${sep}width=${width}&quality=${quality||70}`;
+  let params = `width=${width}`;
+  if(height) params += `&height=${height}&resize=contain`;
+  params += `&quality=${quality||70}`;
+  return `${nueva}${sep}${params}`;
 }
 
 async function cargarStock() {
@@ -826,7 +829,7 @@ function renderGrilla(autos) {
   grid.innerHTML = autos.map(v => `
     <div class="auto-card" onclick="verAuto('${(v.slug||('id-'+v.id)).replace(/'/g,'')}')" style="cursor:pointer;">
       <div class="auto-card-img">
-        ${v.foto_portada ? `<img src="${imgTransform(v.foto_portada, 600, 70)}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`}
+        ${v.foto_portada ? `<img src="${imgTransform(v.foto_portada, 600, 400, 72)}" alt="${v.marca} ${v.modelo}" loading="lazy">` : `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`}
         <span class="auto-tag ${v.tipo==='Nuevo'?'tag-nuevo':'tag-usado'}">${v.tipo==='Nuevo'?'0 km':'Usado'}</span>
         ${v.estado==='Reservado'?'<span class="tag-reservado">Reservado</span>':''}
       </div>
