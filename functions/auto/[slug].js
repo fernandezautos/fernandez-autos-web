@@ -28,6 +28,23 @@ function esc(s) {
     .replace(/'/g, "&#39;");
 }
 
+// --- Redimensionar imagen de Supabase Storage on-the-fly ---
+// Convierte .../object/public/... en .../render/image/public/...?width=&height=&resize=contain
+// Defensiva: si no es de Supabase Storage publico, es null, o ya esta transformada, devuelve tal cual.
+// resize=contain + height enderezan la orientacion (EXIF) y evitan recortes raros.
+function imgTransform(url, width, height, quality) {
+  if (!url || typeof url !== "string") return url;
+  if (url.indexOf("/render/image/") !== -1) return url;
+  const marca = "/storage/v1/object/public/";
+  if (url.indexOf(marca) === -1) return url;
+  const nueva = url.replace(marca, "/storage/v1/render/image/public/");
+  const sep = nueva.indexOf("?") === -1 ? "?" : "&";
+  let params = "width=" + width;
+  if (height) params += "&height=" + height + "&resize=contain";
+  params += "&quality=" + (quality || 70);
+  return nueva + sep + params;
+}
+
 // --- Formatear precio en pesos argentinos ---
 function fmtPrecio(n) {
   if (!n) return "Consultar precio";
@@ -89,7 +106,12 @@ function paginaAuto(v, fotos, slug) {
   const nombre = [v.marca, v.modelo, v.anio].filter(Boolean).join(" ");
   const nombreCompleto = [v.marca, v.modelo, v.anio, v.version].filter(Boolean).join(" ");
   const titulo = `${nombreCompleto} — Fernández Autos`;
+  // Open Graph: se deja la foto ORIGINAL sin transformar (WhatsApp/Facebook
+  // cachean la preview y son quisquillosos con las URLs transformadas).
   const fotoPrincipal = fotos[0] || `${SITE}/og-image-1200x630.png`;
+  // Versiones transformadas para mostrar en la pagina (velocidad + orientacion):
+  const fotosVista = fotos.map((u) => imgTransform(u, 900, 675, 74)); // principal (4:3)
+  const fotosThumb = fotos.map((u) => imgTransform(u, 200, 156, 72)); // miniaturas
   const url = `${SITE}/auto/${slug}`;
   const precioTxt = fmtPrecio(v.precio);
   const reservado = v.estado === "Reservado";
@@ -125,7 +147,7 @@ function paginaAuto(v, fotos, slug) {
   // Galeria
   const thumbsHTML =
     fotos.length > 1
-      ? `<div class="thumbs">${fotos
+      ? `<div class="thumbs">${fotosThumb
           .map(
             (u, i) =>
               `<img class="thumb ${i === 0 ? "active" : ""}" src="${esc(u)}" onclick="verFoto(${i})" loading="lazy" alt="">`
@@ -134,7 +156,7 @@ function paginaAuto(v, fotos, slug) {
       : "";
 
   const fotoPrincipalHTML = fotos.length
-    ? `<img id="fotoPrincipal" src="${esc(fotos[0])}" alt="${esc(nombre)}" class="foto-principal">`
+    ? `<img id="fotoPrincipal" src="${esc(fotosVista[0])}" alt="${esc(nombre)}" class="foto-principal">`
     : `<div class="foto-ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
 
   const wspMsg = encodeURIComponent(
@@ -287,20 +309,25 @@ footer a{color:var(--accent);text-decoration:none;}
 </div>
 
 <script>
-const FOTOS = ${JSON.stringify(fotos)};
+// Fotos para mostrar en grande al cambiar (transformadas, orientadas).
+const FOTOS = ${JSON.stringify(fotosVista)};
+// Fotos originales en alta, para el lightbox (ampliar).
+const FOTOS_HD = ${JSON.stringify(fotos)};
 const URL_AUTO = ${JSON.stringify(url)};
 const TITULO = ${JSON.stringify(nombreCompleto)};
 
 function verFoto(i){
   const main = document.getElementById('fotoPrincipal');
-  if(main) main.src = FOTOS[i];
+  if(main){ main.src = FOTOS[i]; main.dataset.idx = i; }
   document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));
 }
 
 const mainImg = document.getElementById('fotoPrincipal');
 if(mainImg){
+  mainImg.dataset.idx = 0;
   mainImg.addEventListener('click', ()=>{
-    document.getElementById('lightboxImg').src = mainImg.src;
+    const i = parseInt(mainImg.dataset.idx || '0', 10);
+    document.getElementById('lightboxImg').src = FOTOS_HD[i] || mainImg.src;
     document.getElementById('lightbox').classList.add('open');
   });
 }
