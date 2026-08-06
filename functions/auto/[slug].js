@@ -175,7 +175,12 @@ function paginaAuto(v, fotos, slug) {
       : "";
 
   const fotoPrincipalHTML = fotos.length
-    ? `<img id="fotoPrincipal" src="${esc(fotosVista[0])}" alt="${esc(nombre)}" class="foto-principal">`
+    ? `<div class="foto-wrap">
+         <img id="fotoPrincipal" src="${esc(fotosVista[0])}" alt="${esc(nombre)}" class="foto-principal">
+         ${fotos.length > 1 ? `<button class="nav-foto prev" onclick="cambiarFoto(-1)" aria-label="Anterior">‹</button>
+         <button class="nav-foto next" onclick="cambiarFoto(1)" aria-label="Siguiente">›</button>
+         <div class="foto-contador"><span id="fotoNum">1</span>/${fotos.length}</div>` : ""}
+       </div>`
     : `<div class="foto-ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
 
   const wspMsg = encodeURIComponent(
@@ -250,8 +255,26 @@ header a.volver:hover{color:var(--black);}
 
 /* GALERIA */
 .galeria{min-width:0;}
-.foto-principal{width:100%;max-width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:12px;background:var(--cream);display:block;cursor:zoom-in;}
+.foto-wrap{position:relative;user-select:none;}
+.foto-principal{width:100%;max-width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:12px;background:var(--cream);display:block;cursor:zoom-in;touch-action:pan-y;}
 .foto-ph{width:100%;aspect-ratio:4/3;border-radius:12px;background:var(--cream);display:flex;align-items:center;justify-content:center;}
+/* Flechas sobre la foto principal */
+.nav-foto{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:38px;height:38px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.85);color:var(--black);
+  font-size:1.6rem;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);transition:background .15s;z-index:2;
+}
+.nav-foto:hover{background:#fff;}
+.nav-foto.prev{left:10px;padding-right:3px;}
+.nav-foto.next{right:10px;padding-left:3px;}
+.foto-contador{
+  position:absolute;bottom:10px;right:12px;
+  background:rgba(0,0,0,.6);color:#fff;font-size:0.72rem;font-weight:600;
+  padding:3px 9px;border-radius:20px;z-index:2;
+}
 .thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;}
 .thumb{width:72px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;flex-shrink:0;border:2px solid transparent;opacity:.7;transition:all .15s;}
 .thumb.active,.thumb:hover{border-color:var(--accent);opacity:1;}
@@ -290,8 +313,20 @@ header a.volver:hover{color:var(--black);}
 /* LIGHTBOX */
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;}
 .lightbox.open{display:flex;}
-.lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;}
-.lightbox .cerrar{position:absolute;top:20px;right:24px;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none;line-height:1;}
+.lightbox img{max-width:92vw;max-height:88vh;object-fit:contain;touch-action:pan-y;user-select:none;}
+.lightbox .cerrar{position:absolute;top:20px;right:24px;color:#fff;font-size:2rem;cursor:pointer;background:none;border:none;line-height:1;z-index:2;}
+.lb-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.18);color:#fff;
+  font-size:2rem;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s;z-index:2;
+}
+.lb-nav:hover{background:rgba(255,255,255,.32);}
+.lb-nav.prev{left:16px;padding-right:4px;}
+.lb-nav.next{right:16px;padding-left:4px;}
+.lb-contador{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-size:0.85rem;font-weight:600;background:rgba(0,0,0,.4);padding:4px 12px;border-radius:20px;}
 
 footer{border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--muted);font-size:0.82rem;margin-top:20px;}
 footer a{color:var(--accent);text-decoration:none;}
@@ -345,8 +380,11 @@ footer a{color:var(--accent);text-decoration:none;}
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="cerrarLightbox(event)">
-  <button class="cerrar" onclick="cerrarLightbox(event)">✕</button>
+  <button class="cerrar" onclick="cerrarLightbox(event)" aria-label="Cerrar">✕</button>
+  <button class="lb-nav prev" onclick="cambiarFotoLB(-1, event)" aria-label="Anterior">‹</button>
   <img id="lightboxImg" src="" alt="">
+  <button class="lb-nav next" onclick="cambiarFotoLB(1, event)" aria-label="Siguiente">›</button>
+  <div class="lb-contador"><span id="lbNum">1</span>/<span id="lbTotal">1</span></div>
 </div>
 
 <script>
@@ -356,26 +394,99 @@ const FOTOS = ${JSON.stringify(fotosVista)};
 const FOTOS_HD = ${JSON.stringify(fotos)};
 const URL_AUTO = ${JSON.stringify(url)};
 const TITULO = ${JSON.stringify(nombreCompleto)};
+const TOTAL = FOTOS.length;
 
-function verFoto(i){
-  const main = document.getElementById('fotoPrincipal');
-  if(main){ main.src = FOTOS[i]; main.dataset.idx = i; }
-  document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===i));
-}
+let idxActual = 0;   // índice de la foto principal
+let idxLB = 0;       // índice dentro del lightbox
 
 const mainImg = document.getElementById('fotoPrincipal');
-if(mainImg){
-  mainImg.dataset.idx = 0;
-  mainImg.addEventListener('click', ()=>{
-    const i = parseInt(mainImg.dataset.idx || '0', 10);
-    document.getElementById('lightboxImg').src = FOTOS_HD[i] || mainImg.src;
-    document.getElementById('lightbox').classList.add('open');
-  });
+const fotoNum = document.getElementById('fotoNum');
+
+// --- Foto principal: mostrar foto por índice ---
+function verFoto(i){
+  if(TOTAL === 0) return;
+  idxActual = (i + TOTAL) % TOTAL;
+  if(mainImg){ mainImg.src = FOTOS[idxActual]; mainImg.dataset.idx = idxActual; }
+  if(fotoNum){ fotoNum.textContent = idxActual + 1; }
+  document.querySelectorAll('.thumb').forEach((t,idx)=>t.classList.toggle('active',idx===idxActual));
+}
+// Avanzar/retroceder la foto principal (flechas encima de la foto)
+function cambiarFoto(dir){
+  verFoto(idxActual + dir);
+}
+
+// --- Lightbox ---
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lbNum = document.getElementById('lbNum');
+const lbTotal = document.getElementById('lbTotal');
+
+function abrirLightbox(i){
+  if(TOTAL === 0) return;
+  idxLB = (i + TOTAL) % TOTAL;
+  lightboxImg.src = FOTOS_HD[idxLB] || FOTOS[idxLB];
+  if(lbNum){ lbNum.textContent = idxLB + 1; }
+  if(lbTotal){ lbTotal.textContent = TOTAL; }
+  lightbox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cambiarFotoLB(dir, e){
+  if(e) e.stopPropagation();
+  idxLB = (idxLB + dir + TOTAL) % TOTAL;
+  lightboxImg.src = FOTOS_HD[idxLB] || FOTOS[idxLB];
+  if(lbNum){ lbNum.textContent = idxLB + 1; }
 }
 function cerrarLightbox(e){
   if(e.target.id==='lightbox' || e.target.classList.contains('cerrar')){
-    document.getElementById('lightbox').classList.remove('open');
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
   }
+}
+
+// Abrir lightbox al tocar la foto principal (en la foto actual)
+if(mainImg){
+  mainImg.dataset.idx = 0;
+  mainImg.addEventListener('click', ()=> abrirLightbox(idxActual));
+}
+
+// --- Teclado: flechas navegan, Escape cierra ---
+document.addEventListener('keydown', (e)=>{
+  if(lightbox.classList.contains('open')){
+    if(e.key === 'ArrowLeft')  cambiarFotoLB(-1);
+    else if(e.key === 'ArrowRight') cambiarFotoLB(1);
+    else if(e.key === 'Escape'){ lightbox.classList.remove('open'); document.body.style.overflow=''; }
+  } else if(TOTAL > 1){
+    if(e.key === 'ArrowLeft')  cambiarFoto(-1);
+    else if(e.key === 'ArrowRight') cambiarFoto(1);
+  }
+});
+
+// --- Swipe (deslizar con el dedo) ---
+// Detecta gesto horizontal; ignora si es scroll vertical.
+function agregarSwipe(elemento, onIzq, onDer){
+  let x0 = null, y0 = null;
+  elemento.addEventListener('touchstart', (e)=>{
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+  }, {passive:true});
+  elemento.addEventListener('touchend', (e)=>{
+    if(x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    const dy = e.changedTouches[0].clientY - y0;
+    // Umbral: movimiento horizontal claro (>40px) y más horizontal que vertical
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+      if(dx < 0) onIzq(); else onDer();
+    }
+    x0 = null; y0 = null;
+  }, {passive:true});
+}
+
+if(TOTAL > 1){
+  if(mainImg){
+    // En la foto principal: deslizar izq => siguiente, der => anterior
+    agregarSwipe(mainImg, ()=>cambiarFoto(1), ()=>cambiarFoto(-1));
+  }
+  // En el lightbox
+  agregarSwipe(lightboxImg, ()=>cambiarFotoLB(1), ()=>cambiarFotoLB(-1));
 }
 
 async function compartir(){
