@@ -51,6 +51,21 @@ function fmtPrecio(n) {
   return "$ " + Number(n).toLocaleString("es-AR");
 }
 
+// --- Version "limpia": si la version ya arranca con el modelo, lo saca ---
+// Ej: modelo="Eco Sport", version="Eco Sport 2.0 Se L13" -> "2.0 Se L13"
+// Asi el titulo no queda "Eco Sport 2013 Eco Sport 2.0 Se L13".
+function versionLimpia(modelo, version) {
+  if (!version) return "";
+  if (!modelo) return version;
+  const m = String(modelo).trim().toLowerCase();
+  const vv = String(version).trim();
+  if (vv.toLowerCase().startsWith(m)) {
+    const resto = vv.slice(m.length).replace(/^[\s\-–—]+/, "").trim();
+    return resto || "";
+  }
+  return vv;
+}
+
 export async function onRequest(context) {
   const { params } = context;
   const slug = params.slug; // ej: "ford-focus-2019-168"
@@ -104,7 +119,8 @@ export async function onRequest(context) {
 // ============================================================================
 function paginaAuto(v, fotos, slug) {
   const nombre = [v.marca, v.modelo, v.anio].filter(Boolean).join(" ");
-  const nombreCompleto = [v.marca, v.modelo, v.anio, v.version].filter(Boolean).join(" ");
+  const vLimpia = versionLimpia(v.modelo, v.version);
+  const nombreCompleto = [v.marca, v.modelo, v.anio, vLimpia].filter(Boolean).join(" ");
   const titulo = `${nombreCompleto} — Fernández Autos`;
   // Open Graph: se deja la foto ORIGINAL sin transformar (WhatsApp/Facebook
   // cachean la preview y son quisquillosos con las URLs transformadas).
@@ -137,10 +153,13 @@ function paginaAuto(v, fotos, slug) {
 
   const specsHTML = specs
     .map(
-      (s) => `<div class="spec">
+      (s, i) => {
+        const esUltimaImpar = specs.length % 2 === 1 && i === specs.length - 1;
+        return `<div class="spec${esUltimaImpar ? " full" : ""}">
         <div class="spec-label">${esc(s.label)}</div>
         <div class="spec-val">${esc(s.val)}</div>
-      </div>`
+      </div>`;
+      }
     )
     .join("");
 
@@ -199,6 +218,10 @@ function paginaAuto(v, fotos, slug) {
 <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png">
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --black:#0e0d0b; --white:#fafaf7; --cream:#f4f2ec;
@@ -214,7 +237,11 @@ header{
   padding:0 24px;height:60px;background:#fff;
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
 }
-header .logo img{height:40px;}
+header .logo{display:flex;align-items:center;text-decoration:none;}
+header .logo svg{height:26px;width:auto;display:block;}
+header .logo svg .w{font-family:'Audiowide',var(--sans);font-size:70px;}
+header .logo svg .p{fill:var(--accent);}
+header .logo svg .s{fill:var(--muted);}
 header a.volver{
   font-size:0.9rem;font-weight:500;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;
@@ -242,6 +269,7 @@ header a.volver:hover{color:var(--black);}
 
 .specs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:18px 0;}
 .spec{background:#fff;padding:12px 14px;}
+.spec.full{grid-column:1 / -1;}
 .spec-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:3px;}
 .spec-val{font-size:0.95rem;font-weight:600;}
 
@@ -276,7 +304,11 @@ footer a{color:var(--accent);text-decoration:none;}
 <body>
 
 <header>
-  <a href="/" class="logo"><img src="/wordmark-navy.svg" alt="Fernández Autos" onerror="this.src='/logo.png'"></a>
+  <a href="/" class="logo" aria-label="Fernández Autos">
+    <svg viewBox="0 0 1002 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fernández Autos">
+      <text x="20" y="70" dominant-baseline="central" class="w"><tspan class="p">Fernandez</tspan><tspan class="p"> </tspan><tspan class="s">Autos</tspan></text>
+    </svg>
+  </a>
   <a href="/stock.html" class="volver">‹ Volver al stock</a>
 </header>
 
@@ -288,7 +320,7 @@ footer a{color:var(--accent);text-decoration:none;}
 
   <div class="datos">
     <div class="marca-label">${esc((v.marca || "").toUpperCase())}</div>
-    <h1 class="nombre">${esc([v.modelo, v.anio, v.version].filter(Boolean).join(" "))}</h1>
+    <h1 class="nombre">${esc([v.modelo, v.anio, vLimpia].filter(Boolean).join(" "))}</h1>
     ${badgeReservado}
     <div class="precio">${esc(precioTxt)}</div>
     <div class="specs">${specsHTML}</div>
