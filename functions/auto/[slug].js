@@ -230,11 +230,12 @@ body{font-family:var(--sans);background:var(--white);color:var(--black);}
 /* HEADER */
 header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;height:60px;background:#fff;
+  padding:0 48px;height:62px;
+  background:rgba(250,250,247,.97);backdrop-filter:blur(12px);
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
 }
-header .logo{display:flex;align-items:center;text-decoration:none;}
-header .logo svg{height:32px;width:auto;display:block;overflow:visible;}
+header .logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+header .logo svg{height:38px;width:auto;display:block;overflow:visible;}
 header .logo svg .p{fill:#15140f;}
 header .logo svg .s{fill:#15140f;fill-opacity:0.5;}
 header a.volver{
@@ -245,7 +246,7 @@ header a.volver:hover{color:var(--black);}
 
 /* LAYOUT */
 .ficha{max-width:1080px;margin:0 auto;padding:24px;display:grid;grid-template-columns:1.3fr 1fr;gap:32px;}
-@media(max-width:820px){.ficha{grid-template-columns:1fr;gap:20px;}}
+@media(max-width:820px){.ficha{grid-template-columns:1fr;gap:20px;}header{padding:0 16px;}}
 
 /* GALERIA */
 .galeria{}
