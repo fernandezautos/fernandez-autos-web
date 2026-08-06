@@ -234,9 +234,9 @@ header{
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
 }
 header .logo{display:flex;align-items:center;text-decoration:none;}
-header .logo svg{height:24px;width:auto;display:block;}
-header .logo svg .p{fill:var(--accent);}
-header .logo svg .s{fill:var(--muted);}
+header .logo svg{height:32px;width:auto;display:block;overflow:visible;}
+header .logo svg .p{fill:#15140f;}
+header .logo svg .s{fill:#15140f;fill-opacity:0.5;}
 header a.volver{
   font-size:0.9rem;font-weight:500;color:var(--muted);text-decoration:none;
   display:flex;align-items:center;gap:6px;
