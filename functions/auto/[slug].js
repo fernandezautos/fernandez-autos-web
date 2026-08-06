@@ -261,9 +261,9 @@ header a.volver:hover{color:var(--black);}
 /* Flechas sobre la foto principal */
 .nav-foto{
   position:absolute;top:50%;transform:translateY(-50%);
-  width:38px;height:38px;border-radius:50%;border:none;
+  width:32px;height:32px;border-radius:50%;border:none;
   background:rgba(255,255,255,.85);color:var(--black);
-  font-size:1.6rem;line-height:1;cursor:pointer;
+  font-size:1.35rem;line-height:1;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 2px 8px rgba(0,0,0,.15);transition:background .15s;z-index:2;
 }
