@@ -139,36 +139,73 @@ nav a:hover, nav a.active { color: var(--black); }
 }
 .tab-btn.active { background: var(--accent); color: #fff; }
 
-/* FILTROS */
-.filtros-bar {
-  background: var(--cream); border-bottom: 1px solid var(--border);
-  padding: 20px 48px; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+/* ── LAYOUT: FILTROS LATERALES + GRILLA ── */
+.stock-layout {
+  display: grid; grid-template-columns: 260px 1fr;
+  gap: 28px; align-items: start;
+  padding: 32px 48px;
 }
-.filtro { display: flex; flex-direction: column; gap: 5px; }
+
+/* Columna lateral de filtros */
+.filtros-side {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 10px; padding: 22px 20px;
+  position: sticky; top: 78px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.filtros-side-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.filtros-side-head h3 {
+  font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--black); font-weight: 700;
+}
+.filtros-side-close {
+  display: none; background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 1.3rem; line-height: 1; padding: 4px;
+}
+.filtro { display: flex; flex-direction: column; gap: 6px; }
 .filtro label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
 .filtro select, .filtro input {
   border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 9px 14px; font-family: var(--sans); font-size: 0.86rem;
+  padding: 10px 14px; font-family: var(--sans); font-size: 0.86rem;
   background: #fff; color: var(--black); outline: none;
-  transition: border-color .2s; min-width: 140px;
+  transition: border-color .2s; width: 100%;
 }
 .filtro select:focus, .filtro input:focus { border-color: var(--accent); }
-.btn-filtrar {
-  background: var(--accent); color: #fff; border: none; border-radius: 8px;
-  padding: 10px 22px; font-family: var(--sans); font-size: 0.88rem; font-weight: 600;
-  cursor: pointer; transition: background .2s; white-space: nowrap;
-}
-.btn-filtrar:hover { background: var(--accent-light); }
 .btn-limpiar {
   background: transparent; color: var(--muted); border: 1.5px solid var(--border);
-  border-radius: 8px; padding: 9px 16px; font-family: var(--sans); font-size: 0.86rem;
-  cursor: pointer; transition: all .2s;
+  border-radius: 8px; padding: 10px 16px; font-family: var(--sans); font-size: 0.86rem;
+  cursor: pointer; transition: all .2s; width: 100%; margin-top: 4px;
 }
 .btn-limpiar:hover { border-color: var(--black); color: var(--black); }
-.filtros-resultado { margin-left: auto; font-size: 0.82rem; color: var(--muted); align-self: center; white-space: nowrap; }
+
+/* Botón "Filtros" (solo mobile) */
+.btn-abrir-filtros {
+  display: none; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 11px 18px; font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+  cursor: pointer; margin: 16px 16px 0;
+}
+.btn-abrir-filtros svg { stroke: #fff; }
+
+/* Overlay del panel de filtros (solo mobile) */
+.filtros-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); z-index: 9997;
+}
+.filtros-overlay.open { display: block; }
+
+/* Columna derecha */
+.stock-main { min-width: 0; }
+.filtros-resultado {
+  font-size: 0.82rem; color: var(--muted);
+  margin-bottom: 18px; white-space: nowrap;
+}
 
 /* GRILLA */
-.stock-body { padding: 32px 48px; }
+.stock-body { padding: 0; }
 .autos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
 .auto-card {
   border-radius: 7px; overflow: hidden; background: #fff;
@@ -430,10 +467,27 @@ nav a:hover, nav a.active { color: var(--black); }
   .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
   .btn-wsp{display:none;}
   .stock-hero{padding:32px 16px 0;flex-direction:column;gap:20px;}
-  .filtros-bar{padding:16px;gap:10px;}
-  .filtro select,.filtro input{min-width:0;width:100%;}
-  .filtros-resultado{display:none;}
-  .stock-body{padding:20px 16px;}
+
+  /* Layout pasa a una sola columna */
+  .stock-layout{display:block;padding:0;}
+  .btn-abrir-filtros{display:flex;}
+
+  /* Filtros como panel deslizable desde la izquierda */
+  .filtros-side{
+    position:fixed;top:0;left:0;bottom:0;
+    width:82%;max-width:320px;
+    border-radius:0;border:none;
+    z-index:9998;overflow-y:auto;
+    transform:translateX(-100%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+    box-shadow:4px 0 32px rgba(0,0,0,.15);
+    padding:24px 20px;
+  }
+  .filtros-side.open{transform:translateX(0);}
+  .filtros-side-close{display:block;}
+
+  .stock-main{padding:20px 16px;}
+  .filtros-resultado{margin-bottom:0;}
   .modal-body{grid-template-columns:1fr;padding:20px;}
   .galeria-principal{height:220px;}
   .modal-specs-grid{grid-template-columns:1fr 1fr;}
@@ -585,67 +639,87 @@ nav a:hover, nav a.active { color: var(--black); }
 </div>
 <div id="navOverlay" class="nav-overlay" onclick="toggleMenu()"></div>
 
-<!-- FILTROS -->
-<div class="filtros-bar">
-  <div class="filtro">
-    <label>Tipo</label>
-    <select id="fTipo" onchange="filtrarTipo(this.value)">
-      <option value="">Todos</option>
-      <option value="Usado">Usados</option>
-      <option value="Nuevo">0 km</option>
-    </select>
-  </div>
-  <div class="filtro">
-    <label>Marca</label>
-    <select id="fMarca" onchange="aplicarFiltros()">
-      <option value="">Todas</option>
-    </select>
-  </div>
-  <div class="filtro">
-    <label>Modelo</label>
-    <select id="fModelo" onchange="aplicarFiltros()">
-      <option value="">Todos</option>
-    </select>
-  </div>
-  <div class="filtro">
-    <label>Año desde</label>
-    <select id="fAnioDesde" onchange="aplicarFiltros()">
-      <option value="">Cualquiera</option>
-    </select>
-  </div>
-  <div class="filtro">
-    <label>Precio máximo</label>
-    <select id="fPrecio" onchange="aplicarFiltros()">
-      <option value="">Sin límite</option>
-      <option value="10000000">$ 10.000.000</option>
-      <option value="20000000">$ 20.000.000</option>
-      <option value="30000000">$ 30.000.000</option>
-      <option value="50000000">$ 50.000.000</option>
-      <option value="80000000">$ 80.000.000</option>
-    </select>
-  </div>
-  <div class="filtro">
-    <label>Transmisión</label>
-    <select id="fTransmision" onchange="aplicarFiltros()">
-      <option value="">Todas</option>
-      <option value="Manual">Manual</option>
-      <option value="Automática">Automática</option>
-      <option value="CVT">CVT</option>
-    </select>
-  </div>
-  <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
-  <div class="filtros-resultado" id="filtrosResultado"></div>
-</div>
+<!-- BOTÓN ABRIR FILTROS (solo mobile) -->
+<button class="btn-abrir-filtros" onclick="toggleFiltros()">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+  Filtros
+</button>
 
-<!-- GRILLA DE AUTOS -->
-<div class="stock-body">
-  <div class="autos-grid" id="autosGrid">
-    <div class="empty-state">
-      <div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      <p>Cargando autos...</p>
+<!-- LAYOUT: FILTROS LATERALES + GRILLA -->
+<div class="stock-layout">
+
+  <!-- COLUMNA DE FILTROS -->
+  <aside class="filtros-side" id="filtrosSide">
+    <div class="filtros-side-head">
+      <h3>Filtros</h3>
+      <button class="filtros-side-close" onclick="toggleFiltros()">&#x2715;</button>
+    </div>
+    <div class="filtro">
+      <label>Tipo</label>
+      <select id="fTipo" onchange="filtrarTipo(this.value)">
+        <option value="">Todos</option>
+        <option value="Usado">Usados</option>
+        <option value="Nuevo">0 km</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Marca</label>
+      <select id="fMarca" onchange="aplicarFiltros()">
+        <option value="">Todas</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Modelo</label>
+      <select id="fModelo" onchange="aplicarFiltros()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Año desde</label>
+      <select id="fAnioDesde" onchange="aplicarFiltros()">
+        <option value="">Cualquiera</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Precio máximo</label>
+      <select id="fPrecio" onchange="aplicarFiltros()">
+        <option value="">Sin límite</option>
+        <option value="10000000">$ 10.000.000</option>
+        <option value="20000000">$ 20.000.000</option>
+        <option value="30000000">$ 30.000.000</option>
+        <option value="50000000">$ 50.000.000</option>
+        <option value="80000000">$ 80.000.000</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Transmisión</label>
+      <select id="fTransmision" onchange="aplicarFiltros()">
+        <option value="">Todas</option>
+        <option value="Manual">Manual</option>
+        <option value="Automática">Automática</option>
+        <option value="CVT">CVT</option>
+      </select>
+    </div>
+    <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar filtros</button>
+  </aside>
+
+  <!-- COLUMNA DE RESULTADOS -->
+  <div class="stock-main">
+    <div class="filtros-resultado" id="filtrosResultado"></div>
+    <div class="stock-body">
+      <div class="autos-grid" id="autosGrid">
+        <div class="empty-state">
+          <div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <p>Cargando autos...</p>
+        </div>
+      </div>
     </div>
   </div>
+
 </div>
+
+<!-- OVERLAY DEL PANEL DE FILTROS (mobile) -->
+<div class="filtros-overlay" id="filtrosOverlay" onclick="toggleFiltros()"></div>
 
 <!-- WHATSAPP FLOTANTE -->
 <button onclick="abrirWspModal('stock')" class="wsp-float">
@@ -816,7 +890,6 @@ function aplicarFiltros() {
 function limpiarFiltros() {
   ['fMarca','fModelo','fAnioDesde','fPrecio','fTransmision'].forEach(id => document.getElementById(id).value='');
   filtroTipo = '';
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
   aplicarFiltros();
 }
 
@@ -858,6 +931,15 @@ function verAuto(slug) {
 }
 
 cargarStock();
+
+function toggleFiltros() {
+  const side = document.getElementById('filtrosSide');
+  const overlay = document.getElementById('filtrosOverlay');
+  const abierto = side.classList.toggle('open');
+  overlay.classList.toggle('open', abierto);
+  document.body.style.overflow = abierto ? 'hidden' : '';
+}
+
 function toggleMenu() {
   const panel = document.getElementById('navMenu');
   const btn = document.getElementById('hamburger');
