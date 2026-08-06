@@ -249,8 +249,8 @@ header a.volver:hover{color:var(--black);}
 @media(max-width:820px){.ficha{grid-template-columns:1fr;gap:20px;}header{padding:0 16px;}}
 
 /* GALERIA */
-.galeria{}
-.foto-principal{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--cream);display:block;cursor:zoom-in;}
+.galeria{min-width:0;}
+.foto-principal{width:100%;max-width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:12px;background:var(--cream);display:block;cursor:zoom-in;}
 .foto-ph{width:100%;aspect-ratio:4/3;border-radius:12px;background:var(--cream);display:flex;align-items:center;justify-content:center;}
 .thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;}
 .thumb{width:72px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;flex-shrink:0;border:2px solid transparent;opacity:.7;transition:all .15s;}
