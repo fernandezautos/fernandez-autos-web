@@ -235,7 +235,7 @@ header{
   border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;
 }
 header .logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
-header .logo svg{height:38px;width:auto;display:block;overflow:visible;}
+header .logo svg{height:34px;width:auto;display:block;overflow:visible;}
 header .logo svg .p{fill:#15140f;}
 header .logo svg .s{fill:#15140f;fill-opacity:0.5;}
 header a.volver{
