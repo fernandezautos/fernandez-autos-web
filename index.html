@@ -14,10 +14,27 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fernández Autos — Concesionaria en Mar del Plata">
 <meta property="og:description" content="Concesionaria de autos usados y 0km en Mar del Plata. Financiación, permuta y gestión integral.">
-<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image" content="https://www.fernandezautos.com/og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- ── META PIXEL ────────────────────────────────────────────────── -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '171050316910974');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=171050316910974&ev=PageView&noscript=1"/></noscript>
+<!-- ── FIN META PIXEL ────────────────────────────────────────────── -->
 <style>
 :root {
   --black: #131210;
@@ -1132,6 +1149,7 @@ async function enviarConsulta(e) {
   function exito() {
     msg.textContent = 'Consulta enviada. Te contactamos a la brevedad.';
     msg.className = 'form-msg ok'; msg.style.display = 'block';
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'home_contacto', content_category: interes || '' });
     e.target.reset();
   }
 
@@ -1242,9 +1260,9 @@ async function enviarWspModal() {
   try {
     const r = await fetch(WSP_ROTATOR, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nombre, apellido, telefono, contexto: wspContexto, turnstileToken: tsToken }) });
     const data = await r.json();
-    if (data.ok && data.numero_vendedor) { cerrarWspModal(); window.open('https://wa.me/'+data.numero_vendedor+'?text='+encodeURIComponent(data.mensaje||''), '_blank'); }
+    if (data.ok && data.numero_vendedor) { if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: wspContexto || 'whatsapp' }); cerrarWspModal(); window.open('https://wa.me/'+data.numero_vendedor+'?text='+encodeURIComponent(data.mensaje||''), '_blank'); }
     else throw new Error();
-  } catch { cerrarWspModal(); window.open('https://wa.me/'+WSP_FALLBACK+'?text='+encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank'); }
+  } catch { if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: wspContexto || 'whatsapp' }); cerrarWspModal(); window.open('https://wa.me/'+WSP_FALLBACK+'?text='+encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank'); }
 }
 
 // ── DRAWER MOBILE ─────────────────────────────────────────────────
