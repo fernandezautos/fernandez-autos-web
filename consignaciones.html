@@ -19,10 +19,27 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Consignaciones — Fernández Autos">
 <meta property="og:description" content="Vendé tu auto con nosotros. Te encargamos todo.">
-<meta property="og:image" content="https://fernandezautos.github.io/fernandez-autos/og-image-1200x630.png">
+<meta property="og:image" content="https://www.fernandezautos.com/og-image-1200x630.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+
+<!-- ── META PIXEL ────────────────────────────────────────────────── -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '171050316910974');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=171050316910974&ev=PageView&noscript=1"/></noscript>
+<!-- ── FIN META PIXEL ────────────────────────────────────────────── -->
 
 <style>
 :root {
@@ -522,10 +539,12 @@ async function enviarWspModal() {
     });
     const data = await r.json();
     if (data.ok && data.numero_vendedor) {
+      if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: wspContexto || 'whatsapp' });
       cerrarWspModal();
       window.open('https://wa.me/' + data.numero_vendedor + '?text=' + encodeURIComponent(data.mensaje || ''), '_blank');
     } else { throw new Error('sin numero'); }
   } catch(e) {
+    if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: wspContexto || 'whatsapp' });
     cerrarWspModal();
     window.open('https://wa.me/' + WSP_FALLBACK + '?text=' + encodeURIComponent('Hola, me contacto desde la web de Fernandez Autos.'), '_blank');
   }
@@ -631,6 +650,7 @@ async function enviarConsignacion() {
     msg.textContent = '✓ ¡Solicitud enviada! Te contactamos a la brevedad para coordinar los detalles.';
     msg.className = 'form-msg ok'; msg.style.display = 'block';
     btn.textContent = '✓ Enviado';
+    if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'consignacion', content_category: 'Consignación' });
     limpiarForm();
   }
 
