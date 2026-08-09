@@ -192,8 +192,8 @@ function paginaAuto(v, fotos, slug) {
     : "";
 
   const btnWsp = reservado
-    ? `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp">Consultar disponibilidad</a>`
-    : `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp">Consultar por WhatsApp</a>`;
+    ? `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar disponibilidad</a>`
+    : `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar por WhatsApp</a>`;
 
   const obsHTML = v.obs
     ? `<div class="obs"><h3>Descripción</h3><p>${esc(v.obs)}</p></div>`
@@ -206,6 +206,31 @@ function paginaAuto(v, fotos, slug) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(titulo)}</title>
 <meta name="description" content="${esc(metaDesc)}">
+
+<!-- ── META PIXEL ────────────────────────────────────────────────── -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '171050316910974');
+fbq('track', 'PageView');
+fbq('track', 'ViewContent', {
+  content_ids: ['${esc(String(v.id))}'],
+  content_name: '${esc(nombreCompleto)}',
+  content_type: 'vehicle',
+  content_category: '${esc(v.marca || "")}',
+  value: ${Number(v.precio) || 0},
+  currency: 'ARS'
+});
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=171050316910974&ev=PageView&noscript=1"/></noscript>
+<!-- ── FIN META PIXEL ────────────────────────────────────────────── -->
 
 <!-- Open Graph: lo que WhatsApp / Facebook leen para la miniatura -->
 <meta property="og:type" content="product">
