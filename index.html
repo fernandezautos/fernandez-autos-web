@@ -1130,7 +1130,7 @@ async function cargarStock() {
 function renderAutos(autos) {
   const grid = document.getElementById('autosGrid');
   if (!autos.length) { grid.innerHTML = '<div class="loading-autos">No hay autos disponibles en este momento.</div>'; return; }
-  const fmt = n => n ? (Number(n) > 100000 ? '$ '+Number(n).toLocaleString('es-AR') : 'USD '+Number(n).toLocaleString('es-AR')) : 'Consultar precio';
+  const fmt = (n, moneda) => n ? (moneda === 'USD' ? 'US$ ' : '$ ')+Number(n).toLocaleString('es-AR') : 'Consultar precio';
   const phSvg = `<div class="auto-card-img-ph"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
   grid.innerHTML = autos.map(v => `
     <a href="stock.html?id=${v.id}" class="auto-card">
@@ -1142,7 +1142,7 @@ function renderAutos(autos) {
         <div class="auto-nombre">${v.marca} ${v.modelo}${v.anio?' '+v.anio:''}</div>
         <div class="auto-detalle">${[v.km?Number(v.km).toLocaleString('es-AR')+' km':'',v.transmision,v.color].filter(Boolean).join(' · ')}</div>
         <div class="auto-footer">
-          <div class="auto-precio">${fmt(v.precio)}</div>
+          <div class="auto-precio">${fmt(v.precio, v.moneda_precio)}</div>
           <span class="auto-cta">Ver detalle</span>
         </div>
       </div>
