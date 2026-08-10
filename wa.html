@@ -254,9 +254,24 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqZ2ttcmdrZ2pweWRwYW5ld3NhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0ODU4NjgsImV4cCI6MjA5MzA2MTg2OH0.DLfBLH9H3UGSh1ISzylt4lLc6pExr6YOyy0sb-cbZec';
     const FALLBACK_NUM = '5492236249445';
 
-    // Leer origen desde la URL (?origen=instagram, ?origen=facebook, etc.)
+    // Leer parámetros desde la URL.
+    //  - ?origen=instagram / facebook / etc.  → origen de campaña (comportamiento actual)
+    //  - ?ctx=auto:Ford Focus 2019            → contexto crudo para el rotador. Si viene,
+    //       tiene prioridad sobre origen. El prefijo "auto:" hace que el rotador arme el
+    //       mensaje y el interés con el nombre del vehículo.
+    //  - ?vehiculo_id=168                     → id del vehículo consultado, para vincular
+    //       el lead al registro real. Solo se acepta si es un entero positivo.
     const urlParams = new URLSearchParams(window.location.search);
     const origenParam = urlParams.get('origen') || 'web';
+    const ctxParam = (urlParams.get('ctx') || '').trim();
+    const contextoParam = ctxParam.length > 0 ? ctxParam : origenParam;
+
+    let vehiculoIdParam = null;
+    const vidRaw = (urlParams.get('vehiculo_id') || '').trim();
+    if (/^[0-9]+$/.test(vidRaw)) {
+      const n = parseInt(vidRaw, 10);
+      if (Number.isInteger(n) && n > 0) vehiculoIdParam = n;
+    }
 
     function limpiar(id) {
       document.getElementById(id).classList.remove('error');
@@ -333,7 +348,8 @@
             nombre: nombre,
             apellido: apellido,
             telefono: telefono,
-            contexto: origenParam,
+            contexto: contextoParam,
+            vehiculo_id: vehiculoIdParam,
             turnstileToken: tsToken
           })
         });
