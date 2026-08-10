@@ -15,7 +15,6 @@
 
 const SB_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co";
 const SB_KEY = "sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6";
-const WSP = "5492236249445";
 const SITE = "https://fernandezautos.com"; // dominio final (ajustable)
 
 // --- Escapar texto para meterlo seguro en HTML ---
@@ -183,17 +182,21 @@ function paginaAuto(v, fotos, slug) {
        </div>`
     : `<div class="foto-ph"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#c5c1b5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>`;
 
-  const wspMsg = encodeURIComponent(
-    `Hola, me interesa el ${nombreCompleto} que vi en la web. ${url}`
-  );
-
   const badgeReservado = reservado
     ? `<span class="badge-reservado">Reservado</span>`
     : "";
 
+  // El botón NO va directo a wa.me: pasa por /wa.html, que captura los datos del
+  // cliente (nombre/apellido/teléfono + Turnstile) y llama al rotador. Le pasamos:
+  //   - ctx=auto:Marca Modelo Año  → el rotador arma el mensaje y el interés del auto
+  //   - vehiculo_id=<id>           → vincula el lead al registro real del vehículo
+  const waHref =
+    `/wa.html?ctx=${encodeURIComponent("auto:" + nombre)}` +
+    `&vehiculo_id=${encodeURIComponent(String(v.id))}`;
+
   const btnWsp = reservado
-    ? `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar disponibilidad</a>`
-    : `<a href="https://wa.me/${WSP}?text=${wspMsg}" target="_blank" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar por WhatsApp</a>`;
+    ? `<a href="${waHref}" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar disponibilidad</a>`
+    : `<a href="${waHref}" class="btn-wsp" onclick="if(typeof fbq==='function')fbq('track','Contact',{content_ids:['${esc(String(v.id))}'],content_name:'${esc(nombreCompleto)}',content_type:'vehicle'});">Consultar por WhatsApp</a>`;
 
   const obsHTML = v.obs
     ? `<div class="obs"><h3>Descripción</h3><p>${esc(v.obs)}</p></div>`
