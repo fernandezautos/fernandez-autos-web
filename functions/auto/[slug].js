@@ -44,10 +44,11 @@ function imgTransform(url, width, height, quality) {
   return nueva + sep + params;
 }
 
-// --- Formatear precio en pesos argentinos ---
-function fmtPrecio(n) {
+// --- Formatear precio según moneda (ARS / USD) ---
+function fmtPrecio(n, moneda) {
   if (!n) return "Consultar precio";
-  return "$ " + Number(n).toLocaleString("es-AR");
+  const simbolo = moneda === "USD" ? "US$" : "$";
+  return simbolo + " " + Number(n).toLocaleString("es-AR");
 }
 
 // --- Version "limpia": si la version ya arranca con el modelo, lo saca ---
@@ -128,7 +129,7 @@ function paginaAuto(v, fotos, slug) {
   const fotosVista = fotos.map((u) => imgTransform(u, 900, 675, 74)); // principal (4:3)
   const fotosThumb = fotos.map((u) => imgTransform(u, 200, 156, 72)); // miniaturas
   const url = `${SITE}/auto/${slug}`;
-  const precioTxt = fmtPrecio(v.precio);
+  const precioTxt = fmtPrecio(v.precio, v.moneda_precio);
   const reservado = v.estado === "Reservado";
 
   // Descripcion para meta (WhatsApp / Google)
