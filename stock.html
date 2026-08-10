@@ -837,20 +837,13 @@ const fmt = (n, moneda) => {
   return simbolo+' '+Number(n).toLocaleString('es-AR');
 };
 
-// Redimensiona una imagen de Supabase Storage on-the-fly usando el transformador de imágenes.
-// Convierte .../object/public/... en .../render/image/public/...?width=&quality=
-// Defensiva: si la url no es de Supabase Storage, es null, o ya está transformada, la devuelve tal cual.
+// Servimos la imagen ORIGINAL de Storage tal cual. Las fotos ya se suben
+// redimensionadas y con orientación EXIF corregida desde el CRM, así que NO
+// usamos el transformador on-the-fly de Supabase (/render/image/): tiene un
+// cupo muy bajo en el plan Pro (100 imágenes/mes) y se agota enseguida.
+// Mantenemos la firma (width/height/quality) para no tocar las llamadas.
 function imgTransform(url, width, height, quality){
-  if(!url || typeof url !== 'string') return url;
-  if(url.indexOf('/render/image/') !== -1) return url; // ya transformada
-  const marca = '/storage/v1/object/public/';
-  if(url.indexOf(marca) === -1) return url; // no es Supabase Storage público
-  const nueva = url.replace(marca, '/storage/v1/render/image/public/');
-  const sep = nueva.indexOf('?') === -1 ? '?' : '&';
-  let params = `width=${width}`;
-  if(height) params += `&height=${height}&resize=contain`;
-  params += `&quality=${quality||70}`;
-  return `${nueva}${sep}${params}`;
+  return url;
 }
 
 async function cargarStock() {
