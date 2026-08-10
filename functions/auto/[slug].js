@@ -27,21 +27,13 @@ function esc(s) {
     .replace(/'/g, "&#39;");
 }
 
-// --- Redimensionar imagen de Supabase Storage on-the-fly ---
-// Convierte .../object/public/... en .../render/image/public/...?width=&height=&resize=contain
-// Defensiva: si no es de Supabase Storage publico, es null, o ya esta transformada, devuelve tal cual.
-// resize=contain + height enderezan la orientacion (EXIF) y evitan recortes raros.
+// --- Servir imagen original de Supabase Storage ---
+// Las fotos ya se suben redimensionadas y con orientacion EXIF corregida desde
+// el CRM, asi que NO usamos el transformador on-the-fly de Supabase
+// (/render/image/): tiene un cupo muy bajo en el plan Pro (100 imagenes/mes) y
+// se agota enseguida. Mantenemos la firma para no tocar las llamadas.
 function imgTransform(url, width, height, quality) {
-  if (!url || typeof url !== "string") return url;
-  if (url.indexOf("/render/image/") !== -1) return url;
-  const marca = "/storage/v1/object/public/";
-  if (url.indexOf(marca) === -1) return url;
-  const nueva = url.replace(marca, "/storage/v1/render/image/public/");
-  const sep = nueva.indexOf("?") === -1 ? "?" : "&";
-  let params = "width=" + width;
-  if (height) params += "&height=" + height + "&resize=contain";
-  params += "&quality=" + (quality || 70);
-  return nueva + sep + params;
+  return url;
 }
 
 // --- Formatear precio según moneda (ARS / USD) ---
