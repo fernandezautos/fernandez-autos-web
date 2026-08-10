@@ -698,14 +698,25 @@ nav a:hover, nav a.active { color: var(--black); }
       </select>
     </div>
     <div class="filtro">
-      <label>Precio máximo</label>
-      <select id="fPrecio" onchange="aplicarFiltros()">
+      <label>Precio máx. (pesos)</label>
+      <select id="fPrecioArs" onchange="aplicarFiltros()">
         <option value="">Sin límite</option>
         <option value="10000000">$ 10.000.000</option>
         <option value="20000000">$ 20.000.000</option>
         <option value="30000000">$ 30.000.000</option>
         <option value="50000000">$ 50.000.000</option>
         <option value="80000000">$ 80.000.000</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Precio máx. (dólares)</label>
+      <select id="fPrecioUsd" onchange="aplicarFiltros()">
+        <option value="">Sin límite</option>
+        <option value="10000">US$ 10.000</option>
+        <option value="15000">US$ 15.000</option>
+        <option value="20000">US$ 20.000</option>
+        <option value="30000">US$ 30.000</option>
+        <option value="50000">US$ 50.000</option>
       </select>
     </div>
     <div class="filtro">
@@ -820,7 +831,11 @@ const WSP = '5492236249445';
 let stockData = [];
 let filtroTipo = '';
 
-const fmt = n => n ? '$ '+Number(n).toLocaleString('es-AR') : 'Consultar precio';
+const fmt = (n, moneda) => {
+  if(!n) return 'Consultar precio';
+  const simbolo = moneda === 'USD' ? 'US$' : '$';
+  return simbolo+' '+Number(n).toLocaleString('es-AR');
+};
 
 // Redimensiona una imagen de Supabase Storage on-the-fly usando el transformador de imágenes.
 // Convierte .../object/public/... en .../render/image/public/...?width=&quality=
@@ -851,7 +866,7 @@ async function cargarStock() {
     const params = new URLSearchParams(window.location.search);
     if(params.get('tipo')) { filtroTipo = params.get('tipo'); document.getElementById('fTipo').value = params.get('tipo'); }
     if(params.get('marca')) document.getElementById('fMarca').value = params.get('marca');
-    if(params.get('precio')) document.getElementById('fPrecio').value = params.get('precio');
+    if(params.get('precio')) document.getElementById('fPrecioArs').value = params.get('precio');
     aplicarFiltros();
 
     // Compatibilidad: si viene con ?id= (link viejo), redirigir a la ficha nueva
@@ -894,12 +909,20 @@ function aplicarFiltros() {
   const marca = document.getElementById('fMarca').value;
   const modelo = document.getElementById('fModelo').value;
   const anio = document.getElementById('fAnioDesde').value;
-  const precio = parseInt(document.getElementById('fPrecio').value)||0;
+  const precioArs = parseInt(document.getElementById('fPrecioArs').value)||0;
+  const precioUsd = parseInt(document.getElementById('fPrecioUsd').value)||0;
   const transm = document.getElementById('fTransmision').value;
   if(marca) data = data.filter(v=>v.marca===marca);
   if(modelo) data = data.filter(v=>v.modelo===modelo);
   if(anio) data = data.filter(v=>v.anio>=parseInt(anio));
-  if(precio) data = data.filter(v=>v.precio<=precio);
+  // Precio por moneda: un auto pasa si cumple el tope de SU moneda.
+  // Si el tope de esa moneda está vacío, esa moneda no se limita.
+  if(precioArs || precioUsd) {
+    data = data.filter(v => {
+      if(v.moneda_precio === 'USD') return !precioUsd || v.precio <= precioUsd;
+      return !precioArs || v.precio <= precioArs;
+    });
+  }
   if(transm) data = data.filter(v=>v.transmision===transm);
 
   document.getElementById('filtrosResultado').textContent = data.length+' auto'+(data.length!==1?'s':'')+' encontrado'+(data.length!==1?'s':'');
@@ -907,7 +930,7 @@ function aplicarFiltros() {
 }
 
 function limpiarFiltros() {
-  ['fMarca','fModelo','fAnioDesde','fPrecio','fTransmision'].forEach(id => document.getElementById(id).value='');
+  ['fMarca','fModelo','fAnioDesde','fPrecioArs','fPrecioUsd','fTransmision'].forEach(id => document.getElementById(id).value='');
   filtroTipo = '';
   aplicarFiltros();
 }
@@ -935,7 +958,7 @@ function renderGrilla(autos) {
         </div>
         <div class="auto-footer">
           <div>
-            <div class="auto-precio">${fmt(v.precio)}</div>
+            <div class="auto-precio">${fmt(v.precio, v.moneda_precio)}</div>
           </div>
           <button class="btn-ver">Ver detalle</button>
         </div>
