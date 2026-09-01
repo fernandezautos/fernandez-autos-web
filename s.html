@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fernández Autos</title>
+  <style>
+    :root {
+      --cream: #f4f2ec;
+      --navy: #1a4a8a;
+      --black: #0e0d0b;
+      --muted: #7a7870;
+      --border: #e2dfd5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: var(--cream);
+      color: var(--black);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 40px 32px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(14,13,11,0.06);
+    }
+    .logo {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      margin-bottom: 24px;
+    }
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid var(--border);
+      border-top-color: var(--navy);
+      border-radius: 50%;
+      margin: 8px auto 20px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .msg {
+      font-size: 1rem;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+    .sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .err-title {
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .wa {
+      display: none;
+      margin-top: 22px;
+      background: #25d366;
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">Fernández Autos</div>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <div class="msg">Abriendo tu documento…</div>
+      <div class="sub">Aguardá un instante.</div>
+    </div>
+
+    <div id="error" class="hidden">
+      <div class="err-title" id="errTitle">No pudimos abrir el documento</div>
+      <div class="sub" id="errSub">El enlace no es válido o ya expiró.</div>
+      <a class="wa" id="waLink" href="https://wa.me/5492236249445">Consultar por WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var FN_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/ir";
+      var WA = "https://wa.me/5492236249445";
+
+      function mostrarError(titulo, sub) {
+        document.getElementById("loading").classList.add("hidden");
+        var err = document.getElementById("error");
+        err.classList.remove("hidden");
+        if (titulo) document.getElementById("errTitle").textContent = titulo;
+        if (sub) document.getElementById("errSub").textContent = sub;
+        document.getElementById("waLink").style.display = "inline-block";
+      }
+
+      // El código viene como /s/CODIGO (via _redirects) o como ?c=CODIGO (fallback).
+      var codigo = "";
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("c")) {
+        codigo = params.get("c").trim();
+      } else {
+        var partes = window.location.pathname.split("/").filter(Boolean);
+        if (partes.length) codigo = partes[partes.length - 1].trim();
+        if (codigo === "s" || codigo === "s.html") codigo = "";
+      }
+
+      if (!codigo) {
+        mostrarError("Enlace incompleto", "Falta el código del documento.");
+        return;
+      }
+
+      fetch(FN_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo: codigo })
+      })
+        .then(function (r) { return r.json().then(function (j) { return { status: r.status, body: j }; }); })
+        .then(function (res) {
+          if (res.body && res.body.ok && res.body.url) {
+            window.location.replace(res.body.url);
+            return;
+          }
+          if (res.body && res.body.error === "expirado") {
+            mostrarError("El enlace expiró", "Este documento ya no está disponible. Escribinos y te lo reenviamos.");
+          } else if (res.body && res.body.error === "no_encontrado") {
+            mostrarError("Enlace no encontrado", "El enlace no es válido. Verificá que esté completo.");
+          } else {
+            mostrarError("No pudimos abrir el documento", "Probá de nuevo en un momento o escribinos.");
+          }
+        })
+        .catch(function () {
+          mostrarError("No pudimos abrir el documento", "Revisá tu conexión e intentá de nuevo.");
+        });
+    })();
+  </script>
+</body>
+</html>
