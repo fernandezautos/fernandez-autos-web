@@ -694,7 +694,7 @@ async function enviarConsignacion() {
       try {
         const upR = await fetch(`${SB_URL}/storage/v1/object/${BUCKET}/${path}`, {
           method: 'POST',
-          headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':foto.type,'x-upsert':'true'},
+          headers: {'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':foto.type,'x-upsert':'false'},
           body: foto
         });
         if(upR.ok) urlsFotos.push(`${SB_URL}/storage/v1/object/public/${BUCKET}/${path}`);
