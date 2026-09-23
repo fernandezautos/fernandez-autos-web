@@ -396,6 +396,16 @@ footer a:hover { color: #fff; }
 .wsp-modal-btn:disabled { background: #9e9e9e; cursor: not-allowed; transform: none; }
 .wsp-modal-nota { text-align: center; font-size: 0.73rem; color: #9e9e9e; margin-top: 12px; }
 </style>
+<script>
+// Turnstile (anti-bot): Cloudflare llama a tsOnLoad cuando su script terminó de
+// cargar; el código de la página escucha el evento 'ts-listo' para dibujar widgets.
+window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); };
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=tsOnLoad" async defer></script>
+<style>
+.ts-box { display: flex; justify-content: center; margin: 4px 0 12px; min-height: 65px; border-radius: 8px; }
+.ts-box.inp-err { outline: 2px solid #d32f2f; outline-offset: 2px; }
+</style>
 </head>
 <body>
 
@@ -576,6 +586,7 @@ footer a:hover { color: #fff; }
           <textarea id="fMensaje" placeholder="¿Tenés alguna duda o consulta específica?"></textarea>
         </div>
       </div>
+      <div id="formTurnstile" class="ts-box"></div>
       <button type="submit" class="btn-form">Solicitar asesoramiento</button>
       <div class="form-msg" id="formMsg"></div>
     </form>
@@ -620,6 +631,32 @@ footer a:hover { color: #fff; }
 
 <script>
 
+// ── TURNSTILE (anti-bot de Cloudflare) ────────────────────────────
+// Cada formulario tiene su propio widget, dibujado a mano (render=explicit).
+// El token es de UN solo uso: después de cada envío se resetea el widget para
+// que genere uno nuevo. Si el script de Cloudflare no cargó (bloqueador, caída),
+// tsToken devuelve '' y cada formulario decide qué hacer.
+const TS_SITEKEY = '0x4AAAAAAED4MYJ_EgiolmOs';
+const tsIds = {};
+function tsCargado() { return typeof turnstile !== 'undefined'; }
+function tsRender(sel) {
+  if (!tsCargado() || !document.querySelector(sel)) return null;
+  if (tsIds[sel] === undefined) {
+    try { tsIds[sel] = turnstile.render(sel, { sitekey: TS_SITEKEY, theme: 'light', language: 'es' }); }
+    catch (e) { return null; }
+  }
+  return tsIds[sel];
+}
+function tsToken(sel) {
+  const id = tsRender(sel);
+  if (id === null) return '';
+  try { return turnstile.getResponse(id) || ''; } catch (e) { return ''; }
+}
+function tsReset(sel) {
+  if (tsIds[sel] === undefined || !tsCargado()) return;
+  try { turnstile.reset(tsIds[sel]); } catch (e) {}
+}
+
 // ── SISTEMA WSP ROTATIVO ──────────────────────────────────────────
 const WSP_ROTATOR = 'https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/whatsapp-rotator';
 const WSP_FALLBACK = '5492236249445';
@@ -635,6 +672,11 @@ function abrirWspModal(contexto) {
   btn.disabled = false;
   btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Continuar a WhatsApp →';
   document.getElementById('wspModal').classList.add('open');
+  // Widget con token fresco: se dibuja la primera vez; las siguientes se resetea
+  // (el token de un envío anterior ya está usado).
+  if (tsIds['#wspTurnstile'] === undefined) tsRender('#wspTurnstile');
+  else tsReset('#wspTurnstile');
+  document.getElementById('wspTurnstile').classList.remove('inp-err');
   setTimeout(() => document.getElementById('wspNombre').focus(), 100);
 }
 
@@ -656,6 +698,15 @@ async function enviarWspModal() {
   else document.getElementById('wspNombre').classList.remove('inp-err');
   if (!telefono || telefono.replace(/\D/g,'').length < 8) { document.getElementById('wspTelefono').classList.add('inp-err'); valido = false; }
   else document.getElementById('wspTelefono').classList.remove('inp-err');
+  // Turnstile: si el widget cargó y no está resuelto, pedir que se complete. Si el
+  // script no cargó (bloqueado/caído), no trabamos: el server deriva al número
+  // general para que un cliente real siempre pueda contactar.
+  let tsTok = '';
+  if (tsCargado()) {
+    tsTok = tsToken('#wspTurnstile');
+    document.getElementById('wspTurnstile').classList.toggle('inp-err', !tsTok);
+    if (!tsTok) valido = false;
+  }
   if (!valido) return;
 
   const btn = document.getElementById('wspBtn');
@@ -666,7 +717,7 @@ async function enviarWspModal() {
     const r = await fetch(WSP_ROTATOR, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, telefono, contexto: wspContexto })
+      body: JSON.stringify({ nombre, telefono, contexto: wspContexto, turnstileToken: tsTok })
     });
     const data = await r.json();
     if (data.ok && data.numero_vendedor) {
@@ -684,7 +735,11 @@ async function enviarWspModal() {
 const SB_URL = 'https://bjgkmrgkgjpydpanewsa.supabase.co';
 const SB_KEY = 'sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6';
 const WEBHOOK_URL = `${SB_URL}/functions/v1/webhook-web`;
-const WEBHOOK_SECRET = '2babb2e0-7da3-43a1-ab18-7ab1fb7938b08905c42e-9766-477f-acb2-88b579d45e29';
+const WEBHOOK_SECRET = 'fa_wh_b99930925243ea1a210abdca847b4033dd91ffd2ab431a98';
+// El widget del formulario se dibuja apenas carga Cloudflare (o ya, si cargó antes).
+document.addEventListener('ts-listo', () => tsRender('#formTurnstile'));
+tsRender('#formTurnstile');
+
 
 async function enviarFormulario(e) {
   e.preventDefault();
@@ -699,7 +754,20 @@ async function enviarFormulario(e) {
 
   const nota = `Consulta financiación — Monto: ${monto||'No especificado'} · Situación: ${situacion} · Permuta: ${permuta}${mensaje?' · '+mensaje:''}`;
 
-  // ── Intento 1: webhook ──────────────────────────────────────────────────
+  // Turnstile obligatorio: sin token válido el webhook no crea el lead.
+  const tsTok = tsToken('#formTurnstile');
+  if (!tsTok) {
+    msg.textContent = tsCargado()
+      ? 'Completá la verificación de seguridad antes de enviar.'
+      : 'No pudimos cargar la verificación de seguridad. Por favor escribinos por WhatsApp.';
+    msg.className = 'form-msg err'; msg.style.display = 'block';
+    return;
+  }
+
+  // Todo pasa por el webhook (con service_role). No hay escritura directa desde el
+  // navegador: la base la bloquea por RLS, así que un "fallback" así nunca guardaba
+  // nada y le mostraba un falso "recibida" al cliente.
+  let ok = false;
   try {
     const r = await fetch(WEBHOOK_URL, {
       method: 'POST',
@@ -713,56 +781,27 @@ async function enviarFormulario(e) {
         interes: 'Financiación',
         nota,
         origen_detalle: 'financiacion',
-        payload_extra: { monto, situacion, permuta, mensaje }
+        payload_extra: { monto, situacion, permuta, mensaje },
+        turnstileToken: tsTok
       })
     });
     const data = await r.json();
-    if (r.ok && data.ok) {
-      msg.textContent = '✓ ¡Consulta recibida! Te contactamos a la brevedad.';
-      msg.className = 'form-msg ok'; msg.style.display = 'block';
-      if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'financiacion', content_category: 'Financiación' });
-      e.target.reset();
-      return;
-    }
-    throw new Error('webhook failed: ' + (data.error || r.status));
+    ok = !!(r.ok && data.ok);
+    if (!ok) console.warn('Webhook rechazó la consulta:', data.error || r.status);
   } catch (err) {
-    console.warn('Webhook fallido, usando fallback:', err);
+    console.warn('Webhook: intento fallido:', err);
   }
+  tsReset('#formTurnstile'); // el token ya se usó
 
-  // ── Intento 2: fallback ─────────────────────────────────────────────────
-  try {
-    // Crear cliente
-    const cliR = await fetch(`${SB_URL}/rest/v1/clientes`, {
-      method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
-      body: JSON.stringify({nombre, tel, email, interes:'Financiación', estado:'Prospecto', notas:nota})
-    });
-    const cli = await cliR.json();
-    const clienteId = Array.isArray(cli) ? cli[0]?.id : cli?.id;
-
-    // Crear prospecto (sin asignar)
-    await fetch(`${SB_URL}/rest/v1/prospectos`, {
-      method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body: JSON.stringify({cliente_id:clienteId, nombre, tel, email, interes:'Financiación', nota, col:'nueva', cerrado:false, origen:'web', origen_detalle:'financiacion_fallback', ultimo_contacto:new Date().toISOString()})
-    });
-
-    // Notificar al admin
-    await fetch(`${SB_URL}/rest/v1/notificaciones`, {
-      method:'POST',
-      headers:{'apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
-      body: JSON.stringify({para:'admin', tipo:'nuevo_lead', titulo:'💳 Consulta de financiación (sin asignar)', mensaje:nombre+' · '+tel+' · '+monto, leida:false})
-    });
-
+  if (ok) {
     msg.textContent = '✓ ¡Consulta recibida! Te contactamos a la brevedad.';
     msg.className = 'form-msg ok'; msg.style.display = 'block';
     if (typeof fbq === 'function') fbq('track', 'Lead', { content_name: 'financiacion', content_category: 'Financiación' });
     e.target.reset();
-  } catch(err) {
-    console.error(err);
-    msg.textContent = 'Error al enviar. Por favor escribinos por WhatsApp.';
-    msg.className = 'form-msg err'; msg.style.display = 'block';
+    return;
   }
+  msg.textContent = 'No pudimos enviar tu consulta en este momento. Por favor escribinos por WhatsApp y te respondemos enseguida.';
+  msg.className = 'form-msg err'; msg.style.display = 'block';
 }
 function toggleMenu() {
   const panel = document.getElementById('navMenu');
@@ -796,6 +835,7 @@ document.querySelectorAll('#navMenu a').forEach(a => a.addEventListener('click',
       <label>Tel&#233;fono *</label>
       <input type="tel" id="wspTelefono" placeholder="223 000-0000" autocomplete="tel">
     </div>
+    <div id="wspTurnstile" class="ts-box"></div>
     <button class="wsp-modal-btn" id="wspBtn" onclick="enviarWspModal()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Continuar a WhatsApp &#8594;
