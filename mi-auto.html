@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
+<title>Tu auto — Fernández Autos</title>
+<style>
+:root {
+  --black: #131210;
+  --white: #faf9f6;
+  --cream: #edeae1;
+  --accent: #2f4d5e;
+  --accent-light: #3d6478;
+  --accent-bg: #e6edf0;
+  --muted: #6f6d64;
+  --border: #dcd8cc;
+  --ok: #2d6a30;
+  --ok-bg: #e8f5e9;
+  --warn: #8a5a00;
+  --warn-bg: #fdf3e0;
+  --sans: 'Helvetica Neue', Arial, sans-serif;
+  --serif: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+
+header {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px; height: 58px;
+  background: rgba(250,250,247,.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.header-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+main { max-width: 640px; margin: 0 auto; padding: 20px 16px 40px; }
+
+.hola { font-size: 0.95rem; color: var(--muted); margin-bottom: 4px; }
+h1 { font-family: var(--serif); font-weight: 800; font-size: 1.7rem; line-height: 1.15; letter-spacing: -0.01em; }
+.version { font-size: 0.95rem; color: var(--muted); margin-top: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chip { font-size: 0.78rem; background: var(--cream); color: var(--black); border-radius: 20px; padding: 4px 10px; }
+.estado-pill { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 0.85rem; font-weight: 600; background: var(--accent); color: #fff; border-radius: 20px; padding: 6px 14px; }
+.estado-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #9fe0b0; }
+.precio-pub { margin-top: 10px; font-size: 0.88rem; color: var(--muted); }
+.precio-pub strong { color: var(--black); font-family: var(--serif); font-size: 1.05rem; }
+
+.galeria { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 18px -16px 0; padding: 0 16px 6px; scrollbar-width: none; }
+.galeria::-webkit-scrollbar { display: none; }
+.galeria img { flex: 0 0 86%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; scroll-snap-align: center; background: var(--cream); }
+.galeria.una img { flex-basis: 100%; }
+
+.card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-top: 16px; }
+.card h2 { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; }
+.nota { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+
+.tl { list-style: none; position: relative; }
+.tl li { position: relative; padding: 0 0 16px 30px; }
+.tl li:last-child { padding-bottom: 0; }
+.tl li::before { content: ""; position: absolute; left: 7px; top: 18px; bottom: -2px; width: 2px; background: var(--border); }
+.tl li:last-child::before { display: none; }
+.tl li.hecho::before { background: var(--accent); }
+.tl .dot { position: absolute; left: 0; top: 2px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); background: #fff; }
+.tl li.hecho .dot { background: var(--accent); border-color: var(--accent); }
+.tl li.actual .dot { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-bg); }
+.tl li.actual .dot::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--accent); }
+.tl .t { font-size: 0.93rem; color: var(--black); }
+.tl li.pendiente .t { color: var(--muted); }
+.tl li.actual .t { font-weight: 700; }
+.tl .f { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.tl .aca { display: inline-block; margin-left: 8px; font-size: 0.7rem; font-weight: 700; color: var(--accent); background: var(--accent-bg); border-radius: 10px; padding: 2px 8px; vertical-align: 1px; }
+.eventos { margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 12px; display: grid; gap: 6px; }
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.stat { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.stat .n { font-family: var(--serif); font-weight: 800; font-size: 1.6rem; line-height: 1; }
+.stat .l { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+
+.fila { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.fila:last-child { border-bottom: none; }
+.fila .k { color: var(--muted); }
+.fila .v { text-align: right; font-weight: 600; }
+
+.btns { display: grid; gap: 8px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border-radius: 10px; padding: 12px 16px; font-family: var(--sans); font-size: 0.92rem; font-weight: 600; text-decoration: none; cursor: pointer; border: 1px solid var(--border); background: #fff; color: var(--black); }
+.btn:hover { border-color: var(--accent-light); }
+.btn-wsp { background: #25d366; border-color: #25d366; color: #fff; }
+.btn-wsp:hover { background: #1fba57; border-color: #1fba57; }
+.btn[disabled] { opacity: .6; cursor: default; }
+
+.cobro-monto { font-family: var(--serif); font-weight: 800; font-size: 2rem; line-height: 1.1; margin: 2px 0 8px; }
+.badge { display: inline-block; font-size: 0.8rem; font-weight: 600; border-radius: 20px; padding: 4px 11px; }
+.badge.ok { background: var(--ok-bg); color: var(--ok); }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.gastos { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 0.9rem; display: grid; gap: 4px; }
+
+.asesor { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.avatar { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 1.2rem; flex-shrink: 0; }
+.asesor .nombre { font-weight: 700; font-size: 1rem; }
+
+.centro { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; padding: 20px; }
+.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: gira .8s linear infinite; }
+@keyframes gira { to { transform: rotate(360deg); } }
+.centro h1 { font-size: 1.3rem; }
+.centro .btn { max-width: 320px; }
+
+footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 24px 16px 32px; }
+
+@media (min-width: 700px) {
+  header { padding: 0 32px; }
+  h1 { font-size: 2rem; }
+  .galeria img { flex-basis: 70%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" aria-label="Fernández Autos">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="28" style="display:block;overflow:visible;">
+      <text y="60" font-family="Audiowide, sans-serif" font-size="42">
+        <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
+      </text>
+    </svg>
+  </a>
+  <span class="header-tag">Tu auto</span>
+</header>
+
+<main id="app">
+  <div class="centro"><div class="spinner" aria-label="Cargando"></div><div class="nota">Cargando la información de tu auto…</div></div>
+</main>
+
+<footer>© 2026 Fernández Autos · Mar del Plata</footer>
+
+<script>
+(function () {
+  var FN_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co/functions/v1/portal-duenio";
+  var WSP_AGENCIA = "5492236249445";
+  var app = document.getElementById("app");
+
+  var ETAPAS = {
+    ingresado: "Recibimos tu auto",
+    preparacion: "En preparación",
+    a_la_venta: "A la venta",
+    reservado: "Reservado",
+    vendido: "Vendido",
+    entregado: "Entregado al comprador",
+    pagado: "Te pagamos",
+    devuelto: "Te devolvimos el auto"
+  };
+
+  function obtenerToken() {
+    var q = new URLSearchParams(location.search).get("t");
+    if (q) return q.trim();
+    var partes = location.pathname.split("/").filter(Boolean);
+    var ultimo = partes[partes.length - 1] || "";
+    return (ultimo === "mi-auto" || ultimo === "mi-auto.html") ? "" : ultimo;
+  }
+
+  // Todo el contenido se arma con textContent: nunca se inserta HTML con datos.
+  function h(tag, attrs, hijos) {
+    var el = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (k === "text") el.textContent = attrs[k];
+      else if (k === "class") el.className = attrs[k];
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), attrs[k]);
+      else el.setAttribute(k, attrs[k]);
+    });
+    (hijos || []).forEach(function (c) { if (c) el.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+    return el;
+  }
+
+  function dinero(n, moneda) {
+    if (n === null || n === undefined) return "—";
+    return (moneda === "USD" ? "U$D " : "$ ") + Math.round(n).toLocaleString("es-AR");
+  }
+
+  function fecha(iso) {
+    if (!iso) return "";
+    var p = String(iso).slice(0, 10).split("-");
+    return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : "";
+  }
+
+  function wa(numero, texto) {
+    return "https://wa.me/" + numero + "?text=" + encodeURIComponent(texto);
+  }
+
+  function mostrarError(titulo, sub) {
+    app.innerHTML = "";
+    app.appendChild(h("div", { class: "centro" }, [
+      h("h1", { text: titulo }),
+      h("p", { class: "nota", text: sub }),
+      h("a", { class: "btn btn-wsp", href: wa(WSP_AGENCIA, "Hola! Quiero consultar por mi auto en consignación."), target: "_blank", rel: "noopener", text: "Escribinos por WhatsApp" })
+    ]));
+  }
+
+  function tarjeta(titulo, hijos) {
+    return h("section", { class: "card" }, [h("h2", { text: titulo })].concat(hijos));
+  }
+
+  function render(d, token) {
+    var a = d.auto;
+    var nombreAuto = [a.marca, a.modelo].filter(Boolean).join(" ");
+    document.title = nombreAuto + " — Fernández Autos";
+    app.innerHTML = "";
+
+    // ── Encabezado ──
+    var chips = [a.anio, a.km !== null ? a.km.toLocaleString("es-AR") + " km" : null, a.color, a.dominio]
+      .filter(Boolean).map(function (x) { return h("span", { class: "chip", text: String(x) }); });
+    app.appendChild(h("div", null, [
+      d.duenio ? h("div", { class: "hola", text: "Hola, " + d.duenio }) : null,
+      h("h1", { text: nombreAuto }),
+      a.version ? h("div", { class: "version", text: a.version }) : null,
+      h("div", { class: "chips" }, chips),
+      h("div", { class: "estado-pill", text: ETAPAS[d.etapa] || "En proceso" }),
+      a.precio ? h("div", { class: "precio-pub" }, ["Precio publicado: ", h("strong", { text: dinero(a.precio, a.moneda) })]) : null
+    ]));
+
+    // ── Fotos ──
+    if (a.fotos && a.fotos.length) {
+      var gal = h("div", { class: "galeria" + (a.fotos.length === 1 ? " una" : "") });
+      a.fotos.forEach(function (url, i) {
+        gal.appendChild(h("img", { src: url, alt: nombreAuto + " — foto " + (i + 1), loading: i < 2 ? "eager" : "lazy" }));
+      });
+      app.appendChild(gal);
+    }
+
+    // ── Línea de tiempo ──
+    var lista = h("ol", { class: "tl" });
+    d.timeline.forEach(function (p) {
+      var t = h("div", { class: "t" }, [p.titulo]);
+      if (p.estado === "actual") t.appendChild(h("span", { class: "aca", text: "Estamos acá" }));
+      lista.appendChild(h("li", { class: p.estado }, [
+        h("span", { class: "dot" }), t,
+        p.fecha ? h("div", { class: "f", text: fecha(p.fecha) }) : null
+      ]));
+    });
+    var tl = [lista];
+    if (d.eventos && d.eventos.length) {
+      tl.push(h("div", { class: "eventos" }, d.eventos.map(function (e) {
+        return h("div", { class: "nota", text: (e.fecha ? fecha(e.fecha) + " · " : "") + e.texto });
+      })));
+    }
+    app.appendChild(tarjeta("Cómo va tu auto", tl));
+
+    // ── Dónde está publicado ──
+    var pubs = [];
+    if (d.publicaciones.web) pubs.push(h("a", { class: "btn", href: d.publicaciones.web, target: "_blank", rel: "noopener", text: "Verlo en nuestra web" }));
+    if (d.publicaciones.mercadolibre) pubs.push(h("a", { class: "btn", href: d.publicaciones.mercadolibre, target: "_blank", rel: "noopener", text: "Verlo en MercadoLibre" }));
+    if (pubs.length) {
+      app.appendChild(tarjeta("Dónde está publicado", [h("div", { class: "btns" }, pubs)]));
+    } else if (d.etapa === "preparacion" || d.etapa === "a_la_venta") {
+      app.appendChild(tarjeta("Dónde está publicado", [h("p", { class: "nota", text: "Estamos preparando la publicación. Apenas esté online vas a ver los links acá." })]));
+    }
+
+    // ── Números ──
+    var n = d.numeros, stats = [];
+    if (n.dias !== null) stats.push([n.dias, n.dias === 1 ? "día con nosotros" : "días con nosotros"]);
+    stats.push([n.consultas, n.consultas === 1 ? "consulta recibida" : "consultas recibidas"]);
+    if (n.visitas_ml_30d !== null) stats.push([n.visitas_ml_30d.toLocaleString("es-AR"), "visitas en MercadoLibre (30 días)"]);
+    app.appendChild(tarjeta("Tu auto en números", [h("div", { class: "stats" }, stats.map(function (s) {
+      return h("div", { class: "stat" }, [h("div", { class: "n", text: String(s[0]) }), h("div", { class: "l", text: s[1] })]);
+    }))]));
+
+    // ── Lo que acordamos ──
+    var ac = d.acuerdo;
+    var filas = [
+      ["Tipo de acuerdo", ac.tipo === "porcentaje" ? "Comisión de la agencia" : "Precio mínimo"],
+      ac.tipo === "porcentaje" ? ["Comisión", ac.porcentaje + "%"] : ["Precio mínimo", dinero(ac.precio_minimo, ac.moneda)],
+      ["Fecha de ingreso", fecha(ac.fecha_ingreso) || "—"]
+    ].map(function (f) { return h("div", { class: "fila" }, [h("span", { class: "k", text: f[0] }), h("span", { class: "v", text: f[1] })]); });
+    var acHijos = filas;
+    if (ac.tiene_contrato) {
+      var btnC = h("button", { class: "btn", type: "button", text: "Descargar contrato (PDF)" });
+      btnC.style.marginTop = "12px";
+      btnC.addEventListener("click", function () { descargarContrato(token, btnC); });
+      acHijos = filas.concat([btnC]);
+    }
+    app.appendChild(tarjeta("Lo que acordamos", acHijos));
+
+    // ── Historial de precios ──
+    if (d.precios && d.precios.length) {
+      var filasP = d.precios.slice().reverse().map(function (p, i) {
+        return h("div", { class: "fila" }, [
+          h("span", { class: "k", text: fecha(p.fecha) + (i === 0 ? " · actual" : "") }),
+          h("span", { class: "v", text: dinero(p.precio, p.moneda) })
+        ]);
+      });
+      app.appendChild(tarjeta("Historial de precios", filasP));
+    }
+
+    // ── Cuánto vas a cobrar ──
+    var c = d.cobro, cob = [];
+    if (c.tipo === "fijo") {
+      cob.push(h("div", { class: "cobro-monto", text: dinero(c.monto, c.moneda) }));
+      cob.push(h("p", { class: "nota", text: "Es el precio mínimo que acordamos: cuando se venda tu auto, esto es lo que recibís." }));
+    } else if (c.tipo === "estimado") {
+      cob.push(h("div", { class: "cobro-monto", text: "≈ " + dinero(c.monto, c.moneda) }));
+      cob.push(h("p", { class: "nota", text: "Estimado si se vende al precio publicado, ya descontada la comisión acordada." }));
+    } else if (c.tipo === "liquidacion") {
+      cob.push(h("div", { class: "cobro-monto", text: dinero(c.monto, c.moneda) }));
+      cob.push(c.pagado
+        ? h("span", { class: "badge ok", text: "✓ Pagado" + (c.fecha_pago ? " el " + fecha(c.fecha_pago) : "") })
+        : h("span", { class: "badge warn", text: "Pendiente de pago" }));
+      var g = [h("div", null, [h("span", { class: "nota", text: "Gastos del auto: " })])];
+      if (c.gastos.al_dia) {
+        g[0].appendChild(h("strong", { text: "al día ✓" }));
+      } else {
+        g[0].appendChild(h("strong", { text: "tenés un saldo pendiente" }));
+        c.gastos.debe.forEach(function (x) { g.push(h("div", { text: "• " + dinero(x.monto, x.moneda) })); });
+        g.push(h("div", { class: "nota", text: "Tu asesor te va a contactar para coordinarlo." }));
+      }
+      cob.push(h("div", { class: "gastos" }, g));
+    } else {
+      cob.push(h("p", { class: "nota", text: "Estamos preparando tu liquidación. Tu asesor te va a avisar apenas esté lista." }));
+    }
+    app.appendChild(tarjeta("Cuánto vas a cobrar", cob));
+
+    // ── Tu asesor ──
+    var as = d.asesor;
+    var iniciales = as.nombre.split(/\s+/).map(function (x) { return x.charAt(0); }).join("").slice(0, 2).toUpperCase();
+    var avatar = as.foto
+      ? h("img", { class: "avatar", src: as.foto, alt: as.nombre })
+      : h("div", { class: "avatar", text: iniciales });
+    app.appendChild(tarjeta("Tu asesor", [
+      h("div", { class: "asesor" }, [avatar, h("div", null, [h("div", { class: "nombre", text: as.nombre }), h("div", { class: "nota", text: "Fernández Autos" })])]),
+      h("a", { class: "btn btn-wsp", href: wa(as.whatsapp, "Hola! Te escribo por mi " + nombreAuto + (a.dominio ? " (" + a.dominio + ")" : "") + "."), target: "_blank", rel: "noopener", text: "Hablar por WhatsApp" })
+    ]));
+  }
+
+  function descargarContrato(token, btn) {
+    btn.disabled = true;
+    var txt = btn.textContent;
+    btn.textContent = "Preparando…";
+    fetch(FN_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ t: token, accion: "contrato" }) })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.ok && j.url) location.href = j.url;
+        else alert("El contrato no está disponible en este momento. Consultá con tu asesor.");
+      })
+      .catch(function () { alert("No pudimos conectarnos. Probá de nuevo en un momento."); })
+      .then(function () { btn.disabled = false; btn.textContent = txt; });
+  }
+
+  var token = obtenerToken();
+  if (!token) {
+    mostrarError("Link incompleto", "Revisá que hayas abierto el link completo que te enviamos.");
+    return;
+  }
+
+  fetch(FN_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ t: token, accion: "ver" }) })
+    .then(function (r) { return r.json().then(function (j) { return { status: r.status, j: j }; }); })
+    .then(function (res) {
+      if (res.j && res.j.ok) return render(res.j, token);
+      if (res.status === 429) return mostrarError("Demasiados intentos", "Esperá unos minutos y volvé a abrir el link.");
+      mostrarError("Este link no está disponible", "Puede que haya sido reemplazado por uno nuevo. Pedile el link actualizado a tu asesor.");
+    })
+    .catch(function () {
+      mostrarError("No pudimos cargar la información", "Revisá tu conexión y volvé a abrir el link.");
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,1 +1,2 @@
 /s/:codigo  /s.html?c=:codigo  200
+/mi-auto/:token  /mi-auto.html?t=:token  200
