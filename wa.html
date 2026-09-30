@@ -261,8 +261,11 @@
     //       mensaje y el interés con el nombre del vehículo.
     //  - ?vehiculo_id=168                     → id del vehículo consultado, para vincular
     //       el lead al registro real. Solo se acepta si es un entero positivo.
+    //  Si vienen ctx y origen juntos (ej. link de la IA de WhatsApp con el auto), el
+    //  origen viaja aparte como "campania" para no perderlo.
     const urlParams = new URLSearchParams(window.location.search);
     const origenParam = urlParams.get('origen') || 'web';
+    const campaniaParam = (urlParams.get('origen') || '').trim() || null;
     const ctxParam = (urlParams.get('ctx') || '').trim();
     const contextoParam = ctxParam.length > 0 ? ctxParam : origenParam;
 
@@ -363,6 +366,7 @@
             telefono: telefono,
             contexto: contextoParam,
             vehiculo_id: vehiculoIdParam,
+            campania: campaniaParam,
             turnstileToken: tsToken
           })
         });

@@ -55,10 +55,21 @@ h1 { font-family: var(--serif); font-weight: 800; font-size: 1.7rem; line-height
 .precio-pub { margin-top: 10px; font-size: 0.88rem; color: var(--muted); }
 .precio-pub strong { color: var(--black); font-family: var(--serif); font-size: 1.05rem; }
 
-.galeria { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 18px -16px 0; padding: 0 16px 6px; scrollbar-width: none; }
-.galeria::-webkit-scrollbar { display: none; }
-.galeria img { flex: 0 0 86%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; scroll-snap-align: center; background: var(--cream); }
-.galeria.una img { flex-basis: 100%; }
+.carrusel { margin-top: 18px; }
+.car-main { position: relative; }
+.car-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; border-radius: 12px; background: var(--cream); scrollbar-width: none; }
+.car-track::-webkit-scrollbar, .car-thumbs::-webkit-scrollbar { display: none; }
+.car-track img { flex: 0 0 100%; width: 100%; aspect-ratio: 4/3; object-fit: cover; scroll-snap-align: center; }
+.car-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255,255,255,.92); color: var(--black); box-shadow: 0 2px 8px rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.car-btn svg { width: 18px; height: 18px; }
+.car-btn.prev { left: 10px; }
+.car-btn.next { right: 10px; }
+.car-btn[disabled] { opacity: 0; pointer-events: none; }
+.car-count { position: absolute; right: 10px; bottom: 10px; background: rgba(19,18,16,.6); color: #fff; font-size: 0.75rem; font-weight: 600; border-radius: 12px; padding: 3px 9px; }
+.car-thumbs { position: relative; display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 2px; scrollbar-width: none; }
+.car-thumbs button { flex: 0 0 68px; height: 51px; padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: var(--cream); opacity: .55; cursor: pointer; transition: opacity .15s, border-color .15s; }
+.car-thumbs button.activa { border-color: var(--accent); opacity: 1; }
+.car-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-top: 16px; }
 .card h2 { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; margin-bottom: 12px; }
@@ -119,7 +130,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
 @media (min-width: 700px) {
   header { padding: 0 32px; }
   h1 { font-size: 2rem; }
-  .galeria img { flex-basis: 70%; }
+  .car-thumbs button { flex-basis: 84px; height: 63px; }
 }
 </style>
 </head>
@@ -227,13 +238,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
     ]));
 
     // ── Fotos ──
-    if (a.fotos && a.fotos.length) {
-      var gal = h("div", { class: "galeria" + (a.fotos.length === 1 ? " una" : "") });
-      a.fotos.forEach(function (url, i) {
-        gal.appendChild(h("img", { src: url, alt: nombreAuto + " — foto " + (i + 1), loading: i < 2 ? "eager" : "lazy" }));
-      });
-      app.appendChild(gal);
-    }
+    if (a.fotos && a.fotos.length) app.appendChild(carrusel(a.fotos, nombreAuto));
 
     // ── Línea de tiempo ──
     var lista = h("ol", { class: "tl" });
@@ -336,6 +341,86 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
       h("div", { class: "asesor" }, [avatar, h("div", null, [h("div", { class: "nombre", text: as.nombre }), h("div", { class: "nota", text: "Fernández Autos" })])]),
       h("a", { class: "btn btn-wsp", href: wa(as.whatsapp, "Hola! Te escribo por mi " + nombreAuto + (a.dominio ? " (" + a.dominio + ")" : "") + "."), target: "_blank", rel: "noopener", text: "Hablar por WhatsApp" })
     ]));
+  }
+
+  function flecha(puntos) {
+    var ns = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    var pl = document.createElementNS(ns, "polyline");
+    pl.setAttribute("points", puntos);
+    svg.appendChild(pl);
+    return svg;
+  }
+
+  // Foto grande deslizable + miniaturas. El deslizamiento es nativo (scroll-snap),
+  // así funciona con el dedo en el celular; flechas y miniaturas solo mueven el scroll.
+  function carrusel(fotos, nombre) {
+    var total = fotos.length, actual = 0;
+    var track = h("div", { class: "car-track" });
+    fotos.forEach(function (url, i) {
+      track.appendChild(h("img", { src: url, alt: nombre + " — foto " + (i + 1), loading: i < 2 ? "eager" : "lazy", draggable: "false" }));
+    });
+    var main = h("div", { class: "car-main" }, [track]);
+    if (total === 1) return h("div", { class: "carrusel" }, [main]);
+
+    var prev = h("button", { class: "car-btn prev", type: "button", "aria-label": "Foto anterior" }, [flecha("15 18 9 12 15 6")]);
+    var next = h("button", { class: "car-btn next", type: "button", "aria-label": "Foto siguiente" }, [flecha("9 18 15 12 9 6")]);
+    var contador = h("div", { class: "car-count" });
+    main.appendChild(prev);
+    main.appendChild(next);
+    main.appendChild(contador);
+
+    var thumbs = h("div", { class: "car-thumbs" });
+    var botones = fotos.map(function (url, i) {
+      var b = h("button", { type: "button", "aria-label": "Ver foto " + (i + 1) }, [h("img", { src: url, alt: "" })]);
+      b.addEventListener("click", function () { ir(i); });
+      thumbs.appendChild(b);
+      return b;
+    });
+
+    // Flechas/miniaturas: marcan al instante y mueven el scroll; mientras dura ese
+    // movimiento se ignoran los eventos de scroll (si no, pisan el índice a mitad de camino).
+    var programado = false, finProgramado;
+    function ir(i) {
+      i = Math.max(0, Math.min(total - 1, i));
+      programado = true;
+      clearTimeout(finProgramado);
+      finProgramado = setTimeout(function () { programado = false; }, 800);
+      track.scrollTo({ left: i * track.clientWidth, behavior: "smooth" });
+      marcar(i);
+    }
+
+    function marcar(i) {
+      actual = i;
+      contador.textContent = (i + 1) + " / " + total;
+      prev.disabled = i === 0;
+      next.disabled = i === total - 1;
+      botones.forEach(function (b, j) { b.classList.toggle("activa", j === i); });
+      // Sin animación: dos scrolls suaves simultáneos hacen que Chrome corte el de la foto.
+      var b = botones[i];
+      thumbs.scrollLeft = Math.max(0, b.offsetLeft - (thumbs.clientWidth - b.offsetWidth) / 2);
+    }
+
+    prev.addEventListener("click", function () { ir(actual - 1); });
+    next.addEventListener("click", function () { ir(actual + 1); });
+    var espera;
+    track.addEventListener("scroll", function () {
+      if (programado) return;
+      clearTimeout(espera);
+      espera = setTimeout(function () {
+        var i = Math.round(track.scrollLeft / track.clientWidth);
+        if (i !== actual) marcar(i);
+      }, 90);
+    });
+
+    marcar(0);
+    return h("div", { class: "carrusel" }, [main, thumbs]);
   }
 
   function descargarContrato(token, btn) {
