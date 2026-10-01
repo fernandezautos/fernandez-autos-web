@@ -280,6 +280,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
     if (n.dias !== null) stats.push([n.dias, n.dias === 1 ? "día con nosotros" : "días con nosotros"]);
     stats.push([n.consultas, n.consultas === 1 ? "consulta recibida" : "consultas recibidas"]);
     if (n.visitas_ml_30d !== null) stats.push([n.visitas_ml_30d.toLocaleString("es-AR"), "visitas en MercadoLibre (30 días)"]);
+    if (n.visitas_web_30d) stats.push([n.visitas_web_30d.toLocaleString("es-AR"), n.visitas_web_30d === 1 ? "visita en nuestra web (30 días)" : "visitas en nuestra web (30 días)"]);
     app.appendChild(tarjeta("Tu auto en números", [h("div", { class: "stats" }, stats.map(function (s) {
       return h("div", { class: "stat" }, [h("div", { class: "n", text: String(s[0]) }), h("div", { class: "l", text: s[1] })]);
     }))]));

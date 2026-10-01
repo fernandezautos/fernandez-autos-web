@@ -523,6 +523,22 @@ async function compartir(){
     }
   }
 }
+
+// --- Visita a la ficha: contador propio (edge function visita-web del CRM) ---
+// Abrir cualquier auto con ?equipo=1 marca este navegador como del equipo y deja
+// de contarlo; ?equipo=0 lo vuelve a contar.
+(function(){
+  try{
+    var eq = new URLSearchParams(location.search).get('equipo');
+    if(eq === '1') localStorage.setItem('fa_equipo','1');
+    if(eq === '0') localStorage.removeItem('fa_equipo');
+    if(localStorage.getItem('fa_equipo') === '1') return;
+  }catch(e){}
+  fetch(${JSON.stringify(SB_URL + "/functions/v1/visita-web")}, {
+    method:'POST', keepalive:true, headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ v: ${JSON.stringify(v.id)} })
+  }).catch(function(){});
+})();
 </script>
 </body>
 </html>`;
