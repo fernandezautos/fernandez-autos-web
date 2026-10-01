@@ -92,6 +92,13 @@ h1 { font-family: var(--serif); font-weight: 800; font-size: 1.7rem; line-height
 .tl .aca { display: inline-block; margin-left: 8px; font-size: 0.7rem; font-weight: 700; color: var(--accent); background: var(--accent-bg); border-radius: 10px; padding: 2px 8px; vertical-align: 1px; }
 .eventos { margin-top: 14px; border-top: 1px dashed var(--border); padding-top: 12px; display: grid; gap: 6px; }
 
+.mk-barra { position: relative; height: 12px; margin: 22px 0 8px; background: var(--cream); border-radius: 6px; }
+.mk-rango { position: absolute; top: 0; bottom: 0; background: #9fb4c2; border-radius: 6px; }
+.mk-marca { position: absolute; top: -6px; bottom: -6px; width: 4px; margin-left: -2px; background: var(--black); border-radius: 2px; }
+.mk-etq { position: absolute; top: -26px; transform: translateX(-50%); font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+.mk-leyenda { display: flex; gap: 16px; margin-bottom: 10px; font-size: 0.75rem; color: var(--muted); }
+.mk-leyenda span::before { content: ""; display: inline-block; vertical-align: -1px; margin-right: 6px; width: 14px; height: 10px; border-radius: 3px; background: #9fb4c2; }
+.mk-leyenda span:last-child::before { width: 4px; height: 12px; border-radius: 2px; background: var(--black); }
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
 .stat { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
 .stat .n { font-family: var(--serif); font-weight: 800; font-size: 1.6rem; line-height: 1; }
@@ -304,6 +311,9 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
       app.appendChild(tarjeta("Historial de precios", filasP));
     }
 
+    // ── Cómo está el mercado ──
+    if (d.mercado) app.appendChild(tarjetaMercado(d.mercado));
+
     // ── Cuánto vas a cobrar ──
     var c = d.cobro, cob = [];
     if (c.tipo === "fijo") {
@@ -341,6 +351,31 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
       h("div", { class: "asesor" }, [avatar, h("div", null, [h("div", { class: "nombre", text: as.nombre }), h("div", { class: "nota", text: "Fernández Autos" })])]),
       h("a", { class: "btn btn-wsp", href: wa(as.whatsapp, "Hola! Te escribo por mi " + nombreAuto + (a.dominio ? " (" + a.dominio + ")" : "") + "."), target: "_blank", rel: "noopener", text: "Hablar por WhatsApp" })
     ]));
+  }
+
+  // Rango donde está la mayoría de los autos similares y la posición del suyo.
+  function tarjetaMercado(m) {
+    var zona = m.zona === "costa_atlantica" ? "en la Costa Atlántica" : "en todo el país";
+    var lo = Math.min(m.desde, m.precio), hi = Math.max(m.hasta, m.precio);
+    var margen = (hi - lo) * 0.15 || m.precio * 0.1;
+    lo -= margen; hi += margen;
+    var pct = function (x) { return ((x - lo) / (hi - lo) * 100).toFixed(1) + "%"; };
+    var rango = h("div", { class: "mk-rango" });
+    rango.style.left = pct(m.desde);
+    rango.style.width = "calc(" + pct(m.hasta) + " - " + pct(m.desde) + ")";
+    var marca = h("div", { class: "mk-marca" });
+    marca.style.left = pct(m.precio);
+    var etq = h("div", { class: "mk-etq", text: "Tu auto" });
+    etq.style.left = pct(m.precio);
+    var donde = m.precio < m.desde ? "por debajo de la mayoría"
+      : m.precio > m.hasta ? "por arriba de la mayoría" : "dentro del rango de la mayoría";
+    return tarjeta("Cómo está el mercado", [
+      h("p", { class: "nota", text: "Hay " + m.n + " autos similares al tuyo (misma versión y kilometraje parecido) publicados " + zona + ". La mayoría está entre " +
+        dinero(m.desde, m.moneda) + " y " + dinero(m.hasta, m.moneda) + "." }),
+      h("div", { class: "mk-barra" }, [rango, marca, etq]),
+      h("div", { class: "mk-leyenda" }, [h("span", { text: "La mayoría de los similares" }), h("span", { text: "Tu auto" })]),
+      h("p", { class: "nota", text: "Tu auto está publicado a " + dinero(m.precio, m.moneda) + ", " + donde + ". Datos de MercadoLibre del " + fecha(m.fecha) + "." })
+    ]);
   }
 
   function flecha(puntos) {
