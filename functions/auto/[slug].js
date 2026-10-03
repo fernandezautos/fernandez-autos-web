@@ -132,7 +132,9 @@ function paginaAuto(v, fotos, slug) {
   descPartes.push(precioTxt);
   const metaDesc = descPartes.join(" · ");
   // Para Google/IAs: mismo resumen + dónde está el auto
-  const seoDesc = `${nombreCompleto} ${v.tipo === "Nuevo" ? "0km" : "usado"} en venta en Fernandez Autos, Mar del Plata. ${metaDesc}.`;
+  // Bing marca error si pasa de 160 caracteres: se recorta en el último espacio.
+  let seoDesc = `${nombreCompleto} ${v.tipo === "Nuevo" ? "0km" : "usado"} en venta en Fernandez Autos, Mar del Plata. ${metaDesc}.`;
+  if (seoDesc.length > 158) seoDesc = seoDesc.slice(0, 157).replace(/\s+\S*$/, "") + "…";
 
   // Ficha del auto en schema.org (Car + oferta), para buscadores e IAs.
   const jsonLd = {
