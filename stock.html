@@ -140,6 +140,9 @@ nav a:hover, nav a.active { color: var(--black); }
 
 
 
+/* TÍTULO DE LA PÁGINA (único <h1>, lo leen buscadores e IAs) */
+.stock-titulo { font-family: var(--sans); font-size: 1.25rem; font-weight: 700; color: var(--black); margin-bottom: 14px; line-height: 1.3; }
+
 /* HERO STOCK */
 .stock-hero {
   background: var(--cream); padding: 20px 48px;
@@ -744,6 +747,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
 
   <!-- COLUMNA DE RESULTADOS -->
   <div class="stock-main">
+    <h1 class="stock-titulo">Autos usados y 0km en venta en Mar del Plata</h1>
     <div class="filtros-resultado" id="filtrosResultado"></div>
     <div class="stock-body">
       <div class="autos-grid" id="autosGrid">
