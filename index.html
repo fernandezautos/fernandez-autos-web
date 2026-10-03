@@ -199,7 +199,7 @@ header {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
   padding: 5px 14px; border-radius: 10px; margin-bottom: 16px;
 }
-.carousel-content h1 {
+.carousel-content .carousel-title {
   font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.1; font-weight: 700; margin-bottom: 14px;
 }
@@ -252,7 +252,7 @@ header {
 .quienes-section { background: var(--cream); padding: 88px 48px; }
 .quienes-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 .quienes-text .section-label { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; margin-bottom: 10px; }
-.quienes-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
+.quienes-text h1, .quienes-text h2 { font-family: var(--serif); font-size: clamp(1.8rem,3vw,2.6rem); font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
 .quienes-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
 .quienes-razones { display: flex; flex-direction: column; gap: 16px; }
 .razon-item { display: flex; align-items: flex-start; gap: 16px; }
@@ -549,7 +549,7 @@ footer a:hover { color: #fff; }
   .carousel { height: 460px; }
   .carousel-content { left: 24px; right: 24px; max-width: 100%; }
   .carousel-stats { display: none; }
-  .carousel-content h1 { font-size: 1.8rem; }
+  .carousel-content .carousel-title { font-size: 1.8rem; }
   .quienes-inner { grid-template-columns: 1fr; gap: 40px; }
   .stock-section, .servicios-section, .contacto-section, .quienes-section, .consig-section, .faq-section { padding: 60px 20px; }
   .servicios-grid { grid-template-columns: 1fr 1fr; }
@@ -646,7 +646,8 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <div class="quienes-inner">
     <div class="quienes-text fade-up">
       <div class="section-label">Quiénes somos</div>
-      <h2 id="quienesTitulo">Tu concesionaria de confianza en Mar del Plata</h2>
+      <!-- Único <h1> de la portada: los títulos del carrusel son <h2> -->
+      <h1 id="quienesTitulo">Fernandez Autos, tu concesionaria de confianza en Mar del Plata</h1>
       <p id="quienesDesc">En Fernandez Autos nos especializamos en la compra, venta y financiación de vehículos usados y 0km. Atendemos a cada cliente de forma personalizada, con honestidad y compromiso desde el primer contacto.</p>
       <p>Somos una empresa familiar: hace casi 30 años que vendemos autos en Mar del Plata, y hace 10 abrimos nuestra propia concesionaria en 20 de Septiembre 4326.</p>
       <p id="quienesDesc2">Nuestra gestión integral incluye desde la financiación hasta la transferencia del vehículo, para que solo tengas que preocuparte por manejar.</p>
@@ -1139,7 +1140,7 @@ function renderSlides(data) {
       <div class="carousel-overlay"></div>
       <div class="carousel-content">
         ${s.tag ? `<div class="carousel-tag">${s.tag}</div>` : ''}
-        <h1>${s.titulo||''}</h1>
+        <h2 class="carousel-title">${s.titulo||''}</h2>
         ${s.subtitulo ? `<p class="carousel-sub">${s.subtitulo}</p>` : ''}
         <div class="carousel-btns">
           ${s.btn1_texto ? `<a href="${s.btn1_url||'#stock'}" class="btn-primary">${s.btn1_texto}</a>` : ''}
