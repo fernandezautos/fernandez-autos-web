@@ -15,7 +15,7 @@
 
 const SB_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co";
 const SB_KEY = "sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6";
-const SITE = "https://fernandezautos.com"; // dominio final (ajustable)
+const SITE = "https://www.fernandezautos.com"; // dominio canónico (el sin-www redirige acá)
 
 // --- Escapar texto para meterlo seguro en HTML ---
 function esc(s) {
@@ -113,7 +113,7 @@ function paginaAuto(v, fotos, slug) {
   const nombre = [v.marca, v.modelo, v.anio].filter(Boolean).join(" ");
   const vLimpia = versionLimpia(v.modelo, v.version);
   const nombreCompleto = [v.marca, v.modelo, v.anio, vLimpia].filter(Boolean).join(" ");
-  const titulo = `${nombreCompleto} — Fernández Autos`;
+  const titulo = `${nombreCompleto} — Fernandez Autos, Mar del Plata`;
   // Open Graph: se deja la foto ORIGINAL sin transformar (WhatsApp/Facebook
   // cachean la preview y son quisquillosos con las URLs transformadas).
   const fotoPrincipal = fotos[0] || `${SITE}/og-image-1200x630.png`;
@@ -131,6 +131,40 @@ function paginaAuto(v, fotos, slug) {
   if (v.combustible) descPartes.push(v.combustible);
   descPartes.push(precioTxt);
   const metaDesc = descPartes.join(" · ");
+  // Para Google/IAs: mismo resumen + dónde está el auto
+  const seoDesc = `${nombreCompleto} ${v.tipo === "Nuevo" ? "0km" : "usado"} en venta en Fernandez Autos, Mar del Plata. ${metaDesc}.`;
+
+  // Ficha del auto en schema.org (Car + oferta), para buscadores e IAs.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Car",
+    name: nombreCompleto,
+    url,
+    image: fotos.length ? fotos.slice(0, 10) : undefined,
+    brand: v.marca ? { "@type": "Brand", name: v.marca } : undefined,
+    model: v.modelo || undefined,
+    vehicleConfiguration: vLimpia || undefined,
+    vehicleModelDate: v.anio ? String(v.anio) : undefined,
+    itemCondition: v.tipo === "Nuevo" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
+    mileageFromOdometer: { "@type": "QuantitativeValue", value: Number(v.km) || 0, unitCode: "KMT" },
+    fuelType: v.combustible || undefined,
+    vehicleTransmission: v.transmision || undefined,
+    bodyType: v.carroceria || undefined,
+    color: v.color || undefined,
+    numberOfDoors: v.puertas ? Number(v.puertas) : undefined,
+    offers: {
+      "@type": "Offer",
+      url,
+      price: v.precio ? Number(v.precio) : undefined,
+      priceCurrency: v.precio ? (v.moneda_precio === "USD" ? "USD" : "ARS") : undefined,
+      availability: reservado ? "https://schema.org/LimitedAvailability" : "https://schema.org/InStock",
+      seller: { "@id": `${SITE}/#concesionaria`, "@type": "AutoDealer", name: "Fernandez Autos", url: `${SITE}/`,
+        telephone: "+54 9 223 624-9445",
+        address: { "@type": "PostalAddress", streetAddress: "20 de Septiembre 4326", addressLocality: "Mar del Plata", addressRegion: "Buenos Aires", postalCode: "7600", addressCountry: "AR" } },
+    },
+  };
+  // JSON.stringify descarta los undefined; "<" escapado para no cerrar el <script>.
+  const jsonLdHTML = `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>`;
 
   // Specs visibles en la ficha
   const specs = [
@@ -201,7 +235,9 @@ function paginaAuto(v, fotos, slug) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(titulo)}</title>
-<meta name="description" content="${esc(metaDesc)}">
+<meta name="description" content="${esc(seoDesc)}">
+<link rel="canonical" href="${esc(url)}">
+${jsonLdHTML}
 
 <!-- ── META PIXEL ────────────────────────────────────────────────── -->
 <script>
@@ -234,7 +270,7 @@ fbq('track', 'ViewContent', {
 <meta property="og:description" content="${esc(metaDesc)}">
 <meta property="og:image" content="${esc(fotoPrincipal)}">
 <meta property="og:url" content="${esc(url)}">
-<meta property="og:site_name" content="Fernández Autos">
+<meta property="og:site_name" content="Fernandez Autos">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(nombreCompleto)} — ${esc(precioTxt)}">
 <meta name="twitter:description" content="${esc(metaDesc)}">
@@ -356,8 +392,8 @@ footer a{color:var(--accent);text-decoration:none;}
 <body>
 
 <header>
-  <a href="/" class="logo" aria-label="Fernández Autos">
-    <svg viewBox="0 0 715 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fernández Autos">
+  <a href="/" class="logo" aria-label="Fernandez Autos">
+    <svg viewBox="0 0 715 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fernandez Autos">
       <path class="p" transform="translate(20.000 94.661) scale(0.034180 -0.034180)" d="M1337 586H515V848H1337ZM1453 1174H411V0H151V1303Q151 1330 161.0 1354.0Q171 1378 188.5 1396.0Q206 1414 230.0 1424.0Q254 1434 282 1434H1453Z"/>
       <path class="p" transform="translate(71.680 94.661) scale(0.034180 -0.034180)" d="M1285 723Q1285 669 1266.0 606.5Q1247 544 1204.5 490.5Q1162 437 1093.5 401.0Q1025 365 927 365H458V612H927Q980 612 1009.0 644.5Q1038 677 1038 725Q1038 776 1005.5 805.0Q973 834 927 834H458Q405 834 376.0 801.5Q347 769 347 721V358Q347 306 379.5 277.0Q412 248 460 248H927V0H458Q404 0 341.5 19.0Q279 38 225.5 80.5Q172 123 136.0 191.5Q100 260 100 358V723Q100 777 119.0 839.5Q138 902 180.5 955.5Q223 1009 291.5 1045.0Q360 1081 458 1081H927Q981 1081 1043.5 1062.0Q1106 1043 1159.5 1000.5Q1213 958 1249.0 889.5Q1285 821 1285 723Z"/>
       <path class="p" transform="translate(117.412 94.661) scale(0.034180 -0.034180)" d="M1068 821H483Q430 821 403.0 794.5Q376 768 376 717V0H116V717Q116 784 133.0 837.0Q150 890 178.5 930.5Q207 971 244.0 999.5Q281 1028 321.5 1046.0Q362 1064 403.5 1072.5Q445 1081 481 1081H1068Z"/>
@@ -396,7 +432,7 @@ footer a{color:var(--accent);text-decoration:none;}
 </div>
 
 <footer>
-  Fernández Autos — Mar del Plata · <a href="/stock.html">Ver todo el stock</a>
+  Fernandez Autos — Mar del Plata · <a href="/stock.html">Ver todo el stock</a>
 </footer>
 
 <!-- LIGHTBOX -->
@@ -511,7 +547,7 @@ if(TOTAL > 1){
 }
 
 async function compartir(){
-  const datos = { title: TITULO, text: TITULO + ' — Fernández Autos', url: URL_AUTO };
+  const datos = { title: TITULO, text: TITULO + ' — Fernandez Autos', url: URL_AUTO };
   if(navigator.share){
     try{ await navigator.share(datos); }catch(e){}
   } else {
@@ -553,7 +589,7 @@ function paginaNoEncontrada() {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto no disponible — Fernández Autos</title>
+<title>Auto no disponible — Fernandez Autos</title>
 <style>
 body{font-family:Arial,sans-serif;background:#fafaf7;color:#0e0d0b;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;text-align:center;padding:24px;}
 .box{max-width:420px;}

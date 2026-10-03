@@ -1,0 +1,13 @@
+# Fernandez Autos — www.fernandezautos.com
+# Buscadores e IAs pueden leer todo el sitio público.
+# Lo privado (portal del dueño, links cortos, formulario de WhatsApp) no se indexa.
+
+User-agent: *
+Allow: /
+Disallow: /mi-auto/
+Disallow: /mi-auto.html
+Disallow: /s/
+Disallow: /s.html
+Disallow: /wa.html
+
+Sitemap: https://www.fernandezautos.com/sitemap.xml

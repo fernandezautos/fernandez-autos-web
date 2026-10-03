@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Audiowide&display=swap" rel="stylesheet">
-<title>Tu auto — Fernández Autos</title>
+<title>Tu auto — Fernandez Autos</title>
 <style>
 :root {
   --black: #131210;
@@ -144,7 +144,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
 <body>
 
 <header>
-  <a href="/" aria-label="Fernández Autos">
+  <a href="/" aria-label="Fernandez Autos">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 80" height="28" style="display:block;overflow:visible;">
       <text y="60" font-family="Audiowide, sans-serif" font-size="42">
         <tspan fill="#15140f">Fernandez</tspan><tspan fill="#15140f" fill-opacity="0.5"> Autos</tspan>
@@ -158,7 +158,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
   <div class="centro"><div class="spinner" aria-label="Cargando"></div><div class="nota">Cargando la información de tu auto…</div></div>
 </main>
 
-<footer>© 2026 Fernández Autos · Mar del Plata</footer>
+<footer>© 2026 Fernandez Autos · Mar del Plata</footer>
 
 <script>
 (function () {
@@ -229,7 +229,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
   function render(d, token) {
     var a = d.auto;
     var nombreAuto = [a.marca, a.modelo].filter(Boolean).join(" ");
-    document.title = nombreAuto + " — Fernández Autos";
+    document.title = nombreAuto + " — Fernandez Autos";
     app.innerHTML = "";
 
     // ── Encabezado ──
@@ -349,7 +349,7 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
       ? h("img", { class: "avatar", src: as.foto, alt: as.nombre })
       : h("div", { class: "avatar", text: iniciales });
     app.appendChild(tarjeta("Tu asesor", [
-      h("div", { class: "asesor" }, [avatar, h("div", null, [h("div", { class: "nombre", text: as.nombre }), h("div", { class: "nota", text: "Fernández Autos" })])]),
+      h("div", { class: "asesor" }, [avatar, h("div", null, [h("div", { class: "nombre", text: as.nombre }), h("div", { class: "nota", text: "Fernandez Autos" })])]),
       h("a", { class: "btn btn-wsp", href: wa(as.whatsapp, "Hola! Te escribo por mi " + nombreAuto + (a.dominio ? " (" + a.dominio + ")" : "") + "."), target: "_blank", rel: "noopener", text: "Hablar por WhatsApp" })
     ]));
   }

@@ -1,0 +1,27 @@
+# Fernandez Autos
+
+> Concesionaria familiar de autos usados y 0km en Mar del Plata, Buenos Aires, Argentina. La familia Fernandez vende autos hace casi 30 años y hace 10 abrió su propia concesionaria en 20 de Septiembre 4326. Compra, venta y permuta, financiación con todos los bancos y financieras, venta en consignación y gestoría propia.
+
+## Datos de contacto
+
+- Dirección: 20 de Septiembre 4326, Mar del Plata, Buenos Aires, Argentina
+- Horario: lunes a viernes de 9:00 a 18:00 (sábados y domingos cerrado)
+- WhatsApp / teléfono: +54 9 223 624-9445
+- Web: https://www.fernandezautos.com
+- Instagram: https://www.instagram.com/fernandezautos
+- Facebook: https://www.facebook.com/fernandezautos4326
+
+## Qué hacemos
+
+- Venta de autos usados seleccionados y 0km de todas las marcas.
+- Permuta: tomamos el auto usado del cliente como parte de pago, con tasación sin compromiso.
+- Financiación: trabajamos con todos los bancos y financieras. Con algunos tenemos línea directa y con otros operamos a través de comercializadoras. Créditos prendarios de hasta 60 cuotas fijas.
+- Consignación: vendemos el auto del cliente. Nos ocupamos de la publicación, las consultas, las visitas y el papeleo, sin costo de publicación; el dueño cobra cuando se vende.
+- Gestoría: transferencia y documentación del vehículo incluidas.
+
+## Páginas
+
+- [Stock disponible](https://www.fernandezautos.com/stock): todos los autos publicados, con precio, año y kilometraje. Cada auto tiene su ficha en /auto/<modelo-año-id>.
+- [Financiación](https://www.fernandezautos.com/financiacion): opciones de crédito, permuta y pago combinado.
+- [Consignaciones](https://www.fernandezautos.com/consignaciones): cómo vender tu auto con nosotros.
+- [Mapa del sitio](https://www.fernandezautos.com/sitemap.xml): lista actualizada de todas las fichas de autos.
