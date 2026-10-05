@@ -183,7 +183,7 @@ header {
 .carousel { position: relative; width: 100%; height: 580px; overflow: hidden; background: #111; }
 .carousel-track { display: flex; height: 100%; transition: transform .7s cubic-bezier(.77,0,.175,1); }
 .carousel-slide { min-width: 100%; height: 100%; position: relative; flex-shrink: 0; }
-.carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-slide img, .carousel-slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
 .carousel-slide-ph { width: 100%; height: 100%; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%); display: flex; align-items: center; justify-content: center; }
 .carousel-overlay {
   position: absolute; inset: 0;
@@ -547,6 +547,8 @@ footer a:hover { color: #fff; }
   .btn-wsp { display: none; }
   .header-cta .btn-outline { font-size: 0.78rem; padding: 7px 12px; }
   .carousel { height: 460px; }
+  /* Las fotos del carrusel tienen el lado izquierdo oscuro para el texto: en el celular se encuadra más a la derecha para que se vea la foto */
+  .carousel-slide img { object-position: 72% center; }
   .carousel-content { left: 24px; right: 24px; max-width: 100%; }
   .carousel-stats { display: none; }
   .carousel-content .carousel-title { font-size: 1.8rem; }
@@ -1134,7 +1136,9 @@ function renderSlides(data) {
   const nav   = document.getElementById('carouselNav');
   track.innerHTML = slides.map((s,i) => `
     <div class="carousel-slide">
-      ${s.imagen_url
+      ${s.video_url
+        ? `<video src="${s.video_url}"${s.imagen_url ? ` poster="${s.imagen_url}"` : ''} muted loop playsinline${i===0 && !SIN_MOVIMIENTO ? ' autoplay' : ''} preload="${i===0?'auto':'none'}" aria-hidden="true"></video>`
+        : s.imagen_url
         ? `<img src="${s.imagen_url}" alt="${s.titulo||''}" loading="${i===0?'eager':'lazy'}">`
         : `<div class="carousel-slide-ph"></div>`}
       <div class="carousel-overlay"></div>
@@ -1149,20 +1153,51 @@ function renderSlides(data) {
       </div>
     </div>`).join('');
   nav.innerHTML = slides.map((_,i) => `<button class="carousel-dot${i===0?' active':''}" onclick="irASlide(${i})"></button>`).join('');
+  slideCurrent = 0;
+  track.style.transform = 'translateX(0)';
+  reproducirVideoActivo();
 }
+
+// Solo corre el video del slide visible; los demás quedan pausados y vuelven al inicio.
+// Con "reducir movimiento" activado no se reproduce: queda la foto de portada.
+const SIN_MOVIMIENTO = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function reproducirVideoActivo() {
+  document.querySelectorAll('#carouselTrack .carousel-slide').forEach((el, j) => {
+    const v = el.querySelector('video');
+    if (!v) return;
+    if (j === slideCurrent && !SIN_MOVIMIENTO) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  });
+}
+// Si la pestaña estaba en segundo plano el navegador no deja arrancar el video: lo retomamos al volver.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || SIN_MOVIMIENTO) return;
+  const v = document.querySelectorAll('#carouselTrack .carousel-slide')[slideCurrent]?.querySelector('video');
+  if (v && v.paused) v.play().catch(() => {});
+});
 
 function irASlide(i) {
   slideCurrent = i;
   document.getElementById('carouselTrack').style.transform = `translateX(-${i*100}%)`;
   document.querySelectorAll('.carousel-dot').forEach((d,j) => d.classList.toggle('active', j===i));
+  reproducirVideoActivo();
 }
 function moverCarrusel(dir) {
   irASlide((slideCurrent + dir + slides.length) % slides.length);
   reiniciarAutoPlay();
 }
+// Las fotos quedan 5 s; un slide con video queda lo que dura el video (una vuelta completa).
 function reiniciarAutoPlay() {
-  clearInterval(autoPlayTimer);
-  if (slides.length > 1) autoPlayTimer = setInterval(() => moverCarrusel(1), 5000);
+  clearTimeout(autoPlayTimer);
+  if (slides.length < 2) return;
+  let ms = 5000;
+  const v = document.querySelectorAll('#carouselTrack .carousel-slide')[slideCurrent]?.querySelector('video');
+  if (v && !SIN_MOVIMIENTO) ms = (v.duration > 0 ? v.duration * 1000 : 13000) + 300;
+  autoPlayTimer = setTimeout(() => moverCarrusel(1), ms);
 }
 
 // ── CMS ───────────────────────────────────────────────────────────
@@ -1192,6 +1227,7 @@ async function cargarContenidoHome() {
         btn1_url:   g(rows, s, 'btn1_url'),
         btn2_texto: g(rows, s, 'btn2_texto'),
         imagen_url: g(rows, s, 'imagen_url'),
+        video_url:  g(rows, s, 'video_url'),
       });
     }
     renderSlides(slidesData.length ? slidesData : FALLBACK_SLIDES);
@@ -1510,9 +1546,10 @@ window.addEventListener('message', function(e) {
       btn1_url:   gp(s, 'btn1_url'),
       btn2_texto: gp(s, 'btn2_texto'),
       imagen_url: gp(s, 'imagen_url'),
+      video_url:  gp(s, 'video_url'),
     });
   }
-  if (slidesData.length) { clearInterval(autoPlayTimer); renderSlides(slidesData); reiniciarAutoPlay(); }
+  if (slidesData.length) { clearTimeout(autoPlayTimer); renderSlides(slidesData); reiniciarAutoPlay(); }
 
   // Stats carrusel
   const expVal = gp('stat_experiencia','valor'); const expLbl = gp('stat_experiencia','label');
