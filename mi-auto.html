@@ -325,9 +325,27 @@ footer { text-align: center; font-size: 0.78rem; color: var(--muted); padding: 2
       cob.push(h("p", { class: "nota", text: "Estimado si se vende al precio publicado, ya descontada la comisión acordada." }));
     } else if (c.tipo === "liquidacion") {
       cob.push(h("div", { class: "cobro-monto", text: dinero(c.monto, c.moneda) }));
+      var pagos = c.pagos || [];
+      var parcial = !c.pagado && (c.pagado_monto || 0) > 0;
       cob.push(c.pagado
         ? h("span", { class: "badge ok", text: "✓ Pagado" + (c.fecha_pago ? " el " + fecha(c.fecha_pago) : "") })
-        : h("span", { class: "badge warn", text: "Pendiente de pago" }));
+        : parcial
+          ? h("span", { class: "badge warn", text: "Pago parcial" })
+          : h("span", { class: "badge warn", text: "Pendiente de pago" }));
+      // Pagos a cuenta: se listan si hubo más de uno o si todavía queda saldo.
+      if (parcial || pagos.length > 1) {
+        var pg = pagos.map(function (p) {
+          return h("div", { class: "fila" }, [
+            h("span", { class: "k", text: "Te pagamos" + (p.fecha ? " el " + fecha(p.fecha) : "") }),
+            h("span", { class: "v", text: dinero(p.monto, c.moneda) })
+          ]);
+        });
+        if (parcial) pg.push(h("div", { class: "fila" }, [
+          h("span", { class: "k", text: "Saldo a cobrar" }),
+          h("span", { class: "v", text: dinero(c.saldo, c.moneda) })
+        ]));
+        cob.push(h("div", { class: "gastos" }, pg));
+      }
       var g = [h("div", null, [h("span", { class: "nota", text: "Gastos del auto: " })])];
       if (c.gastos.al_dia) {
         g[0].appendChild(h("strong", { text: "al día ✓" }));
