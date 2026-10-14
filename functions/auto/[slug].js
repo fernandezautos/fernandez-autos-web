@@ -13,6 +13,8 @@
 // convencion de Pages Functions (carpeta functions/ + [slug].js dinamico).
 // ============================================================================
 
+import { esCasa, sinMotor, specsCasa, resumenCasa } from "../_lib/casas.js";
+
 const SB_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co";
 const SB_KEY = "sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6";
 const SITE = "https://www.fernandezautos.com"; // dominio canónico (el sin-www redirige acá)
@@ -126,6 +128,7 @@ function paginaAuto(v, fotos, slug) {
 
   // Descripcion para meta (WhatsApp / Google)
   const descPartes = [];
+  if (esCasa(v)) descPartes.push(resumenCasa(v));
   if (v.km) descPartes.push(`${Number(v.km).toLocaleString("es-AR")} km`);
   if (v.transmision) descPartes.push(v.transmision);
   if (v.combustible) descPartes.push(v.combustible);
@@ -139,7 +142,8 @@ function paginaAuto(v, fotos, slug) {
   // Ficha del auto en schema.org (Car + oferta), para buscadores e IAs.
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Car",
+    // Motorhome / casa rodante: schema.org no tiene un tipo propio, va como Vehicle.
+    "@type": esCasa(v) ? "Vehicle" : "Car",
     name: nombreCompleto,
     url,
     image: fotos.length ? fotos.slice(0, 10) : undefined,
@@ -148,7 +152,7 @@ function paginaAuto(v, fotos, slug) {
     vehicleConfiguration: vLimpia || undefined,
     vehicleModelDate: v.anio ? String(v.anio) : undefined,
     itemCondition: v.tipo === "Nuevo" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
-    mileageFromOdometer: { "@type": "QuantitativeValue", value: Number(v.km) || 0, unitCode: "KMT" },
+    mileageFromOdometer: sinMotor(v) ? undefined : { "@type": "QuantitativeValue", value: Number(v.km) || 0, unitCode: "KMT" },
     fuelType: v.combustible || undefined,
     vehicleTransmission: v.transmision || undefined,
     bodyType: v.carroceria || undefined,
@@ -168,8 +172,19 @@ function paginaAuto(v, fotos, slug) {
   // JSON.stringify descarta los undefined; "<" escapado para no cerrar el <script>.
   const jsonLdHTML = `<script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>`;
 
-  // Specs visibles en la ficha
-  const specs = [
+  // Specs visibles en la ficha. Motorhome / casa rodante: su equipamiento en
+  // vez de carrocería y puertas; una casa rodante de arrastre no tiene motor
+  // (ni km, ni combustible, ni transmisión).
+  const specs = (esCasa(v) ? [
+    ...specsCasa(v),
+    { label: "Año", val: v.anio },
+    ...(sinMotor(v) ? [] : [
+      { label: "Kilometraje", val: v.km ? Number(v.km).toLocaleString("es-AR") + " km" : "0 km" },
+      { label: "Combustible", val: v.combustible },
+      { label: "Transmisión", val: v.transmision },
+    ]),
+    { label: "Color", val: v.color },
+  ] : [
     { label: "Año", val: v.anio },
     { label: "Kilometraje", val: v.km ? Number(v.km).toLocaleString("es-AR") + " km" : "0 km" },
     { label: "Combustible", val: v.combustible },
@@ -177,7 +192,7 @@ function paginaAuto(v, fotos, slug) {
     { label: "Carrocería", val: v.carroceria },
     { label: "Color", val: v.color },
     { label: "Puertas", val: v.puertas ? v.puertas + " puertas" : null },
-  ].filter((s) => s.val && s.val !== "—" && s.val !== "");
+  ]).filter((s) => s.val && s.val !== "—" && s.val !== "");
 
   const specsHTML = specs
     .map(
@@ -412,7 +427,7 @@ footer a{color:var(--accent);text-decoration:none;}
       <path class="s" transform="translate(652.734 94.661) scale(0.034180 -0.034180)" d="M1167 365Q1167 298 1150.0 244.5Q1133 191 1105.0 150.5Q1077 110 1040.0 81.5Q1003 53 962.5 35.0Q922 17 880.5 8.5Q839 0 802 0H98V260H800Q853 260 880.0 287.0Q907 314 907 365Q902 469 802 469H399Q313 469 253.0 499.0Q193 529 155.5 574.0Q118 619 101.5 671.0Q85 723 85 768Q85 855 116.0 914.5Q147 974 194.0 1011.0Q241 1048 296.0 1064.5Q351 1081 399 1081H1038V821H401Q381 821 369.5 816.5Q358 812 352.5 804.5Q347 797 346.0 788.5Q345 780 345 772Q346 756 351.0 747.0Q356 738 363.5 734.0Q371 730 380.5 729.5Q390 729 399 729H802Q902 729 972.0 693.0Q1042 657 1085.0 602.5Q1128 548 1147.5 484.0Q1167 420 1167 365Z"/>
     </svg>
   </a>
-  <a href="/stock.html" class="volver">‹ Volver al stock</a>
+  <a href="${esCasa(v) ? "/motorhomes" : "/stock.html"}" class="volver">‹ Volver ${esCasa(v) ? "a motorhomes" : "al stock"}</a>
 </header>
 
 <div class="ficha">

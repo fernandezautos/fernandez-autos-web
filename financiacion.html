@@ -407,6 +407,22 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
 .ts-box { display: flex; justify-content: center; margin: 4px 0 12px; min-height: 65px; border-radius: 8px; }
 .ts-box.inp-err { outline: 2px solid #d32f2f; outline-offset: 2px; }
 </style>
+<style>
+/* Menú en pantallas medianas: con Motorhomes son 7 secciones y no entraban.
+   Se achica el espacio y se saca "Ver stock" del encabezado (ya está en el menú). */
+@media (min-width: 769px) and (max-width: 1180px) {
+  header { padding: 0 24px; }
+  nav { gap: 18px; }
+  .header-cta .btn-outline { display: none; }
+}
+/* Tablets apaisadas: además se esconde el WhatsApp del encabezado (queda el
+   botón flotante) y se achica la letra del menú. */
+@media (min-width: 769px) and (max-width: 960px) {
+  nav { gap: 14px; }
+  nav a { font-size: 0.85rem; }
+  .header-cta .btn-wsp { display: none; }
+}
+</style>
 </head>
 <body>
 
@@ -421,6 +437,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <nav class="nav-desktop">
     <a href="index.html">Inicio</a>
     <a href="stock.html">Stock</a>
+    <a href="/motorhomes">Motorhomes</a>
     <a href="financiacion.html" class="active">Financiación</a>
     <a href="consignaciones.html">Consignaciones</a>
     <a href="index.html#servicios">Servicios</a>
@@ -446,6 +463,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   </div>
   <a href="index.html" onclick="toggleMenu()">Home</a>
   <a href="stock.html" onclick="toggleMenu()">Stock</a>
+  <a href="/motorhomes" onclick="toggleMenu()">Motorhomes</a>
   <a href="financiacion.html" class="active" onclick="toggleMenu()">Financiación</a>
   <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
   <a href="index.html#servicios">Servicios</a>
@@ -619,6 +637,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <div>© 2026 Fernandez Autos · Mar del Plata</div>
   <div style="display:flex;gap:20px;">
     <a href="stock.html">Stock</a>
+    <a href="/motorhomes">Motorhomes</a>
     <a href="financiacion.html">Financiación</a>
     <a href="consignaciones.html">Consignaciones</a>
     <a href="index.html#contacto">Contacto</a>

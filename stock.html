@@ -624,6 +624,22 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
 .ts-box { display: flex; justify-content: center; margin: 4px 0 12px; min-height: 65px; border-radius: 8px; }
 .ts-box.inp-err { outline: 2px solid #d32f2f; outline-offset: 2px; }
 </style>
+<style>
+/* Menú en pantallas medianas: con Motorhomes son 7 secciones y no entraban.
+   Se achica el espacio y se saca "Ver stock" del encabezado (ya está en el menú). */
+@media (min-width: 769px) and (max-width: 1180px) {
+  header { padding: 0 24px; }
+  nav { gap: 18px; }
+  .header-cta .btn-outline { display: none; }
+}
+/* Tablets apaisadas: además se esconde el WhatsApp del encabezado (queda el
+   botón flotante) y se achica la letra del menú. */
+@media (min-width: 769px) and (max-width: 960px) {
+  nav { gap: 14px; }
+  nav a { font-size: 0.85rem; }
+  .header-cta .btn-wsp { display: none; }
+}
+</style>
 </head>
 <body>
 
@@ -638,6 +654,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <nav class="nav-desktop">
     <a href="index.html">Inicio</a>
     <a href="stock.html" class="active">Stock</a>
+    <a href="/motorhomes">Motorhomes</a>
     <a href="financiacion.html">Financiación</a>
     <a href="consignaciones.html">Consignaciones</a>
     <a href="index.html#servicios">Servicios</a>
@@ -663,6 +680,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   </div>
   <a href="index.html" onclick="toggleMenu()">Home</a>
   <a href="stock.html" class="active" onclick="toggleMenu()">Stock</a>
+  <a href="/motorhomes" onclick="toggleMenu()">Motorhomes</a>
   <a href="financiacion.html" onclick="toggleMenu()">Financiación</a>
   <a href="consignaciones.html" onclick="toggleMenu()">Consignaciones</a>
   <a href="index.html#servicios">Servicios</a>
@@ -691,6 +709,14 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
         <option value="">Todos</option>
         <option value="Usado">Usados</option>
         <option value="Nuevo">0 km</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <label>Vehículo</label>
+      <select id="fClase" onchange="aplicarFiltros()">
+        <option value="">Todos</option>
+        <option value="Auto">Autos y camionetas</option>
+        <option value="casas">Motorhomes y casas rodantes</option>
       </select>
     </div>
     <div class="filtro">
@@ -885,6 +911,23 @@ const WSP = '5492236249445';
 
 let stockData = [];
 let filtroTipo = '';
+// /motorhomes sirve esta misma página (functions/motorhomes.js) con el filtro
+// "Vehículo" puesto en motorhomes y casas rodantes.
+const SECCION_CASAS = document.body.dataset.seccion === 'motorhomes';
+const esCasa = v => v.clase_vehiculo && v.clase_vehiculo !== 'Auto';
+// Resumen de una casa para la tarjeta (mismas claves que el CRM, clase-vehiculo.js).
+function resumenCasa(v) {
+  const d = v.casa_datos || {};
+  const plazas = d.plazas_dormir || d.plazas_viaje;
+  return [v.clase_vehiculo === 'Casa rodante' ? 'Casa rodante' : 'Motorhome',
+    plazas ? plazas + ' plazas' : '', d.largo_m ? String(d.largo_m).replace('.', ',') + ' m' : '']
+    .filter(Boolean).join(' · ');
+}
+if (SECCION_CASAS) {
+  document.querySelectorAll('.nav-desktop a, #navMenu a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '/motorhomes');
+  });
+}
 
 const fmt = (n, moneda) => {
   if(!n) return 'Consultar precio';
@@ -913,6 +956,8 @@ async function cargarStock() {
     // Leer parámetros de la URL (desde buscador de home)
     const params = new URLSearchParams(window.location.search);
     if(params.get('tipo')) { filtroTipo = params.get('tipo'); document.getElementById('fTipo').value = params.get('tipo'); }
+    if(SECCION_CASAS) document.getElementById('fClase').value = 'casas';
+    else if(params.get('clase')) document.getElementById('fClase').value = params.get('clase');
     if(params.get('marca')) document.getElementById('fMarca').value = params.get('marca');
     if(params.get('precio')) document.getElementById('fPrecioArs').value = params.get('precio');
     aplicarFiltros();
@@ -954,6 +999,9 @@ function filtrarTipo(tipo) {
 function aplicarFiltros() {
   let data = [...stockData];
   if(filtroTipo) data = data.filter(v => v.tipo === filtroTipo);
+  const clase = document.getElementById('fClase').value;
+  if(clase === 'Auto') data = data.filter(v => !esCasa(v));
+  else if(clase === 'casas') data = data.filter(esCasa);
   const marca = document.getElementById('fMarca').value;
   const modelo = document.getElementById('fModelo').value;
   const anio = document.getElementById('fAnioDesde').value;
@@ -973,18 +1021,24 @@ function aplicarFiltros() {
   }
   if(transm) data = data.filter(v=>v.transmision===transm);
 
-  document.getElementById('filtrosResultado').textContent = data.length+' auto'+(data.length!==1?'s':'')+' encontrado'+(data.length!==1?'s':'');
+  const palabra = clase === 'casas' ? 'vehículo' : 'auto';
+  document.getElementById('filtrosResultado').textContent = data.length+' '+palabra+(data.length!==1?'s':'')+' encontrado'+(data.length!==1?'s':'');
   renderGrilla(data);
 }
 
 function limpiarFiltros() {
   ['fMarca','fModelo','fAnioDesde','fPrecioArs','fPrecioUsd','fTransmision'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('fClase').value = SECCION_CASAS ? 'casas' : '';
   filtroTipo = '';
   aplicarFiltros();
 }
 
 function renderGrilla(autos) {
   const grid = document.getElementById('autosGrid');
+  if(!autos.length && document.getElementById('fClase').value === 'casas') {
+    grid.innerHTML = '<div class="empty-state"><h3>Por ahora no tenemos motorhomes ni casas rodantes publicados</h3><p>Contanos qué estás buscando y te avisamos apenas ingrese uno.</p><button class="btn-wsp" style="margin:12px auto 0;" onclick="abrirWspModal(\'motorhomes\')">Consultar por WhatsApp</button></div>';
+    return;
+  }
   if(!autos.length) {
     grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3>No encontramos autos con esos filtros</h3><p>Probá cambiando los criterios de búsqueda.</p></div>';
     return;
@@ -999,6 +1053,7 @@ function renderGrilla(autos) {
       <div class="auto-card-body">
         <div class="auto-nombre">${v.marca} ${v.modelo}</div>
         <div class="auto-specs">
+          ${esCasa(v)?`<span class="auto-spec">${resumenCasa(v)}</span>`:''}
           ${v.anio?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${v.anio}</span>`:''}
           ${v.km?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 12l4-6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>${Number(v.km).toLocaleString('es-AR')} km</span>`:''}
           ${v.transmision?`<span class="auto-spec"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="6" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="18" r="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="5" y1="8" x2="5" y2="16"/><line x1="19" y1="8" x2="12" y2="8"/></svg>${v.transmision}</span>`:''}

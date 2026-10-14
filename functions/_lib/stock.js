@@ -11,6 +11,8 @@
 // Lee de Supabase con la llave PUBLICA de solo-lectura (nunca service_role).
 // ============================================================================
 
+import { esCasa, resumenCasa } from "./casas.js";
+
 export const SB_URL = "https://bjgkmrgkgjpydpanewsa.supabase.co";
 export const SB_KEY = "sb_publishable_FL_GSYzAfQ507Ve7RVKsKA_njj_gRT6";
 export const SITE = "https://www.fernandezautos.com";
@@ -53,6 +55,7 @@ export function urlAuto(v) {
 export function tarjetaAuto(v) {
   const nombre = [v.marca, v.modelo, v.anio].filter(Boolean).join(" ");
   const detalle = [
+    esCasa(v) ? resumenCasa(v) : "",
     v.km ? Number(v.km).toLocaleString("es-AR") + " km" : "",
     v.transmision,
     v.combustible,
@@ -97,8 +100,9 @@ export function itemListJsonLd(autos) {
 
 // Toma la página estática (context.next()) y le escribe el stock adentro de
 // #autosGrid. Si algo falla devuelve la página tal cual: nunca la rompe.
-export async function inyectarStock(context, query) {
-  const res = await context.next();
+// `res` opcional: la página ya traída (la usa /motorhomes, que sirve stock.html).
+export async function inyectarStock(context, query, res) {
+  res = res || await context.next();
   const tipo = res.headers.get("content-type") || "";
   if (context.request.method !== "GET" || !res.ok || !tipo.includes("text/html")) return res;
 

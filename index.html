@@ -577,6 +577,22 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
 .ts-box { display: flex; justify-content: center; margin: 4px 0 12px; min-height: 65px; border-radius: 8px; }
 .ts-box.inp-err { outline: 2px solid #d32f2f; outline-offset: 2px; }
 </style>
+<style>
+/* Menú en pantallas medianas: con Motorhomes son 7 secciones y no entraban.
+   Se achica el espacio y se saca "Ver stock" del encabezado (ya está en el menú). */
+@media (min-width: 769px) and (max-width: 1180px) {
+  header { padding: 0 24px; }
+  nav { gap: 18px; }
+  .header-cta .btn-outline { display: none; }
+}
+/* Tablets apaisadas: además se esconde el WhatsApp del encabezado (queda el
+   botón flotante) y se achica la letra del menú. */
+@media (min-width: 769px) and (max-width: 960px) {
+  nav { gap: 14px; }
+  nav a { font-size: 0.85rem; }
+  .header-cta .btn-wsp { display: none; }
+}
+</style>
 </head>
 <body>
 
@@ -593,6 +609,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <nav class="nav-desktop">
     <a href="#quienes">Nosotros</a>
     <a href="#stock">Stock</a>
+    <a href="/motorhomes">Motorhomes</a>
     <a href="#consignaciones">Consignaciones</a>
     <a href="#servicios">Servicios</a>
     <a href="#financiacion">Financiación</a>
@@ -618,6 +635,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   </div>
   <a href="#quienes" onclick="toggleMenu()">Nosotros</a>
   <a href="#stock" onclick="toggleMenu()">Stock</a>
+  <a href="/motorhomes" onclick="toggleMenu()">Motorhomes</a>
   <a href="#consignaciones" onclick="toggleMenu()">Consignaciones</a>
   <a href="#servicios" onclick="toggleMenu()">Servicios</a>
   <a href="#financiacion" onclick="toggleMenu()">Financiación</a>
@@ -1038,6 +1056,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   <div>© 2026 Fernandez Autos · 20 de Septiembre 4326, Mar del Plata</div>
   <div class="footer-links">
     <a href="#stock">Stock</a>
+    <a href="/motorhomes">Motorhomes</a>
     <a href="#consignaciones">Consignaciones</a>
     <a href="#financiacion">Financiación</a>
     <a href="#preguntas">Preguntas frecuentes</a>

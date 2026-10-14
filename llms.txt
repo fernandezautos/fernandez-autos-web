@@ -22,6 +22,7 @@
 ## Páginas
 
 - [Stock disponible](https://www.fernandezautos.com/stock): todos los autos publicados, con precio, año y kilometraje. Cada auto tiene su ficha en /auto/<modelo-año-id>.
+- [Motorhomes y casas rodantes](https://www.fernandezautos.com/motorhomes): motorhomes y casas rodantes de arrastre en venta, con plazas y equipamiento.
 - [Financiación](https://www.fernandezautos.com/financiacion): opciones de crédito, permuta y pago combinado.
 - [Consignaciones](https://www.fernandezautos.com/consignaciones): cómo vender tu auto con nosotros.
 - [Mapa del sitio](https://www.fernandezautos.com/sitemap.xml): lista actualizada de todas las fichas de autos.

@@ -8,6 +8,7 @@ import { SITE, esc, traerAutos, urlAuto } from "./_lib/stock.js";
 const PAGINAS = [
   { path: "/", prioridad: "1.0", frecuencia: "daily" },
   { path: "/stock", prioridad: "0.9", frecuencia: "daily" },
+  { path: "/motorhomes", prioridad: "0.8", frecuencia: "weekly" },
   { path: "/financiacion", prioridad: "0.7", frecuencia: "monthly" },
   { path: "/consignaciones", prioridad: "0.7", frecuencia: "monthly" },
 ];
