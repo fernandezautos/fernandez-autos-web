@@ -405,6 +405,7 @@ header a.volver:hover{color:var(--black);}
 footer{border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--muted);font-size:0.82rem;margin-top:20px;}
 footer a{color:var(--accent);text-decoration:none;}
 </style>
+<script src="/atribucion.js"></script>
 </head>
 <body>
 

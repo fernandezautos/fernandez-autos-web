@@ -593,6 +593,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   .header-cta .btn-wsp { display: none; }
 }
 </style>
+<script src="/atribucion.js"></script>
 </head>
 <body>
 
@@ -1378,7 +1379,7 @@ async function enviarConsulta(e) {
       const r = await fetch(WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_KEY}`, 'x-webhook-secret': WEBHOOK_SECRET },
-        body: JSON.stringify({ nombre, tel, email, interes, nota: mensaje, origen_detalle: 'home_contacto', turnstileToken: tsTok })
+        body: JSON.stringify({ nombre, tel, email, interes, nota: mensaje, origen_detalle: 'home_contacto', turnstileToken: tsTok, atribucion: (window.faAtribucion ? window.faAtribucion() : null) })
       });
       const data = await r.json();
       if (!(r.ok && data.ok)) console.warn('Webhook rechazó la consulta:', data.error || r.status);
@@ -1477,7 +1478,7 @@ async function enviarWspModal() {
   const btn = document.getElementById('wspBtn');
   btn.disabled = true; btn.textContent = 'Conectando...';
   try {
-    const r = await fetch(WSP_ROTATOR, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nombre, apellido, telefono, contexto: wspContexto, turnstileToken: tsTok }) });
+    const r = await fetch(WSP_ROTATOR, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nombre, apellido, telefono, contexto: wspContexto, turnstileToken: tsTok, atribucion: (window.faAtribucion ? window.faAtribucion() : null) }) });
     const data = await r.json();
     if (data.ok && data.numero_vendedor) { if (typeof fbq === 'function') fbq('track', 'Contact', { content_name: wspContexto || 'whatsapp' }); cerrarWspModal(); window.open('https://wa.me/'+data.numero_vendedor+'?text='+encodeURIComponent(data.mensaje||''), '_blank'); }
     else throw new Error();

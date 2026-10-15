@@ -423,6 +423,7 @@ window.tsOnLoad = function () { document.dispatchEvent(new Event('ts-listo')); }
   .header-cta .btn-wsp { display: none; }
 }
 </style>
+<script src="/atribucion.js"></script>
 </head>
 <body>
 
@@ -737,7 +738,7 @@ async function enviarWspModal() {
     const r = await fetch(WSP_ROTATOR, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nombre, telefono, contexto: wspContexto, turnstileToken: tsTok })
+      body: JSON.stringify({ nombre, telefono, contexto: wspContexto, turnstileToken: tsTok, atribucion: (window.faAtribucion ? window.faAtribucion() : null) })
     });
     const data = await r.json();
     if (data.ok && data.numero_vendedor) {
@@ -802,7 +803,8 @@ async function enviarFormulario(e) {
         nota,
         origen_detalle: 'financiacion',
         payload_extra: { monto, situacion, permuta, mensaje },
-        turnstileToken: tsTok
+        turnstileToken: tsTok,
+        atribucion: (window.faAtribucion ? window.faAtribucion() : null)
       })
     });
     const data = await r.json();

@@ -187,6 +187,7 @@
       line-height: 1.6;
     }
   </style>
+<script src="/atribucion.js"></script>
 </head>
 <body>
 
@@ -367,6 +368,7 @@
             contexto: contextoParam,
             vehiculo_id: vehiculoIdParam,
             campania: campaniaParam,
+            atribucion: (window.faAtribucion ? window.faAtribucion() : null),
             turnstileToken: tsToken
           })
         });
