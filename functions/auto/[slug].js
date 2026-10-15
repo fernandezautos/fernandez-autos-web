@@ -274,7 +274,7 @@ fbq('track', 'ViewContent', {
   content_type: 'vehicle',
   content_category: '${esc(v.marca || "")}',
   value: ${Number(v.precio) || 0},
-  currency: 'ARS'
+  currency: '${v.moneda_precio === "USD" ? "USD" : "ARS"}'
 });
 </script>
 <noscript><img height="1" width="1" style="display:none"
