@@ -62,8 +62,18 @@ async function leer(path) {
   return r.json();
 }
 
+// "Duster" + "Duster 2.0 Privilege" → "Duster 2.0 Privilege": si la versión ya
+// trae el modelo (pasa con la carga autocompletada, ej. "Hilux Sw4 Tdi" con
+// modelo "Sw4"), no se repite.
+function nombreAuto(v) {
+  const modelo = String(v.modelo || "").trim();
+  const version = String(v.version || "").trim();
+  const repite = modelo && (" " + version.toLowerCase() + " ").includes(" " + modelo.toLowerCase() + " ");
+  return [v.marca, repite ? null : modelo, version, v.anio].filter(Boolean).join(" ");
+}
+
 function fila(v, fotos) {
-  const nombre = [v.marca, v.modelo, v.version, v.anio].filter(Boolean).join(" ");
+  const nombre = nombreAuto(v);
   const km = Number(v.km) || 0;
   const nuevo = v.tipo === "Nuevo";
   const detalle = [
