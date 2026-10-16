@@ -68,7 +68,10 @@ async function leer(path) {
 function nombreAuto(v) {
   const modelo = String(v.modelo || "").trim();
   const version = String(v.version || "").trim();
-  const repite = modelo && (" " + version.toLowerCase() + " ").includes(" " + modelo.toLowerCase() + " ");
+  const repite = modelo && (
+    (" " + version.toLowerCase() + " ").includes(" " + modelo.toLowerCase() + " ") ||
+    modelo.toLowerCase() === String(v.marca || "").trim().toLowerCase()  // "RAM" + "Ram"
+  );
   return [v.marca, repite ? null : modelo, version, v.anio].filter(Boolean).join(" ");
 }
 
