@@ -66,11 +66,15 @@ async function leer(path) {
 // trae el modelo (pasa con la carga autocompletada, ej. "Hilux Sw4 Tdi" con
 // modelo "Sw4"), no se repite.
 function nombreAuto(v) {
-  const modelo = String(v.modelo || "").trim();
+  const marca = String(v.marca || "").trim();
+  let modelo = String(v.modelo || "").trim();
+  // "RAM" + "Ram 1500" → "1500": el modelo no repite la marca. No se corrige en
+  // el CRM porque cambiar el modelo regenera el link de la ficha.
+  if (marca && modelo.toLowerCase().startsWith(marca.toLowerCase() + " ")) modelo = modelo.slice(marca.length).trim();
   const version = String(v.version || "").trim();
   const repite = modelo && (
     (" " + version.toLowerCase() + " ").includes(" " + modelo.toLowerCase() + " ") ||
-    modelo.toLowerCase() === String(v.marca || "").trim().toLowerCase()  // "RAM" + "Ram"
+    modelo.toLowerCase() === marca.toLowerCase()  // "RAM" + "Ram"
   );
   return [v.marca, repite ? null : modelo, version, v.anio].filter(Boolean).join(" ");
 }
